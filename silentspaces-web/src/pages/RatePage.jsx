@@ -6,25 +6,57 @@ export default function RatePage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Phase A: pull location name from local JSON so the page feels real.
+  // Pull location info from local data so the page feels real.
   const loc = useMemo(() => locations.find((l) => l.id === id), [id]);
 
+  // Ratings UI state (not saved yet, just proving the flow works).
   const [stars, setStars] = useState(0);
+
+  // Yes/No toggles (null means “not answered yet”).
+  const [wifiAvailable, setWifiAvailable] = useState(null);   // true/false/null
+  const [seatingAvailable, setSeatingAvailable] = useState(null);
+
+  // simple “select time” input.
+  const [bestTime, setBestTime] = useState("");
+
   const [comments, setComments] = useState("");
+
+  // Simple label so users understand what their star pick means.
+  const ratingLabel = useMemo(() => {
+    if (stars === 0) return "";
+    if (stars <= 2) return "Not quiet";
+    if (stars === 3) return "Okay";
+    if (stars === 4) return "Quiet";
+    return "Very Quiet";
+  }, [stars]);
 
   if (!loc) {
     return <div style={{ padding: 16 }}>Location not found.</div>;
   }
 
-  const canSubmit = stars > 0;
+  const canSubmit = stars > 0; // keep it minimal for now
 
   const onSubmit = () => {
     if (!canSubmit) return;
 
-    // Phase A: mock submit only (no backend yet).
+    // Phase A: just prove submission flow works.
+    // Later: POST /ratings with stars + wifi/seating + bestTime + comments.
     alert("Rating submitted (mock) ✅");
+
+    // Send user back to details after submission.
     navigate(`/location/${loc.id}`);
   };
+
+  const toggleStyle = (active) => ({
+    padding: "10px 14px",
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    cursor: "pointer",
+    background: active ? "#111" : "#fff",
+    color: active ? "#fff" : "#111",
+    minWidth: 80,
+    textAlign: "center"
+  });
 
   const starStyle = (active) => ({
     width: 42,
@@ -50,7 +82,7 @@ export default function RatePage() {
       <div style={{ opacity: 0.8, marginTop: 6 }}>{loc.name}</div>
 
       <div style={{ marginTop: 18 }}>
-        <div style={{ fontWeight: 700, marginBottom: 8 }}>How quiet is it?</div>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>How quiet is this space?</div>
 
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           {[1, 2, 3, 4, 5].map((n) => (
@@ -65,6 +97,56 @@ export default function RatePage() {
             </button>
           ))}
         </div>
+
+        {ratingLabel && (
+          <div style={{ marginTop: 8, opacity: 0.8 }}>{ratingLabel}</div>
+        )}
+      </div>
+
+      <div style={{ marginTop: 22 }}>
+        <div style={{ fontWeight: 700, marginBottom: 10 }}>Wi-Fi Available?</div>
+        <div style={{ display: "flex", gap: 12 }}>
+          <button type="button" style={toggleStyle(wifiAvailable === true)} onClick={() => setWifiAvailable(true)}>
+            Yes
+          </button>
+          <button type="button" style={toggleStyle(wifiAvailable === false)} onClick={() => setWifiAvailable(false)}>
+            No
+          </button>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 22 }}>
+        <div style={{ fontWeight: 700, marginBottom: 10 }}>Seating Available?</div>
+        <div style={{ display: "flex", gap: 12 }}>
+          <button type="button" style={toggleStyle(seatingAvailable === true)} onClick={() => setSeatingAvailable(true)}>
+            Yes
+          </button>
+          <button type="button" style={toggleStyle(seatingAvailable === false)} onClick={() => setSeatingAvailable(false)}>
+            No
+          </button>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 22 }}>
+        <div style={{ fontWeight: 700, marginBottom: 10 }}>Best time to visit?</div>
+
+        {/* Simple dropdown for now. Later you can replace with a time picker. */}
+        <select
+          value={bestTime}
+          onChange={(e) => setBestTime(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 12,
+            borderRadius: 12,
+            border: "1px solid #ddd",
+            background: "#fff"
+          }}
+        >
+          <option value="">Select time</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Evening">Evening</option>
+        </select>
       </div>
 
       <div style={{ marginTop: 22 }}>
