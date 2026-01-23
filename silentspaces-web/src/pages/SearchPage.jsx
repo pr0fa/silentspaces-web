@@ -11,6 +11,7 @@ export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [wifiOnly, setWifiOnly] = useState(false);
   const [seatingOnly, setSeatingOnly] = useState(false);
+  const [quietOnly, setQuietOnly] = useState(false); //  add: quiet feature
   const [socketsOnly, setSocketsOnly] = useState(false);
 
 
@@ -29,15 +30,19 @@ export default function SearchPage() {
         loc.name.toLowerCase().includes(q) ||
         (loc.area && loc.area.toLowerCase().includes(q)) ||
         loc.type.toLowerCase().includes(q);
+
+        
+
       
       // Filters are optional. If a checkbox is OFF, results don't get blocked.
       const matchesWifi = !wifiOnly || loc.wifi === true;
       const matchesSeating = !seatingOnly || loc.seating === true;
+      const matchesQuiet = !quietOnly || loc.quietnessScore >= 4.0; // added: treat 4.0+ as "quiet enough" can change later on.
       const matchesSockets = !socketsOnly || loc.sockets === true;
 
-      return matchesText && matchesWifi && matchesSeating && matchesSockets;
+      return matchesText && matchesWifi && matchesSeating && matchesSockets && matchesQuiet;
     });
-  }, [query, wifiOnly, seatingOnly, socketsOnly]);
+  }, [query, wifiOnly, seatingOnly,quietOnly, socketsOnly]);
 
   return (
     <div style={{ padding: 16, maxWidth: 520, margin: "0 auto" }}>
@@ -57,7 +62,8 @@ export default function SearchPage() {
       />
 
       {/* filter: quick toggles for the stuff users actually care about  */}
-         <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+        
+        <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
         <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
           <input type="checkbox" checked={wifiOnly} onChange={() => setWifiOnly(!wifiOnly)} />
           Wi-Fi
@@ -69,13 +75,18 @@ export default function SearchPage() {
         </label>
 
         <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
+         <input type="checkbox" checked={quietOnly} onChange={() => setQuietOnly(!quietOnly)} />
+         Quiet
+        </label>
+
+        <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
           <input type="checkbox" checked={socketsOnly} onChange={() => setSocketsOnly(!socketsOnly)} />
           Sockets
         </label>
       </div>
 
       {/*Feedback so users know filtering actually worked*/}
-      
+
       <p style={{ marginTop: 12, fontSize: 13, opacity: 0.8 }}>
         Showing {filtered.length} location(s)
       </p>
