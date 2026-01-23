@@ -6,9 +6,16 @@ export default function LocationDetailsPage(){
   const{ id } = useParams();
   const navigate = useNavigate();
 
+ // Using local JSON as our data source for now.
+// Later: this becomes an API call like GET / locations.
   const loc= locations.find((l) => l.id==id);
+
+// favourite set as UI state no login or database yet.
+// Later: store it per user/device.
   const [favourite, setFavourite] = useState(false);
 
+
+// If someone writes down a random ID, don't crash the app.
   if(!loc){
     return <div style ={{ padding: 16 }}> Location not found.</div>;
   }
