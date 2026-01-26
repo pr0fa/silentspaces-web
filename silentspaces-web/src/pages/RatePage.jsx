@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import locations from "../data/locations.mock.json";
+import { submitRating } from "../api/ratingsApi";
 
 export default function RatePage() {
   const navigate = useNavigate();
@@ -9,17 +10,20 @@ export default function RatePage() {
   // Pull location info from local data so the page feels real.
   const loc = useMemo(() => locations.find((l) => l.id === id), [id]);
 
-  // Ratings UI state (not saved yet, just proving the flow works).
+  // Ratings UI state
   const [stars, setStars] = useState(0);
 
   // Yes/No toggles (null means “not answered yet”).
-  const [wifiAvailable, setWifiAvailable] = useState(null);   // true/false/null
+  const [wifiAvailable, setWifiAvailable] = useState(null); // true/false/null
   const [seatingAvailable, setSeatingAvailable] = useState(null);
 
   // simple “select time” input.
   const [bestTime, setBestTime] = useState("");
 
   const [comments, setComments] = useState("");
+
+  // Submitting state so user can’t spam-submit
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Simple label so users understand what their star pick means.
   const ratingLabel = useMemo(() => {
@@ -34,17 +38,28 @@ export default function RatePage() {
     return <div style={{ padding: 16 }}>Location not found.</div>;
   }
 
-  const canSubmit = stars > 0; // keep it minimal for now
+  // keeping it minimal for now
+  const canSubmit = stars > 0 && !isSubmitting;
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!canSubmit) return;
 
-    // Phase A: just prove submission flow works.
-    // Later: POST /ratings with stars + wifi/seating + bestTime + comments.
-    alert("Rating submitted (mock) ✅");
+    try {
+      setIsSubmitting(true);
 
-    // Send user back to details after submission.
-    navigate(`/location/${loc.id}`);
+      // send stars + comments only
+      // Backend expects: { rating, comment }
+      await submitRating(loc.id, stars, comments);
+
+      alert("Rating submitted ✅");
+
+      // Send user back to details after submission.
+      navigate(`/location/${loc.id}`);
+    } catch (err) {
+      alert(err.message || "Failed to submit rating");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const toggleStyle = (active) => ({
@@ -82,7 +97,9 @@ export default function RatePage() {
       <div style={{ opacity: 0.8, marginTop: 6 }}>{loc.name}</div>
 
       <div style={{ marginTop: 18 }}>
-        <div style={{ fontWeight: 700, marginBottom: 8 }}>How quiet is this space?</div>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>
+          How quiet is this space?
+        </div>
 
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           {[1, 2, 3, 4, 5].map((n) => (
@@ -106,31 +123,51 @@ export default function RatePage() {
       <div style={{ marginTop: 22 }}>
         <div style={{ fontWeight: 700, marginBottom: 10 }}>Wi-Fi Available?</div>
         <div style={{ display: "flex", gap: 12 }}>
-          <button type="button" style={toggleStyle(wifiAvailable === true)} onClick={() => setWifiAvailable(true)}>
+          <button
+            type="button"
+            style={toggleStyle(wifiAvailable === true)}
+            onClick={() => setWifiAvailable(true)}
+          >
             Yes
           </button>
-          <button type="button" style={toggleStyle(wifiAvailable === false)} onClick={() => setWifiAvailable(false)}>
+          <button
+            type="button"
+            style={toggleStyle(wifiAvailable === false)}
+            onClick={() => setWifiAvailable(false)}
+          >
             No
           </button>
         </div>
       </div>
 
       <div style={{ marginTop: 22 }}>
-        <div style={{ fontWeight: 700, marginBottom: 10 }}>Seating Available?</div>
+        <div style={{ fontWeight: 700, marginBottom: 10 }}>
+          Seating Available?
+        </div>
         <div style={{ display: "flex", gap: 12 }}>
-          <button type="button" style={toggleStyle(seatingAvailable === true)} onClick={() => setSeatingAvailable(true)}>
+          <button
+            type="button"
+            style={toggleStyle(seatingAvailable === true)}
+            onClick={() => setSeatingAvailable(true)}
+          >
             Yes
           </button>
-          <button type="button" style={toggleStyle(seatingAvailable === false)} onClick={() => setSeatingAvailable(false)}>
+          <button
+            type="button"
+            style={toggleStyle(seatingAvailable === false)}
+            onClick={() => setSeatingAvailable(false)}
+          >
             No
           </button>
         </div>
       </div>
 
       <div style={{ marginTop: 22 }}>
-        <div style={{ fontWeight: 700, marginBottom: 10 }}>Best time to visit?</div>
+        <div style={{ fontWeight: 700, marginBottom: 10 }}>
+          Best time to visit?
+        </div>
 
-        {/* Simple dropdown for now. Later you can replace with a time picker. */}
+        {/* Simple dropdown for now. Later I will replace with a time picker. */}
         <select
           value={bestTime}
           onChange={(e) => setBestTime(e.target.value)}
@@ -150,7 +187,9 @@ export default function RatePage() {
       </div>
 
       <div style={{ marginTop: 22 }}>
-        <div style={{ fontWeight: 700, marginBottom: 10 }}>Additional comments</div>
+        <div style={{ fontWeight: 700, marginBottom: 10 }}>
+          Additional comments
+        </div>
         <textarea
           value={comments}
           onChange={(e) => setComments(e.target.value)}
@@ -179,10 +218,10 @@ export default function RatePage() {
           opacity: canSubmit ? 1 : 0.5
         }}
       >
-        Submit rating
+        {isSubmitting ? "Submitting..." : "Submit rating"}
       </button>
 
-      {!canSubmit && (
+      {!stars && (
         <div style={{ marginTop: 10, fontSize: 13, opacity: 0.8 }}>
           Pick a star rating to submit.
         </div>
