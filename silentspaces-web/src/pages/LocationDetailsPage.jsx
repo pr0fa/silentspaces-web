@@ -1,40 +1,52 @@
-import {useParams, useNavigate} from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import locations from "../data/locations.mock.json";
+import RatingsPanel from "../components/RatingsPanel";
 
-export default function LocationDetailsPage(){
-  const{ id } = useParams();
+export default function LocationDetailsPage() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
- // Using local JSON as our data source for now.
-// Later: this becomes an API call like GET / locations.
-  const loc= locations.find((l) => l.id==id);
+  // Using local JSON as our data source for now.
+  // Later: this becomes an API call like GET /locations.
+  const loc = locations.find((l) => l.id === id);
 
-// favourite set as UI state no login or database yet.
-// Later: store it per user/device.
+  // favourite set as UI state no login or database yet.
+  // Later: store it per user/device.
   const [favourite, setFavourite] = useState(false);
 
-
-// If someone writes down a random ID, don't crash the app.
-  if(!loc){
-    return <div style ={{ padding: 16 }}> Location not found.</div>;
+  // If someone writes down a random ID, don't crash the app.
+  if (!loc) {
+    return <div style={{ padding: 16 }}>Location not found.</div>;
   }
 
   return (
-    <div style = {{ padding: 16, maxWidth: 520, margin: "0 auto"}}>
-      <button onClick = {() => navigate(-1)} style={{ marginBottom:12}}> ← Back </button>
-   
-   <div style = {{ display: "flex", justifyContent: "space-between", gap:12}}>
-    <div>
-    <div style={{ opacity: 0.8, marginTop: 4, fontSize: 13 }}>
-            {loc.area} • {loc.type} • {loc.distanceKm} km
-   </div>
-</div>
+    <div style={{ padding: 16, maxWidth: 520, margin: "0 auto" }}>
+      <button onClick={() => navigate(-1)} style={{ marginBottom: 12 }}>
+        ← Back
+      </button>
 
-<button
-  onClick= {()=> setFavourite((v)=> !v)}
-  title="Save to favourites"
-   style={{
+      {/* Location name (was missing) */}
+      <h2 style={{ margin: 0 }}>{loc.name}</h2>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 12,
+          marginTop: 8
+        }}
+      >
+        <div>
+          <div style={{ opacity: 0.8, marginTop: 4, fontSize: 13 }}>
+            {loc.area} • {loc.type} • {loc.distanceKm} km
+          </div>
+        </div>
+
+        <button
+          onClick={() => setFavourite((v) => !v)}
+          title="Save to favourites"
+          style={{
             fontSize: 18,
             borderRadius: 12,
             padding: "8px 12px",
@@ -44,7 +56,15 @@ export default function LocationDetailsPage(){
           {favourite ? "♥" : "♡"}
         </button>
       </div>
-         <div style={{ marginTop: 16, padding: 14, border: "1px solid #eee", borderRadius: 14 }}>
+
+      <div
+        style={{
+          marginTop: 16,
+          padding: 14,
+          border: "1px solid #eee",
+          borderRadius: 14
+        }}
+      >
         <div>
           <b>Quietness:</b> {loc.quietnessScore} ({loc.ratingCount} ratings)
         </div>
@@ -63,6 +83,9 @@ export default function LocationDetailsPage(){
         </div>
       </div>
 
+      {/*  show stored ratings + average */}
+      <RatingsPanel locationId={loc.id} />
+
       <button
         onClick={() => navigate(`/rate/${loc.id}`)}
         style={{
@@ -78,4 +101,3 @@ export default function LocationDetailsPage(){
     </div>
   );
 }
-  
