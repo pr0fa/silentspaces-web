@@ -1,17 +1,13 @@
-// Setting up the swap from JSON to MySQL without touching routes.
+const jsonStore = require("./jsonRatingsStore");
 
-const { JsonRatingsStore } = require("./jsonRatingsStore");
-const { MysqlRatingsStore } = require ("./mysqlRatingsStore");
-
-function getStore(){
-    const provider= (process.env.STORAGE_PROVIDER || "json").toLowerCase();
-
-    if(provider === "mysql"){
-        return new MysqlRatingsStore();
-    }
-
-    // as default
-    return new JsonRatingsStore();
+function getStore() {
+    // Storage backend is selected via env so the rest of the code can stay the same.
+  const provider = (process.env.STORAGE_PROVIDER || "json").toLowerCase();
+  if (provider === "mysql") {
+     // Loaded only when needed to avoid requiring MySQL deps in JSON mode.
+    return require("./mysqlRatingsStore");
+  }
+  return jsonStore;
 }
 
-module.exports= { getStore };
+module.exports = { getStore };
