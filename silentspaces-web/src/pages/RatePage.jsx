@@ -1,14 +1,15 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import locations from "../data/locations.mock.json";
 import { submitRating } from "../api/ratingsApi";
+import { getLocationById } from "../api/locationsApi";
 
 export default function RatePage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Pull location info from local data so the page feels real.
-  const loc = useMemo(() => locations.find((l) => l.id === id), [id]);
+  // Location loaded from backend so the header matches the selected item
+  const [loc, setLoc] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Ratings UI state
   const [stars, setStars] = useState(0);
@@ -25,6 +26,31 @@ export default function RatePage() {
   // Submitting state so user can’t spam-submit
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Load location when route id changes
+  useEffect(() => {
+    let alive = true;
+
+    setLoading(true);
+
+    getLocationById(id)
+      .then((data) => {
+        if (!alive) return;
+        setLoc(data);
+      })
+      .catch(() => {
+        if (!alive) return;
+        setLoc(null);
+      })
+      .finally(() => {
+        if (!alive) return;
+        setLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [id]);
+
   // Simple label so users understand what their star pick means.
   const ratingLabel = useMemo(() => {
     if (stars === 0) return "";
@@ -33,6 +59,10 @@ export default function RatePage() {
     if (stars === 4) return "Quiet";
     return "Very Quiet";
   }, [stars]);
+
+  if (loading) {
+    return <div style={{ padding: 16 }}>Loading…</div>;
+  }
 
   if (!loc) {
     return <div style={{ padding: 16 }}>Location not found.</div>;
