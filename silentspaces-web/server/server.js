@@ -38,7 +38,7 @@ app.post("/api/locations/:id/ratings", async (req, res) => {
 
     loc.ratings.push(newRating);
 
-    // Update summary fields you already have in JSON
+    // Update summary fields I already have in JSON
     loc.ratingCount = loc.ratings.length;
     loc.quietnessScore = avg(loc.ratings);
 

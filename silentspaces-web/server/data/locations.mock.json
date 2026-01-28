@@ -37,15 +37,28 @@
     "type": "Café",
     "area": "Liverpool Street",
     "distanceKm": 2.3,
-    "quietnessScore": 3.7,
-    "ratingCount": 59,
+    "quietnessScore": 4.5,
+    "ratingCount": 2,
     "wifi": true,
     "seating": true,
     "sockets": false,
     "lat": 51.5176,
     "lng": -0.082,
     "bestTime": "Afternoons (2PM–5PM)",
-    "ratings": []
+    "ratings": [
+      {
+        "id": "rating_1769448976704_7efa0aadfb681",
+        "rating": 4,
+        "comment": "Test",
+        "createdAt": "2026-01-26T17:36:16.705Z"
+      },
+      {
+        "id": "rating_1769449001525_0a087c0be8f14",
+        "rating": 5,
+        "comment": "Test2",
+        "createdAt": "2026-01-26T17:36:41.525Z"
+      }
+    ]
   },
   {
     "id": "lon-004",
@@ -84,7 +97,7 @@
     "name": "Camden Calm Library",
     "type": "Library",
     "area": "Camden Town",
-    "distanceKm": 5.0,
+    "distanceKm": 5,
     "quietnessScore": 4.1,
     "ratingCount": 76,
     "wifi": true,
@@ -100,7 +113,7 @@
     "name": "Green Park Bench Zone",
     "type": "Park",
     "area": "Green Park",
-    "distanceKm": 2.0,
+    "distanceKm": 2,
     "quietnessScore": 3.6,
     "ratingCount": 34,
     "wifi": false,
@@ -117,7 +130,7 @@
     "type": "Study Space",
     "area": "Canary Wharf",
     "distanceKm": 6.9,
-    "quietnessScore": 4.0,
+    "quietnessScore": 4,
     "ratingCount": 93,
     "wifi": true,
     "seating": true,
