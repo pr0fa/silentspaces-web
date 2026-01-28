@@ -1,19 +1,48 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import locations from "../data/locations.mock.json";
+import { useEffect, useState } from "react";
 import RatingsPanel from "../components/RatingsPanel";
+import { getLocationById } from "../api/locationsApi";
 
 export default function LocationDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Using local JSON as our data source for now.
-  // Later: this becomes an API call like GET /locations.
-  const loc = locations.find((l) => l.id === id);
+  // Location is loaded from the backend (MySQL)
+  const [loc, setLoc] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // favourite set as UI state no login or database yet.
   // Later: store it per user/device.
   const [favourite, setFavourite] = useState(false);
+
+  // Load location when the route id changes
+  useEffect(() => {
+    let alive = true;
+
+    setLoading(true);
+
+    getLocationById(id)
+      .then((data) => {
+        if (!alive) return;
+        setLoc(data);
+      })
+      .catch(() => {
+        if (!alive) return;
+        setLoc(null);
+      })
+      .finally(() => {
+        if (!alive) return;
+        setLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [id]);
+
+  if (loading) {
+    return <div style={{ padding: 16 }}>Loading…</div>;
+  }
 
   // If someone writes down a random ID, don't crash the app.
   if (!loc) {
@@ -39,7 +68,7 @@ export default function LocationDetailsPage() {
       >
         <div>
           <div style={{ opacity: 0.8, marginTop: 4, fontSize: 13 }}>
-            {loc.area} • {loc.type} • {loc.distanceKm} km
+            {loc.area} • {loc.type} • {Number(loc.distanceMiles || 0).toFixed(1)} mi
           </div>
         </div>
 
@@ -66,7 +95,7 @@ export default function LocationDetailsPage() {
         }}
       >
         <div>
-          <b>Quietness:</b> {loc.quietnessScore} ({loc.ratingCount} ratings)
+          <b>Quietness:</b> {loc.quietnessScore ?? "-"} ({loc.ratingCount ?? 0} ratings)
         </div>
 
         <div style={{ marginTop: 10 }}>
