@@ -1,5 +1,5 @@
 // server/storage/mysqlRatingsStore.js
-// MySQL ratings store (XAMPP). Exposes simple functions: addRating, getRatings.
+// MySQL store (XAMPP). Handles locations + ratings.
 // Requires: npm i mysql2 dotenv
 
 const mysql = require("mysql2/promise");
@@ -21,6 +21,38 @@ function getPool() {
 
   return pool;
 }
+
+// -------- Locations --------
+
+// Get all locations (used by search/list page)
+async function getLocations() {
+  const db = getPool();
+
+  const [rows] = await db.execute(
+    `SELECT id, name, type, area, distanceMiles, wifi, seating, sockets, lat, lng, bestTime
+     FROM locations
+     ORDER BY id ASC`
+  );
+
+  return rows;
+}
+
+// Get one location by id (used by details + rate page)
+async function getLocationById(id) {
+  const db = getPool();
+
+  const [rows] = await db.execute(
+    `SELECT id, name, type, area, distanceMiles, wifi, seating, sockets, lat, lng, bestTime
+     FROM locations
+     WHERE id = ?
+     LIMIT 1`,
+    [id]
+  );
+
+  return rows[0] || null;
+}
+
+// -------- Ratings --------
 
 async function addRating(locationId, rating, comment) {
   const db = getPool();
@@ -69,4 +101,4 @@ async function getRatings(locationId) {
   };
 }
 
-module.exports = { addRating, getRatings };
+module.exports = { getLocations, getLocationById, addRating, getRatings };

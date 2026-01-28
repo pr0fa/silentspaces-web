@@ -3,11 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
-// keep here if i decide to use .env later (MySQL)
-try {
-  require("dotenv").config();
-} catch (_) {}
-
 const { getStore } = require("./storage");
 const store = getStore();
 
@@ -20,6 +15,33 @@ function parseRating(x) {
   if (!Number.isFinite(n) || n < 1 || n > 5) return null;
   return Math.round(n);
 }
+
+// ---------- Locations (DB-backed) ----------
+
+// List all locations (used for Search page)
+app.get("/api/locations", async (req, res) => {
+  try {
+    const locations = await store.getLocations();
+    res.json(locations);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Failed to load locations" });
+  }
+});
+
+// Get one location by id (used for Details + Rate header)
+app.get("/api/locations/:id", async (req, res) => {
+  try {
+    const loc = await store.getLocationById(req.params.id);
+    if (!loc) return res.status(404).json({ error: "Location not found" });
+    res.json(loc);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Failed to load location" });
+  }
+});
+
+// ---------- Ratings ----------
 
 // Save rating
 app.post("/api/locations/:id/ratings", async (req, res) => {
