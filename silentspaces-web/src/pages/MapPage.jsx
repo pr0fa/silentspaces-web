@@ -2,7 +2,30 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { getLocations } from "../api/locationsApi";
+import { useMap } from "react-leaflet";
+import L from "leaflet";
+
 import "./styles/MapPage.css";
+
+function FitBounds({ points }) {
+  const map = useMap();
+
+  useEffect(() => {
+    // When the visible marker set changes, update the viewport so all points are in view.
+    if (!points || points.length === 0) return;
+
+    // Create a bounding box around all marker coordinates.
+    const bounds = L.latLngBounds(points);
+
+    // Fit the map to the bounds with padding so markers are not glued to the edges.
+    map.fitBounds(bounds, { padding: [30, 30] });
+  }, [map, points]);
+
+  // This component controls map behaviour only and does not render UI.
+  return null;
+}
+
+
 
 export default function MapPage() {
   const navigate = useNavigate();
@@ -126,6 +149,8 @@ export default function MapPage() {
             attribution='&copy; OpenStreetMap contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+
+           <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
 
           {filtered.map((loc) => (
             <Marker key={loc.id} position={[Number(loc.lat), Number(loc.lng)]}>
