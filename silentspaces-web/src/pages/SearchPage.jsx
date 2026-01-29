@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { getLocations } from "../api/locationsApi";
+import "./styles/SearchPage.css";
 
 export default function SearchPage() {
   const navigate = useNavigate();
@@ -54,7 +54,8 @@ export default function SearchPage() {
       const type = (loc.type || "").toLowerCase();
 
       // Text match across common fields
-      const matchesText = q === "" || name.includes(q) || area.includes(q) || type.includes(q);
+      const matchesText =
+        q === "" || name.includes(q) || area.includes(q) || type.includes(q);
 
       // Optional facility filters
       const matchesWifi = !wifiOnly || !!loc.wifi;
@@ -65,79 +66,96 @@ export default function SearchPage() {
       const quietness = Number(loc.quietnessScore || 0);
       const matchesQuiet = !quietOnly || quietness >= 4.0;
 
-      return matchesText && matchesWifi && matchesSeating && matchesSockets && matchesQuiet;
+      return (
+        matchesText &&
+        matchesWifi &&
+        matchesSeating &&
+        matchesSockets &&
+        matchesQuiet
+      );
     });
   }, [locations, query, wifiOnly, seatingOnly, quietOnly, socketsOnly]);
 
-  if (loading) return <div style={{ padding: 16 }}>Loading locations…</div>;
-  if (error) return <div style={{ padding: 16 }}>{error}</div>;
+  if (loading) return <div className="sp-state">Loading locations…</div>;
+  if (error) return <div className="sp-state">{error}</div>;
 
   return (
-    <div style={{ padding: 16, maxWidth: 520, margin: "0 auto" }}>
-      <h2 style={{ marginTop: 0 }}>Search</h2>
+    <div className="sp-page">
+      <h2 className="sp-title">Search</h2>
 
       <input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search by name, area, or type..."
-        style={{
-          width: "100%",
-          padding: 12,
-          borderRadius: 12,
-          border: "1px solid #ddd",
-          outline: "none"
-        }}
+        className="sp-search"
       />
 
-      <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
-        <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          <input type="checkbox" checked={wifiOnly} onChange={() => setWifiOnly(!wifiOnly)} />
+      <div className="sp-filters">
+        <label className="sp-filter">
+          <input
+            type="checkbox"
+            checked={wifiOnly}
+            onChange={() => setWifiOnly(!wifiOnly)}
+          />
           Wi-Fi
         </label>
 
-        <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          <input type="checkbox" checked={seatingOnly} onChange={() => setSeatingOnly(!seatingOnly)} />
+        <label className="sp-filter">
+          <input
+            type="checkbox"
+            checked={seatingOnly}
+            onChange={() => setSeatingOnly(!seatingOnly)}
+          />
           Seating
         </label>
 
-        <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          <input type="checkbox" checked={quietOnly} onChange={() => setQuietOnly(!quietOnly)} />
+        <label className="sp-filter">
+          <input
+            type="checkbox"
+            checked={quietOnly}
+            onChange={() => setQuietOnly(!quietOnly)}
+          />
           Quiet
         </label>
 
-        <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          <input type="checkbox" checked={socketsOnly} onChange={() => setSocketsOnly(!socketsOnly)} />
+        <label className="sp-filter">
+          <input
+            type="checkbox"
+            checked={socketsOnly}
+            onChange={() => setSocketsOnly(!socketsOnly)}
+          />
           Sockets
         </label>
       </div>
 
-      <p style={{ marginTop: 12, fontSize: 13, opacity: 0.8 }}>
-        Showing {filtered.length} location(s)
-      </p>
+      <p className="sp-count">Showing {filtered.length} location(s)</p>
 
-      <div style={{ display: "grid", gap: 12 }}>
+      <div className="sp-grid">
         {filtered.map((loc) => (
           <div
             key={loc.id}
             onClick={() => navigate(`/location/${loc.id}`)}
-            style={{
-              padding: 14,
-              border: "1px solid #eee",
-              borderRadius: 14,
-              cursor: "pointer"
+            className="sp-card"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                navigate(`/location/${loc.id}`);
+              }
             }}
           >
-            <div style={{ fontWeight: 800 }}>{loc.name}</div>
+            <div className="sp-cardTitle">{loc.name}</div>
 
-            <div style={{ fontSize: 12, opacity: 0.8, marginTop: 4 }}>
-              {loc.area} • {loc.type} • {Number(loc.distanceMiles || 0).toFixed(1)} mi
+            <div className="sp-cardMeta">
+              {loc.area} • {loc.type} •{" "}
+              {Number(loc.distanceMiles || 0).toFixed(1)} mi
             </div>
 
-            <div style={{ fontSize: 12, marginTop: 6 }}>
+            <div className="sp-cardQuiet">
               Quietness: <b>{loc.quietnessScore ?? "-"}</b> ({loc.ratingCount ?? 0})
             </div>
 
-            <div style={{ fontSize: 12, opacity: 0.9, marginTop: 6 }}>
+            <div className="sp-cardFacilities">
               {loc.wifi ? "Wi-Fi ✅ " : "Wi-Fi ❌ "}
               {loc.seating ? "Seating ✅ " : "Seating ❌ "}
               {loc.sockets ? "Sockets ✅" : "Sockets ❌"}
