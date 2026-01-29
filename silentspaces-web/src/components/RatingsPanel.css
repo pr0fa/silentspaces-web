@@ -1,0 +1,41 @@
+.rp-error {
+  color: crimson;
+}
+
+.rp-container {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+.rp-title {
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.rp-summary {
+  margin-bottom: 10px;
+}
+
+.rp-count {
+  opacity: 0.8;
+}
+
+.rp-empty {
+  opacity: 0.8;
+}
+
+.rp-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.rp-item {
+  margin-bottom: 8px;
+}
+
+.rp-date {
+  font-size: 12px;
+  opacity: 0.7;
+}
