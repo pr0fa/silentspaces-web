@@ -1,0 +1,73 @@
+.sp-page {
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.sp-state {
+  padding: 16px;
+}
+
+.sp-title {
+  margin-top: 0;
+}
+
+.sp-search {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.sp-filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.sp-filter {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.sp-count {
+  margin-top: 12px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.sp-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.sp-card {
+  padding: 14px;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.sp-cardTitle {
+  font-weight: 800;
+}
+
+.sp-cardMeta {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+.sp-cardQuiet {
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.sp-cardFacilities {
+  font-size: 12px;
+  opacity: 0.9;
+  margin-top: 6px;
+}
