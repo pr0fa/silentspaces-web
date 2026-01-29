@@ -29,9 +29,26 @@ async function getLocations() {
   const db = getPool();
 
   const [rows] = await db.execute(
-    `SELECT id, name, type, area, distanceMiles, wifi, seating, sockets, lat, lng, bestTime
-     FROM locations
-     ORDER BY id ASC`
+    `
+    SELECT
+      l.id,
+      l.name,
+      l.type,
+      l.area,
+      l.distanceMiles,
+      l.wifi,
+      l.seating,
+      l.sockets,
+      l.lat,
+      l.lng,
+      l.bestTime,
+      COALESCE(ROUND(AVG(r.rating), 1), 0) AS quietnessScore,
+      COUNT(r.id) AS ratingCount
+    FROM locations l
+    LEFT JOIN ratings r ON r.location_id = l.id
+    GROUP BY l.id
+    ORDER BY l.id ASC
+    `
   );
 
   return rows;
@@ -42,10 +59,27 @@ async function getLocationById(id) {
   const db = getPool();
 
   const [rows] = await db.execute(
-    `SELECT id, name, type, area, distanceMiles, wifi, seating, sockets, lat, lng, bestTime
-     FROM locations
-     WHERE id = ?
-     LIMIT 1`,
+    `
+    SELECT
+      l.id,
+      l.name,
+      l.type,
+      l.area,
+      l.distanceMiles,
+      l.wifi,
+      l.seating,
+      l.sockets,
+      l.lat,
+      l.lng,
+      l.bestTime,
+      COALESCE(ROUND(AVG(r.rating), 1), 0) AS quietnessScore,
+      COUNT(r.id) AS ratingCount
+    FROM locations l
+    LEFT JOIN ratings r ON r.location_id = l.id
+    WHERE l.id = ?
+    GROUP BY l.id
+    LIMIT 1
+    `,
     [id]
   );
 
@@ -66,7 +100,7 @@ async function addRating(locationId, rating, comment) {
 
   // Return updated stats
   const [stats] = await db.execute(
-    "SELECT COUNT(*) AS count, ROUND(AVG(rating), 1) AS average FROM ratings WHERE location_id = ?",
+    "SELECT COUNT(*) AS count, COALESCE(ROUND(AVG(rating), 1), 0) AS average FROM ratings WHERE location_id = ?",
     [locationId]
   );
 
@@ -89,7 +123,7 @@ async function getRatings(locationId) {
   );
 
   const [stats] = await db.execute(
-    "SELECT COUNT(*) AS count, ROUND(AVG(rating), 1) AS average FROM ratings WHERE location_id = ?",
+    "SELECT COUNT(*) AS count, COALESCE(ROUND(AVG(rating), 1), 0) AS average FROM ratings WHERE location_id = ?",
     [locationId]
   );
 
