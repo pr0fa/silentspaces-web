@@ -1,0 +1,47 @@
+.mp-page {
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.mp-state {
+  padding: 16px;
+}
+
+.mp-controls {
+  display: grid;
+  gap: 12px;
+}
+
+.mp-search {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.mp-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mp-filter {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.mp-count {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.mp-mapLeaflet {
+  margin-top: 14px;
+  height: 520px;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  overflow: hidden;
+}

@@ -6,6 +6,10 @@ import LocationDetailsPage from "./pages/LocationDetailsPage.jsx";
 import RatePage from "./pages/RatePage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 
+// Leaflet base styles (needed for tiles/controls/popups/icons)
+import "leaflet/dist/leaflet.css";
+
+
 export default function App() {
   return (
     <Routes>
