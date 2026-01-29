@@ -157,10 +157,27 @@ export default function MapPage() {
               <Popup>
                 <div>
                   <div style={{ fontWeight: 700 }}>{loc.name}</div>
+
                   <div style={{ fontSize: 12, opacity: 0.8 }}>
                     {loc.area} • {loc.type}
                   </div>
-                  <div style={{ marginTop: 8 }}>
+
+                  {/* Quietness summary is shown as '-' when no ratings exist */}
+                  <div style={{ fontSize: 12, marginTop: 8 }}>
+                    <b>Quietness:</b>{" "}
+                    {Number(loc.ratingCount || 0) === 0 ? "-" : (loc.quietnessScore ?? "-")} (
+                    {loc.ratingCount ?? 0})
+                  </div>
+
+                  {/* Facility indicators help users decide without leaving the map */}
+                  <div style={{ fontSize: 12, opacity: 0.9, marginTop: 6 }}>
+                    {loc.wifi ? "Wi-Fi ✅ " : "Wi-Fi ❌ "}
+                    {loc.seating ? "Seating ✅ " : "Seating ❌ "}
+                    {loc.sockets ? "Sockets ✅" : "Sockets ❌"}
+                  </div>
+
+                  {/* Navigate to the details page for full info and ratings */}
+                  <div style={{ marginTop: 10 }}>
                     <button type="button" onClick={() => navigate(`/location/${loc.id}`)}>
                       View details
                     </button>
