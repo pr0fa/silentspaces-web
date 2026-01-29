@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { submitRating } from "../api/ratingsApi";
 import { getLocationById } from "../api/locationsApi";
+import "./styles/RatePage.css";
 
 export default function RatePage() {
   const navigate = useNavigate();
@@ -61,11 +62,11 @@ export default function RatePage() {
   }, [stars]);
 
   if (loading) {
-    return <div style={{ padding: 16 }}>Loading…</div>;
+    return <div className="rp-state">Loading…</div>;
   }
 
   if (!loc) {
-    return <div style={{ padding: 16 }}>Location not found.</div>;
+    return <div className="rp-state">Location not found.</div>;
   }
 
   // keeping it minimal for now
@@ -92,77 +93,51 @@ export default function RatePage() {
     }
   };
 
-  const toggleStyle = (active) => ({
-    padding: "10px 14px",
-    borderRadius: 12,
-    border: "1px solid #ddd",
-    cursor: "pointer",
-    background: active ? "#111" : "#fff",
-    color: active ? "#fff" : "#111",
-    minWidth: 80,
-    textAlign: "center"
-  });
-
-  const starStyle = (active) => ({
-    width: 42,
-    height: 42,
-    borderRadius: 12,
-    border: "1px solid #ddd",
-    cursor: "pointer",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 18,
-    background: active ? "#111" : "#fff",
-    color: active ? "#fff" : "#111"
-  });
-
   return (
-    <div style={{ padding: 16, maxWidth: 520, margin: "0 auto" }}>
-      <button onClick={() => navigate(-1)} style={{ marginBottom: 12 }}>
+    <div className="rp-page">
+      <button onClick={() => navigate(-1)} className="rp-back">
         ← Back
       </button>
 
-      <h2 style={{ margin: 0 }}>Rate location</h2>
-      <div style={{ opacity: 0.8, marginTop: 6 }}>{loc.name}</div>
+      <h2 className="rp-title">Rate location</h2>
+      <div className="rp-subtitle">{loc.name}</div>
 
-      <div style={{ marginTop: 18 }}>
-        <div style={{ fontWeight: 700, marginBottom: 8 }}>
-          How quiet is this space?
+      <div className="rp-block">
+        <div className="rp-question">How quiet is this space?</div>
+
+        <div className="rp-starsRow">
+          {[1, 2, 3, 4, 5].map((n) => {
+            const active = n <= stars;
+            return (
+              <button
+                key={n}
+                type="button"
+                onClick={() => setStars(n)}
+                className={`rp-star ${active ? "is-active" : ""}`}
+                aria-label={`Rate ${n} star`}
+              >
+                ★
+              </button>
+            );
+          })}
         </div>
 
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          {[1, 2, 3, 4, 5].map((n) => (
-            <button
-              key={n}
-              type="button"
-              onClick={() => setStars(n)}
-              style={starStyle(n <= stars)}
-              aria-label={`Rate ${n} star`}
-            >
-              ★
-            </button>
-          ))}
-        </div>
-
-        {ratingLabel && (
-          <div style={{ marginTop: 8, opacity: 0.8 }}>{ratingLabel}</div>
-        )}
+        {ratingLabel && <div className="rp-label">{ratingLabel}</div>}
       </div>
 
-      <div style={{ marginTop: 22 }}>
-        <div style={{ fontWeight: 700, marginBottom: 10 }}>Wi-Fi Available?</div>
-        <div style={{ display: "flex", gap: 12 }}>
+      <div className="rp-block">
+        <div className="rp-question">Wi-Fi Available?</div>
+        <div className="rp-toggleRow">
           <button
             type="button"
-            style={toggleStyle(wifiAvailable === true)}
+            className={`rp-toggle ${wifiAvailable === true ? "is-active" : ""}`}
             onClick={() => setWifiAvailable(true)}
           >
             Yes
           </button>
           <button
             type="button"
-            style={toggleStyle(wifiAvailable === false)}
+            className={`rp-toggle ${wifiAvailable === false ? "is-active" : ""}`}
             onClick={() => setWifiAvailable(false)}
           >
             No
@@ -170,21 +145,23 @@ export default function RatePage() {
         </div>
       </div>
 
-      <div style={{ marginTop: 22 }}>
-        <div style={{ fontWeight: 700, marginBottom: 10 }}>
-          Seating Available?
-        </div>
-        <div style={{ display: "flex", gap: 12 }}>
+      <div className="rp-block">
+        <div className="rp-question">Seating Available?</div>
+        <div className="rp-toggleRow">
           <button
             type="button"
-            style={toggleStyle(seatingAvailable === true)}
+            className={`rp-toggle ${
+              seatingAvailable === true ? "is-active" : ""
+            }`}
             onClick={() => setSeatingAvailable(true)}
           >
             Yes
           </button>
           <button
             type="button"
-            style={toggleStyle(seatingAvailable === false)}
+            className={`rp-toggle ${
+              seatingAvailable === false ? "is-active" : ""
+            }`}
             onClick={() => setSeatingAvailable(false)}
           >
             No
@@ -192,22 +169,14 @@ export default function RatePage() {
         </div>
       </div>
 
-      <div style={{ marginTop: 22 }}>
-        <div style={{ fontWeight: 700, marginBottom: 10 }}>
-          Best time to visit?
-        </div>
+      <div className="rp-block">
+        <div className="rp-question">Best time to visit?</div>
 
         {/* Simple dropdown for now. Later I will replace with a time picker. */}
         <select
           value={bestTime}
           onChange={(e) => setBestTime(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 12,
-            borderRadius: 12,
-            border: "1px solid #ddd",
-            background: "#fff"
-          }}
+          className="rp-select"
         >
           <option value="">Select time</option>
           <option value="Morning">Morning</option>
@@ -216,22 +185,14 @@ export default function RatePage() {
         </select>
       </div>
 
-      <div style={{ marginTop: 22 }}>
-        <div style={{ fontWeight: 700, marginBottom: 10 }}>
-          Additional comments
-        </div>
+      <div className="rp-block">
+        <div className="rp-question">Additional comments</div>
         <textarea
           value={comments}
           onChange={(e) => setComments(e.target.value)}
           placeholder="Share your experience..."
           rows={4}
-          style={{
-            width: "100%",
-            padding: 12,
-            borderRadius: 12,
-            border: "1px solid #ddd",
-            resize: "vertical"
-          }}
+          className="rp-textarea"
         />
       </div>
 
@@ -239,22 +200,13 @@ export default function RatePage() {
         type="button"
         onClick={onSubmit}
         disabled={!canSubmit}
-        style={{
-          marginTop: 22,
-          width: "100%",
-          padding: 12,
-          borderRadius: 14,
-          cursor: canSubmit ? "pointer" : "not-allowed",
-          opacity: canSubmit ? 1 : 0.5
-        }}
+        className={`rp-submit ${canSubmit ? "" : "is-disabled"}`}
       >
         {isSubmitting ? "Submitting..." : "Submit rating"}
       </button>
 
       {!stars && (
-        <div style={{ marginTop: 10, fontSize: 13, opacity: 0.8 }}>
-          Pick a star rating to submit.
-        </div>
+        <div className="rp-hint">Pick a star rating to submit.</div>
       )}
     </div>
   );
