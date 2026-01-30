@@ -71,3 +71,9 @@
   opacity: 0.9;
   margin-top: 6px;
 }
+.sp-rateHint {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  opacity: 0.85;
+}

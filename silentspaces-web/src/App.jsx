@@ -16,15 +16,10 @@ function AppLayout({ children }) {
   return <div style={{ paddingBottom: 74 }}>{children}<BottomNav /></div>;
 }
 
+
 function RateHub() {
-  return (
-    <div style={{ padding: 16 }}>
-      <h2 style={{ marginTop: 0 }}>Rate</h2>
-      <div style={{ opacity: 0.8, marginTop: 6 }}>
-        Pick a location from Search or Map to submit a rating.
-      </div>
-    </div>
-  );
+  // Rate is tied to a location, so route users to Search to pick one.
+  return <Navigate to="/search?mode=rate" replace />;
 }
 
 export default function App() {
@@ -38,8 +33,8 @@ export default function App() {
         <Route path="/location/:id" element={<LocationDetailsPage />} />
 
         {/* Nav tab route (low fidelity for now) */}
-        <Route path="/rate" element={<RateHub />} />
-        <Route path="/rate/:id" element={<RatePage />} />
+       <Route path="/rate" element={<Navigate to="/search?mode=rate" replace />} />
+       <Route path="/rate/:id" element={<RatePage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
 

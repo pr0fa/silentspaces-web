@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getLocations } from "../api/locationsApi";
 import "./styles/SearchPage.css";
 
 export default function SearchPage() {
   const navigate = useNavigate();
+  const [params, setParams] = useSearchParams();
+
+  // When Search is opened from the Rate tab, clicking a card should go to /rate/:id
+  const rateMode = params.get("mode") === "rate";
 
   // Data loaded from the backend (MySQL)
   const [locations, setLocations] = useState([]);
@@ -76,12 +80,35 @@ export default function SearchPage() {
     });
   }, [locations, query, wifiOnly, seatingOnly, quietOnly, socketsOnly]);
 
+  const goToCard = (locId) => {
+    // Rate mode routes into the rating flow, normal mode routes into details.
+    navigate(rateMode ? `/rate/${locId}` : `/location/${locId}`);
+  };
+
+  const exitRateMode = () => {
+    // Remove mode=rate but keep the user on Search.
+    params.delete("mode");
+    setParams(params, { replace: true });
+  };
+
   if (loading) return <div className="sp-state">Loading locations…</div>;
   if (error) return <div className="sp-state">{error}</div>;
 
   return (
     <div className="sp-page">
-      <h2 className="sp-title">Search</h2>
+      <div className="sp-headerRow">
+        <h2 className="sp-title">{rateMode ? "Pick a location to rate" : "Search"}</h2>
+
+        {rateMode && (
+          <button type="button" className="sp-exitRate" onClick={exitRateMode}>
+            Exit
+          </button>
+        )}
+      </div>
+
+      {rateMode && (
+        <div className="sp-rateHint">Select a location to rate.</div>
+      )}
 
       <input
         value={query}
@@ -134,21 +161,20 @@ export default function SearchPage() {
         {filtered.map((loc) => (
           <div
             key={loc.id}
-            onClick={() => navigate(`/location/${loc.id}`)}
+            onClick={() => goToCard(loc.id)}
             className="sp-card"
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
-                navigate(`/location/${loc.id}`);
+                goToCard(loc.id);
               }
             }}
           >
             <div className="sp-cardTitle">{loc.name}</div>
 
             <div className="sp-cardMeta">
-              {loc.area} • {loc.type} •{" "}
-              {Number(loc.distanceMiles || 0).toFixed(1)} mi
+              {loc.area} • {loc.type} • {Number(loc.distanceMiles || 0).toFixed(1)} mi
             </div>
 
             <div className="sp-cardQuiet">
