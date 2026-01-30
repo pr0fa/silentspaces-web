@@ -1,0 +1,44 @@
+.bn-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 64px;
+  background: #111;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  z-index: 999;
+}
+
+.bn-item {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 10px 0;
+}
+
+.bn-itemActive {
+  color: #fff;
+}
+
+.bn-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.bn-itemActive .bn-icon {
+  background: rgba(255, 255, 255, 0.9);
+}
+  
+.bn-label {
+  font-size: 12px;
+}
