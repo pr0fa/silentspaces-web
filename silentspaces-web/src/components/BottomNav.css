@@ -1,44 +1,58 @@
-.bn-bar {
+.bn {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 50;
 
-  height: 64px;
-  background: #111;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(12, 12, 12, 0.92);
+  backdrop-filter: blur(10px);
+}
 
+.bn-inner {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  align-items: center;
-  z-index: 999;
+  gap: 10px;
 }
 
 .bn-item {
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.7);
+  appearance: none;
+  border: 0;
+  background: transparent;
 
-  display: grid;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   gap: 6px;
-  padding: 10px 0;
+  padding: 10px 8px;
+  border-radius: 14px;
+
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.bn-itemActive {
-  color: #fff;
+.bn-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.bn-item.is-active {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.10);
 }
 
 .bn-icon {
-  width: 18px;
-  height: 18px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.2);
+  font-size: 18px;
+  line-height: 1;
 }
 
-.bn-itemActive .bn-icon {
-  background: rgba(255, 255, 255, 0.9);
-}
-  
 .bn-label {
   font-size: 12px;
+  line-height: 1;
 }
