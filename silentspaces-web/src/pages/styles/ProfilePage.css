@@ -1,0 +1,207 @@
+/* Profile page layout */
+.pf-page {
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+  color: #f5f5f5; /* ensures headings/labels show on dark background */
+}
+
+.pf-title {
+  text-align: center;
+  font-weight: 700;
+  padding: 10px 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 16px;
+}
+
+/* White card surfaces */
+.pf-card {
+  border: 1px solid #ededed;
+  border-radius: 14px;
+  background: #fff;
+  color: #111; /* ensures text shows inside cards */
+}
+
+.pf-cardPad {
+  padding: 14px;
+}
+
+.pf-avatarWrap {
+  display: grid;
+  place-items: center;
+  padding-top: 18px;
+}
+
+.pf-avatarOuter {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  background: #ececec;
+  display: grid;
+  place-items: center;
+}
+
+.pf-avatarInner {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: #9aa0a6;
+}
+
+/* Name button */
+.pf-nameBtn {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  font-size: 16px;
+  color: #111; /* force visible */
+  margin-top: 10px;
+  padding: 6px 10px 0;
+  cursor: pointer;
+}
+
+.pf-sub {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(17, 17, 17, 0.7); /* visible on white */
+  padding-bottom: 14px;
+}
+
+.pf-divider {
+  height: 1px;
+  background: #ececec;
+  margin: 0 14px;
+}
+
+.pf-stats {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 14px;
+}
+
+.pf-stat {
+  text-align: center;
+}
+
+.pf-statNum {
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+  color: #111;
+}
+
+.pf-statLabel {
+  font-size: 12px;
+  color: rgba(17, 17, 17, 0.7);
+  margin-top: 6px;
+}
+
+.pf-statSep {
+  width: 1px;
+  height: 34px;
+  background: #ececec;
+}
+
+/* Section label on dark background */
+.pf-sectionLabel {
+  margin: 16px 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Preference rows */
+.pf-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.pf-row + .pf-row {
+  border-top: 1px solid #f0f0f0;
+}
+
+.pf-rowText {
+  font-size: 14px;
+  color: #111;
+}
+
+/* Switch */
+.pf-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.pf-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.pf-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #cfd3d7;
+  border-radius: 999px;
+  transition: 0.15s;
+}
+
+.pf-slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 999px;
+  transition: 0.15s;
+}
+
+.pf-switch input:checked + .pf-slider {
+  background: #3b3f46;
+}
+
+.pf-switch input:checked + .pf-slider::before {
+  transform: translateX(20px);
+}
+
+/* Action buttons */
+.pf-actions {
+  margin-top: 12px;
+}
+
+.pf-actionBtn {
+  width: 100%;
+  text-align: left;
+  padding: 12px 12px;
+  border: 1px solid #f1f1f1;
+  border-radius: 10px;
+  background: #fafafa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #111; /* force visible */
+  font-weight: 600;
+}
+
+.pf-actionBtn + .pf-actionBtn {
+  margin-top: 10px;
+}
+
+.pf-actionIcon {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: #9aa0a6;
+  opacity: 0.7;
+}
