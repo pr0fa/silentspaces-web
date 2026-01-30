@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "./styles/ProfilePage.css";
 
 const LS_NAME = "ss:profile:name";
 const LS_MEMBER_SINCE = "ss:profile:memberSince";
@@ -74,11 +74,98 @@ export default function ProfilePage() {
     const clean = next.trim().slice(0, 28) || "Bleron Ajvazi";
     setName(clean);
     localStorage.setItem(LS_NAME, clean);
-    
   };
-  return null;
+
+  return (
+    <div className="pf-page">
+      <div className="pf-title">Profile</div>
+
+      <div className="pf-card">
+        <div className="pf-avatarWrap">
+          <div className="pf-avatarOuter">
+            <div className="pf-avatarInner" />
+          </div>
+        </div>
+
+        <button type="button" className="pf-nameBtn" onClick={onEditName} title="Edit name">
+          {name}
+        </button>
+
+        <div className="pf-sub">Member since {memberSince}</div>
+
+        <div className="pf-divider" />
+
+        <div className="pf-stats">
+          <div className="pf-stat">
+            <div className="pf-statNum">{ratingsCount}</div>
+            <div className="pf-statLabel">Ratings</div>
+          </div>
+
+          <div className="pf-statSep" />
+
+          <div className="pf-stat">
+            <div className="pf-statNum">{favouritesCount}</div>
+            <div className="pf-statLabel">Favorites</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="pf-sectionLabel">Preferences</div>
+
+      <div className="pf-card pf-cardPad">
+        <div className="pf-row">
+          <div className="pf-rowText">Wi-Fi Required</div>
+          <label className="pf-switch">
+            <input
+              type="checkbox"
+              checked={wifiRequired}
+              onChange={() => setWifiRequired((v) => !v)}
+            />
+            <span className="pf-slider" />
+          </label>
+        </div>
+
+        <div className="pf-row">
+          <div className="pf-rowText">Seating Required</div>
+          <label className="pf-switch">
+            <input
+              type="checkbox"
+              checked={seatingRequired}
+              onChange={() => setSeatingRequired((v) => !v)}
+            />
+            <span className="pf-slider" />
+          </label>
+        </div>
+
+        <div className="pf-row">
+          <div className="pf-rowText">Notifications</div>
+          <label className="pf-switch">
+            <input
+              type="checkbox"
+              checked={notifications}
+              onChange={() => setNotifications((v) => !v)}
+            />
+            <span className="pf-slider" />
+          </label>
+        </div>
+      </div>
+
+      <div className="pf-card pf-cardPad pf-actions">
+        <button type="button" className="pf-actionBtn" onClick={() => navigate("/rate")}>
+          <span>My Ratings</span>
+          <span className="pf-actionIcon" aria-hidden="true" />
+        </button>
+
+        <button type="button" className="pf-actionBtn" onClick={() => navigate("/saved")}>
+          <span>Saved Locations</span>
+          <span className="pf-actionIcon" aria-hidden="true" />
+        </button>
+
+        <button type="button" className="pf-actionBtn" onClick={() => navigate("/settings")}>
+          <span>Settings</span>
+          <span className="pf-actionIcon" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  );
 }
-
-
-
-
