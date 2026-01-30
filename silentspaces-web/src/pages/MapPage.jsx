@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { getLocations } from "../api/locationsApi";
-import { useMap } from "react-leaflet";
 import L from "leaflet";
 
 import "./styles/MapPage.css";
@@ -24,8 +23,6 @@ function FitBounds({ points }) {
   // This component controls map behaviour only and does not render UI.
   return null;
 }
-
-
 
 export default function MapPage() {
   const navigate = useNavigate();
@@ -91,12 +88,8 @@ export default function MapPage() {
   }, [locations, query, wifiOnly, seatingOnly, quietOnly]);
 
   // Default center: London-ish. If there are results, center on the first.
-  const center = useMemo(() => {
-    if (filtered.length > 0) {
-      return [Number(filtered[0].lat), Number(filtered[0].lng)];
-    }
-    return [51.5074, -0.1278];
-  }, [filtered]);
+  // FitBounds adjusts the viewport once markers exist; this is only the initial fallback.
+  const defaultCenter = [51.5074, -0.1278];
 
   if (loading) return <div className="mp-state">Loading map…</div>;
   if (error) return <div className="mp-state">{error}</div>;
@@ -144,13 +137,18 @@ export default function MapPage() {
       </div>
 
       <div className="mp-mapLeaflet">
-        <MapContainer center={center} zoom={13} scrollWheelZoom style={{ height: "100%", width: "100%" }}>
+        <MapContainer
+          center={defaultCenter}
+          zoom={13}
+          scrollWheelZoom
+          style={{ height: "100%", width: "100%" }}
+        >
           <TileLayer
-            attribution='&copy; OpenStreetMap contributors'
+            attribution="&copy; OpenStreetMap contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-           <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
+          <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
 
           {filtered.map((loc) => (
             <Marker key={loc.id} position={[Number(loc.lat), Number(loc.lng)]}>
