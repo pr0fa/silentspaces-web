@@ -92,7 +92,8 @@ export default function RatePage() {
       saveRatingToLocal(loc.id, stars, comments);
 
       alert("Rating submitted ✅");
-      navigate(`/location/${loc.id}`);
+        // Redirect user back to MAP instead of location page
+    navigate("/map");
     } catch (err) {
       alert(err.message || "Failed to submit rating");
     } finally {
