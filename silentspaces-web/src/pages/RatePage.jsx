@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { submitRating } from "../api/ratingsApi";
 import { getLocationById } from "../api/locationsApi";
 import "./styles/RatePage.css";
+import { toast } from "react-hot-toast";
+
 
 // LocalStorage key for storing the user's rating history
 const LS_MY_RATINGS = "ss:myRatings";
@@ -91,7 +93,7 @@ export default function RatePage() {
       // Save the rating locally so ProfilePage can show user's rating count
       saveRatingToLocal(loc.id, stars, comments);
 
-      alert("Rating submitted ✅");
+      toast.success("Rating submitted!");
         // Redirect user back to MAP instead of location page
     navigate("/map");
     } catch (err) {
