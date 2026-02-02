@@ -11,6 +11,9 @@ const LS_PREF_NOTIFS = "ss:pref:notifications";
 // Optional local keys if you already store these elsewhere.
 const LS_FAVS = "ss:favourites";
 
+// NEW: key for ratings you store locally when user submits a rating
+const LS_MY_RATINGS = "ss:myRatings";
+
 function readBool(key, fallback = false) {
   const raw = localStorage.getItem(key);
   if (raw == null) return fallback;
@@ -41,9 +44,15 @@ export default function ProfilePage() {
   const memberSince = useMemo(() => readText(LS_MEMBER_SINCE, "2025"), []);
 
   // Preferences are stored locally and can be used later for default filters.
-  const [wifiRequired, setWifiRequired] = useState(() => readBool(LS_PREF_WIFI, false));
-  const [seatingRequired, setSeatingRequired] = useState(() => readBool(LS_PREF_SEATING, false));
-  const [notifications, setNotifications] = useState(() => readBool(LS_PREF_NOTIFS, false));
+  const [wifiRequired, setWifiRequired] = useState(() =>
+    readBool(LS_PREF_WIFI, false)
+  );
+  const [seatingRequired, setSeatingRequired] = useState(() =>
+    readBool(LS_PREF_SEATING, false)
+  );
+  const [notifications, setNotifications] = useState(() =>
+    readBool(LS_PREF_NOTIFS, false)
+  );
 
   // Favourites count can be shown even before the full saved list UI exists.
   const favouritesCount = useMemo(() => {
@@ -52,7 +61,11 @@ export default function ProfilePage() {
   }, []);
 
   // Ratings count is a placeholder until you add user accounts.
-  const ratingsCount = 0;
+  // NEW: Now reading real local ratings saved on RatePage
+  const ratingsCount = useMemo(() => {
+    const list = readJson(LS_MY_RATINGS, []);
+    return Array.isArray(list) ? list.length : 0;
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(LS_PREF_WIFI, String(wifiRequired));
