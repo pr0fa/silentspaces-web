@@ -4,6 +4,22 @@ import RatingsPanel from "../components/RatingsPanel";
 import { getLocationById } from "../api/locationsApi";
 import "./styles/LocationDetailsPage.css";
 
+// localStorage key for storing favourite location IDs
+const LS_FAVS = "ss:favourites";
+
+/* Read list of favourite IDs (new helper) */
+function readFavourites() {
+  try {
+    return JSON.parse(localStorage.getItem(LS_FAVS) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+/* Save updated favourite list (new helper) */
+function writeFavourites(list) {
+  localStorage.setItem(LS_FAVS, JSON.stringify(list));
+}
 
 export default function LocationDetailsPage() {
   const { id } = useParams();
@@ -16,6 +32,12 @@ export default function LocationDetailsPage() {
   // favourite set as UI state no login or database yet.
   // Later: store it per user/device.
   const [favourite, setFavourite] = useState(false);
+
+  // NEW: Load favourite state when ID changes
+  useEffect(() => {
+    const favs = readFavourites();
+    setFavourite(favs.includes(id)); // checks if THIS location is saved
+  }, [id]);
 
   // Load location when the route id changes
   useEffect(() => {
@@ -58,6 +80,21 @@ export default function LocationDetailsPage() {
   const quietnessText =
     ratingCount === 0 ? "-" : (loc.quietnessScore ?? "-");
 
+  /* NEW: toggle favourite and persist to localStorage */
+  const toggleFavourite = () => {
+    const favs = readFavourites();
+    let updated;
+
+    if (favs.includes(id)) {
+      updated = favs.filter((x) => x !== id);
+    } else {
+      updated = [...favs, id];
+    }
+
+    writeFavourites(updated);
+    setFavourite(updated.includes(id));
+  };
+
   return (
     <div className="ldp-page">
       <button onClick={() => navigate(-1)} className="ldp-back">
@@ -72,8 +109,9 @@ export default function LocationDetailsPage() {
           {loc.area} • {loc.type} • {distanceText}
         </div>
 
+        {/* NEW: uses toggleFavourite instead of setFavourite */}
         <button
-          onClick={() => setFavourite((v) => !v)}
+          onClick={toggleFavourite}
           title="Save to favourites"
           className="ldp-favBtn"
         >
