@@ -98,6 +98,14 @@ async function addRating(locationId, rating, comment) {
     [locationId, rating, safeComment]
   );
 
+    // 2. NEW: If user selected a bestTime, update the location record
+  if (bestTime && bestTime.trim() !== "") {
+    await db.execute(
+      "UPDATE locations SET bestTime = ? WHERE id = ?",
+      [bestTime, locationId]
+    );
+  }
+
   // Return updated stats
   const [stats] = await db.execute(
     "SELECT COUNT(*) AS count, COALESCE(ROUND(AVG(rating), 1), 0) AS average FROM ratings WHERE location_id = ?",
@@ -110,7 +118,8 @@ async function addRating(locationId, rating, comment) {
   return {
     saved: { rating, comment: safeComment },
     ratingCount: count,
-    quietnessScore: average
+    quietnessScore: average,
+    bestTime: bestTime || null // convenience
   };
 }
 

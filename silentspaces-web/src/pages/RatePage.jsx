@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { submitRating } from "../api/ratingsApi";
 import { getLocationById } from "../api/locationsApi";
 import "./styles/RatePage.css";
-import { toast } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 
 // LocalStorage key for storing the user's rating history
@@ -83,25 +83,27 @@ export default function RatePage() {
    * - Returns user to details page
    */
   const onSubmit = async () => {
-    if (!canSubmit) return;
+  if (!canSubmit) return;
+  try {
+    setIsSubmitting(true);
 
-    try {
-      setIsSubmitting(true);
+    //UPDATED: bestTime is now passed to backend
+    await submitRating(loc.id, stars, comments, bestTime);
 
-      await submitRating(loc.id, stars, comments);
+    // Save the rating locally so ProfilePage can track user submissions
+    saveRatingToLocal(loc.id, stars, comments);
 
-      // Save the rating locally so ProfilePage can show user's rating count
-      saveRatingToLocal(loc.id, stars, comments);
+    toast.success("Rating submitted!");
 
-      toast.success("Rating submitted!");
-        // Redirect user back to MAP instead of location page
+    // NEW: Redirect user to Map instead of Details page
     navigate("/map");
-    } catch (err) {
-      alert(err.message || "Failed to submit rating");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+
+  } catch (err) {
+    alert(err.message || "Failed to submit rating");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="rp-page">

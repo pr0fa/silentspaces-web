@@ -81,13 +81,23 @@
   color: #fff;
 }
 
+/* Style the select box so text is always visible on dark themes */
 .rp-select {
   width: 100%;
   padding: 12px;
   border-radius: 12px;
-  border: 1px solid #ddd;
-  background: #fff;
+  border: 1px solid #555;
+  background: #222;       
+  color: #fff;            
+  appearance: none;        
 }
+
+/* Style dropdown items */
+.rp-select option {
+  background: #222;       
+  color: #fff;             
+}
+
 
 .rp-textarea {
   width: 100%;
