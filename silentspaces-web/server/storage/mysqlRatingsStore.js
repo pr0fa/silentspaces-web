@@ -88,40 +88,47 @@ async function getLocationById(id) {
 
 // -------- Ratings --------
 
-async function addRating(locationId, rating, comment) {
+async function addRating(locationId, rating, comment, bestTime) {
   const db = getPool();
   const safeComment = typeof comment === "string" ? comment.trim().slice(0, 300) : "";
 
-  // Insert rating (created_at handled by DB default)
+  // Insert rating
   await db.execute(
-    "INSERT INTO ratings (location_id, rating, comment) VALUES (?, ?, ?)",
-    [locationId, rating, safeComment]
+    "INSERT INTO ratings (location_id, rating, comment, bestTime) VALUES (?, ?, ?, ?)",
+    [locationId, rating, safeComment, bestTime || null]
   );
 
-    // 2. NEW: If user selected a bestTime, update the location record
-  if (bestTime && bestTime.trim() !== "") {
-    await db.execute(
-      "UPDATE locations SET bestTime = ? WHERE id = ?",
-      [bestTime, locationId]
-    );
-  }
+  // Majority-based bestTime calculation
+  await db.execute(
+    `
+    UPDATE locations l
+    JOIN (
+      SELECT bestTime
+      FROM ratings
+      WHERE location_id = ?
+      GROUP BY bestTime
+      ORDER BY COUNT(*) DESC
+      LIMIT 1
+    ) r ON 1=1
+    SET l.bestTime = r.bestTime
+    WHERE l.id = ?
+    `,
+    [locationId, locationId]
+  );
 
-  // Return updated stats
+  //  Return updated quietness stats
   const [stats] = await db.execute(
     "SELECT COUNT(*) AS count, COALESCE(ROUND(AVG(rating), 1), 0) AS average FROM ratings WHERE location_id = ?",
     [locationId]
   );
 
-  const count = Number(stats?.[0]?.count || 0);
-  const average = Number(stats?.[0]?.average || 0);
-
   return {
-    saved: { rating, comment: safeComment },
-    ratingCount: count,
-    quietnessScore: average,
-    bestTime: bestTime || null // convenience
+    saved: { rating, comment: safeComment, bestTime: bestTime || null },
+    ratingCount: Number(stats[0].count),
+    quietnessScore: Number(stats[0].average)
   };
 }
+
 
 async function getRatings(locationId) {
   const db = getPool();
