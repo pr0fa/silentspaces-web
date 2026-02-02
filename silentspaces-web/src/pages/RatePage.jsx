@@ -4,55 +4,63 @@ import { submitRating } from "../api/ratingsApi";
 import { getLocationById } from "../api/locationsApi";
 import "./styles/RatePage.css";
 
+// LocalStorage key for storing the user's rating history
+const LS_MY_RATINGS = "ss:myRatings";
+
+/**
+ * Saves a rating locally so it can be displayed on the user's profile.
+ * No backend login = local-only storage.
+ */
+function saveRatingToLocal(locationId, rating, comment) {
+  const existing = JSON.parse(localStorage.getItem(LS_MY_RATINGS) || "[]");
+
+  existing.push({
+    locationId,
+    rating,
+    comment,
+    createdAt: new Date().toISOString()
+  });
+
+  localStorage.setItem(LS_MY_RATINGS, JSON.stringify(existing));
+}
+
 export default function RatePage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Location loaded from backend so the header matches the selected item
+  // Location details loaded from backend
   const [loc, setLoc] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Ratings UI state
+  // Rating fields
   const [stars, setStars] = useState(0);
-
-  // Yes/No toggles (null means “not answered yet”).
-  const [wifiAvailable, setWifiAvailable] = useState(null); // true/false/null
+  const [wifiAvailable, setWifiAvailable] = useState(null);
   const [seatingAvailable, setSeatingAvailable] = useState(null);
-
-  // simple “select time” input.
   const [bestTime, setBestTime] = useState("");
-
   const [comments, setComments] = useState("");
 
-  // Submitting state so user can’t spam-submit
+  // Prevent spam submissions
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load location when route id changes
+  /**
+   * Load the selected location using its ID from params.
+   * Ensures Rate Page always shows correct place.
+   */
   useEffect(() => {
     let alive = true;
-
     setLoading(true);
 
     getLocationById(id)
-      .then((data) => {
-        if (!alive) return;
-        setLoc(data);
-      })
-      .catch(() => {
-        if (!alive) return;
-        setLoc(null);
-      })
-      .finally(() => {
-        if (!alive) return;
-        setLoading(false);
-      });
+      .then((data) => alive && setLoc(data))
+      .catch(() => alive && setLoc(null))
+      .finally(() => alive && setLoading(false));
 
-    return () => {
-      alive = false;
-    };
+    return () => (alive = false);
   }, [id]);
 
-  // Simple label so users understand what their star pick means.
+  /**
+   * Converts star number.
+   */
   const ratingLabel = useMemo(() => {
     if (stars === 0) return "";
     if (stars <= 2) return "Not quiet";
@@ -61,30 +69,29 @@ export default function RatePage() {
     return "Very Quiet";
   }, [stars]);
 
-  if (loading) {
-    return <div className="rp-state">Loading…</div>;
-  }
+  if (loading) return <div className="rp-state">Loading…</div>;
+  if (!loc) return <div className="rp-state">Location not found.</div>;
 
-  if (!loc) {
-    return <div className="rp-state">Location not found.</div>;
-  }
-
-  // keeping it minimal for now
   const canSubmit = stars > 0 && !isSubmitting;
 
+  /**
+   * Handles the rating submission:
+   * - Sends to backend
+   * - Saves locally for ProfilePage
+   * - Returns user to details page
+   */
   const onSubmit = async () => {
     if (!canSubmit) return;
 
     try {
       setIsSubmitting(true);
 
-      // send stars + comments only
-      // Backend expects: { rating, comment }
       await submitRating(loc.id, stars, comments);
 
-      alert("Rating submitted ✅");
+      // Save the rating locally so ProfilePage can show user's rating count
+      saveRatingToLocal(loc.id, stars, comments);
 
-      // Send user back to details after submission.
+      alert("Rating submitted ✅");
       navigate(`/location/${loc.id}`);
     } catch (err) {
       alert(err.message || "Failed to submit rating");
@@ -95,6 +102,7 @@ export default function RatePage() {
 
   return (
     <div className="rp-page">
+      {/* Back navigation */}
       <button onClick={() => navigate(-1)} className="rp-back">
         ← Back
       </button>
@@ -102,6 +110,7 @@ export default function RatePage() {
       <h2 className="rp-title">Rate location</h2>
       <div className="rp-subtitle">{loc.name}</div>
 
+      {/* STAR RATING BLOCK */}
       <div className="rp-block">
         <div className="rp-question">How quiet is this space?</div>
 
@@ -125,8 +134,10 @@ export default function RatePage() {
         {ratingLabel && <div className="rp-label">{ratingLabel}</div>}
       </div>
 
+      {/* FACILITY QUESTIONS */}
       <div className="rp-block">
         <div className="rp-question">Wi-Fi Available?</div>
+
         <div className="rp-toggleRow">
           <button
             type="button"
@@ -135,6 +146,7 @@ export default function RatePage() {
           >
             Yes
           </button>
+
           <button
             type="button"
             className={`rp-toggle ${wifiAvailable === false ? "is-active" : ""}`}
@@ -147,21 +159,19 @@ export default function RatePage() {
 
       <div className="rp-block">
         <div className="rp-question">Seating Available?</div>
+
         <div className="rp-toggleRow">
           <button
             type="button"
-            className={`rp-toggle ${
-              seatingAvailable === true ? "is-active" : ""
-            }`}
+            className={`rp-toggle ${seatingAvailable === true ? "is-active" : ""}`}
             onClick={() => setSeatingAvailable(true)}
           >
             Yes
           </button>
+
           <button
             type="button"
-            className={`rp-toggle ${
-              seatingAvailable === false ? "is-active" : ""
-            }`}
+            className={`rp-toggle ${seatingAvailable === false ? "is-active" : ""}`}
             onClick={() => setSeatingAvailable(false)}
           >
             No
@@ -169,10 +179,10 @@ export default function RatePage() {
         </div>
       </div>
 
+      {/* BEST TIME */}
       <div className="rp-block">
         <div className="rp-question">Best time to visit?</div>
 
-        {/* Simple dropdown for now. Later I will replace with a time picker. */}
         <select
           value={bestTime}
           onChange={(e) => setBestTime(e.target.value)}
@@ -185,8 +195,10 @@ export default function RatePage() {
         </select>
       </div>
 
+      {/* COMMENTS */}
       <div className="rp-block">
         <div className="rp-question">Additional comments</div>
+
         <textarea
           value={comments}
           onChange={(e) => setComments(e.target.value)}
@@ -196,6 +208,7 @@ export default function RatePage() {
         />
       </div>
 
+      {/* SUBMIT BUTTON */}
       <button
         type="button"
         onClick={onSubmit}
@@ -205,9 +218,7 @@ export default function RatePage() {
         {isSubmitting ? "Submitting..." : "Submit rating"}
       </button>
 
-      {!stars && (
-        <div className="rp-hint">Pick a star rating to submit.</div>
-      )}
+      {!stars && <div className="rp-hint">Pick a star rating to submit.</div>}
     </div>
   );
 }
