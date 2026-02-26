@@ -1,79 +1,112 @@
 .sp-page {
-  padding: 16px;
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
+  padding: var(--space-md);
 }
 
 .sp-state {
-  padding: 16px;
+  padding: var(--space-md);
 }
 
 .sp-title {
-  margin-top: 0;
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-bold);
 }
+
+/* ---------- Search Input ---------- */
 
 .sp-search {
   width: 100%;
   padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
   outline: none;
+  font-size: var(--font-md);
+  background: var(--color-surface);
+  transition: 0.2s ease;
 }
+
+.sp-search:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+}
+
+/* ---------- Filters ---------- */
 
 .sp-filters {
   display: flex;
-  gap: 10px;
-  margin-top: 12px;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
   flex-wrap: wrap;
 }
 
 .sp-filter {
   display: flex;
-  gap: 6px;
+  gap: var(--space-xs);
   align-items: center;
+  font-size: var(--font-sm);
+  color: var(--color-text-primary);
 }
 
+/* ---------- Result Count ---------- */
+
 .sp-count {
-  margin-top: 12px;
-  font-size: 13px;
-  opacity: 0.8;
+  margin-top: var(--space-md);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
 }
+
+/* ---------- Grid ---------- */
 
 .sp-grid {
   display: grid;
-  gap: 12px;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
 }
 
+/* ---------- Card ---------- */
+
 .sp-card {
-  padding: 14px;
-  border: 1px solid #eee;
-  border-radius: 14px;
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
   cursor: pointer;
+  background: var(--color-surface);
+  transition: 0.2s ease;
+}
+
+.sp-card:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
 }
 
 .sp-cardTitle {
-  font-weight: 800;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-md);
 }
 
 .sp-cardMeta {
-  font-size: 12px;
-  opacity: 0.8;
-  margin-top: 4px;
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
 }
 
 .sp-cardQuiet {
-  font-size: 12px;
-  margin-top: 6px;
+  font-size: var(--font-xs);
+  margin-top: var(--space-xs);
+  color: var(--color-text-primary);
 }
 
 .sp-cardFacilities {
-  font-size: 12px;
-  opacity: 0.9;
-  margin-top: 6px;
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
 }
+
 .sp-rateHint {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  opacity: 0.85;
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
 }

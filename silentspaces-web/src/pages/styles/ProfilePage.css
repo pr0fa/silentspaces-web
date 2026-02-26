@@ -1,42 +1,46 @@
 /* Profile page layout */
 .pf-page {
-  padding: 16px;
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
-  color: #f5f5f5; /* ensures headings/labels show on dark background */
+  padding: var(--space-md);
 }
+
+/* ---------- Header ---------- */
 
 .pf-title {
   text-align: center;
-  font-weight: 700;
-  padding: 10px 0 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 16px;
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-sm) 0 var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-lg);
 }
 
-/* White card surfaces */
+/* ---------- Card Surface ---------- */
+
 .pf-card {
-  border: 1px solid #ededed;
-  border-radius: 14px;
-  background: #fff;
-  color: #111; /* ensures text shows inside cards */
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
 }
 
 .pf-cardPad {
-  padding: 14px;
+  padding: var(--space-md);
 }
+
+/* ---------- Avatar ---------- */
 
 .pf-avatarWrap {
   display: grid;
   place-items: center;
-  padding-top: 18px;
+  padding-top: var(--space-lg);
 }
 
 .pf-avatarOuter {
   width: 88px;
   height: 88px;
   border-radius: 999px;
-  background: #ececec;
+  background: var(--color-border);
   display: grid;
   place-items: center;
 }
@@ -45,40 +49,43 @@
   width: 46px;
   height: 46px;
   border-radius: 999px;
-  background: #9aa0a6;
+  background: var(--color-text-secondary);
 }
 
-/* Name button */
+/* ---------- Name ---------- */
+
 .pf-nameBtn {
   width: 100%;
   border: none;
   background: transparent;
-  font-weight: 700;
-  font-size: 16px;
-  color: #111; /* force visible */
-  margin-top: 10px;
-  padding: 6px 10px 0;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-md);
+  color: var(--color-text-primary);
+  margin-top: var(--space-sm);
+  padding: var(--space-xs) 0 0;
   cursor: pointer;
 }
 
 .pf-sub {
   text-align: center;
-  font-size: 13px;
-  color: rgba(17, 17, 17, 0.7); /* visible on white */
-  padding-bottom: 14px;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  padding-bottom: var(--space-md);
 }
+
+/* ---------- Stats ---------- */
 
 .pf-divider {
   height: 1px;
-  background: #ececec;
-  margin: 0 14px;
+  background: var(--color-border);
+  margin: 0 var(--space-md);
 }
 
 .pf-stats {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 14px;
+  padding: var(--space-md);
 }
 
 .pf-stat {
@@ -86,51 +93,53 @@
 }
 
 .pf-statNum {
-  font-weight: 800;
-  font-size: 16px;
-  line-height: 1;
-  color: #111;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-md);
+  color: var(--color-text-primary);
 }
 
 .pf-statLabel {
-  font-size: 12px;
-  color: rgba(17, 17, 17, 0.7);
-  margin-top: 6px;
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
 }
 
 .pf-statSep {
   width: 1px;
   height: 34px;
-  background: #ececec;
+  background: var(--color-border);
 }
 
-/* Section label on dark background */
+/* ---------- Section Label ---------- */
+
 .pf-sectionLabel {
-  margin: 16px 0 10px;
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.85);
+  margin: var(--space-lg) 0 var(--space-sm);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
 }
 
-/* Preference rows */
+/* ---------- Preference Rows ---------- */
+
 .pf-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 0;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
 }
 
 .pf-row + .pf-row {
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--color-border);
 }
 
 .pf-rowText {
-  font-size: 14px;
-  color: #111;
+  font-size: var(--font-sm);
+  color: var(--color-text-primary);
 }
 
-/* Switch */
+/* ---------- Switch ---------- */
+
 .pf-switch {
   position: relative;
   display: inline-block;
@@ -160,48 +169,54 @@
   width: 18px;
   left: 3px;
   top: 3px;
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 999px;
   transition: 0.15s;
 }
 
 .pf-switch input:checked + .pf-slider {
-  background: #3b3f46;
+  background: var(--color-primary);
 }
 
 .pf-switch input:checked + .pf-slider::before {
   transform: translateX(20px);
 }
 
-/* Action buttons */
+/* ---------- Actions ---------- */
+
 .pf-actions {
-  margin-top: 12px;
+  margin-top: var(--space-md);
 }
 
 .pf-actionBtn {
   width: 100%;
   text-align: left;
-  padding: 12px 12px;
-  border: 1px solid #f1f1f1;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
-  background: #fafafa;
+  background: var(--color-surface);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  color: #111; /* force visible */
-  font-weight: 600;
+  gap: var(--space-sm);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+  transition: 0.2s ease;
+}
+
+.pf-actionBtn:hover {
+  background: var(--color-bg);
 }
 
 .pf-actionBtn + .pf-actionBtn {
-  margin-top: 10px;
+  margin-top: var(--space-sm);
 }
 
 .pf-actionIcon {
   width: 14px;
   height: 14px;
   border-radius: 4px;
-  background: #9aa0a6;
-  opacity: 0.7;
+  background: var(--color-text-secondary);
+  opacity: 0.6;
 }
