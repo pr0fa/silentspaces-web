@@ -10,6 +10,7 @@ const LS_NAME = "ss:profile:name";
 const LS_PREF_WIFI = "ss:pref:wifiRequired";
 const LS_PREF_SEATING = "ss:pref:seatingRequired";
 const LS_PREF_QUIET = "ss:pref:quietRequired";
+const LS_PREF_SOCKETS = "ss:pref:socketsRequired";
 
 // Optional local keys if you already store these elsewhere.
 const LS_FAVS = "ss:favourites";
@@ -60,6 +61,10 @@ export default function ProfilePage() {
   const [quietRequired, setQuietRequired] = useState(() =>
   readBool(LS_PREF_QUIET, false)
   );
+  const [socketsRequired, setSocketsRequired] = useState(() =>
+  readBool(LS_PREF_SOCKETS, false)
+  );
+
   
 
   // Favourites count can be shown even before the full saved list UI exists.
@@ -86,6 +91,10 @@ export default function ProfilePage() {
   useEffect(() => {
   localStorage.setItem(LS_PREF_QUIET, String(quietRequired));
   }, [quietRequired]);
+
+  useEffect(() => {
+  localStorage.setItem(LS_PREF_SOCKETS, String(socketsRequired));
+  }, [socketsRequired]);
 
   const onEditName = () => {
     // Uses a simple prompt for now so the UI stays minimal and commit-friendly.
@@ -168,7 +177,7 @@ export default function ProfilePage() {
             <span className="pf-slider" />
           </label>
         </div>
-       <div className="pf-row">
+        <div className="pf-row">
         <div className="pf-rowText">Quiet Required</div>
         <label className="pf-switch">
         <input
@@ -179,7 +188,18 @@ export default function ProfilePage() {
         <span className="pf-slider" />
       </label>
     </div>
-      </div>
+        <div className="pf-row">
+        <div className="pf-rowText">Sockets Required</div>
+        <label className="pf-switch">
+        <input
+          type="checkbox"
+          checked={socketsRequired}
+          onChange={() => setSocketsRequired((v) => !v)}
+        />
+        <span className="pf-slider" />
+        </label>
+    </div>
+  </div>
       <div className="pf-card pf-cardPad pf-actions">
         <button
           type="button"

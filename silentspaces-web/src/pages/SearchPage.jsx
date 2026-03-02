@@ -7,6 +7,7 @@ import "./styles/SearchPage.css";
 const LS_PREF_WIFI = "ss:pref:wifiRequired";
 const LS_PREF_SEATING = "ss:pref:seatingRequired";
 const LS_PREF_QUIET = "ss:pref:quietRequired";
+const LS_PREF_SOCKETS = "ss:pref:socketsRequired";
 
 function readBool(key, fallback = false) {
   const raw = localStorage.getItem(key);
@@ -34,12 +35,13 @@ export default function SearchPage() {
     readBool(LS_PREF_SEATING, false)
   );
 
-const [quietOnly, setQuietOnly] = useState(() =>
+  const [quietOnly, setQuietOnly] = useState(() =>
   readBool(LS_PREF_QUIET, false)
-);
+  );
 
-  const [socketsOnly, setSocketsOnly] = useState(false);
-
+  const [socketsOnly, setSocketsOnly] = useState(() =>
+  readBool(LS_PREF_SOCKETS, false)
+  );
   // Load locations once when the page mounts
   useEffect(() => {
     let alive = true;
