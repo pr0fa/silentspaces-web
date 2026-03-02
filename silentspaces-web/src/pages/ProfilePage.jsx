@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import "./styles/ProfilePage.css";
 
 const LS_NAME = "ss:profile:name";
-const LS_MEMBER_SINCE = "ss:profile:memberSince";
+// REFINED: Member since removed because authentication is not implemented.
+// Keeping identity fully local to avoid implying backend account storage.
+// const LS_MEMBER_SINCE = "ss:profile:memberSince";
+
 const LS_PREF_WIFI = "ss:pref:wifiRequired";
 const LS_PREF_SEATING = "ss:pref:seatingRequired";
 const LS_PREF_NOTIFS = "ss:pref:notifications";
@@ -40,8 +43,12 @@ export default function ProfilePage() {
   const navigate = useNavigate();
 
   // Profile identity is local-only until authentication exists.
-  const [name, setName] = useState(() => readText(LS_NAME, "Bleron Ajvazi"));
-  const memberSince = useMemo(() => readText(LS_MEMBER_SINCE, "2025"), []);
+  // REFINED: Default name changed to "Guest User" to avoid implying real account.
+  const [name, setName] = useState(() => readText(LS_NAME, "Guest User"));
+
+  // REFINED: Removed "member since" because there is no backend account system.
+  // This prevents misleading account ownership implications.
+  // const memberSince = useMemo(() => readText(LS_MEMBER_SINCE, "2025"), []);
 
   // Preferences are stored locally and can be used later for default filters.
   const [wifiRequired, setWifiRequired] = useState(() =>
@@ -84,7 +91,8 @@ export default function ProfilePage() {
     const next = prompt("Display name", name);
     if (next == null) return;
 
-    const clean = next.trim().slice(0, 28) || "Bleron Ajvazi";
+    // REFINED: Fallback updated to "Guest User" instead of real name.
+    const clean = next.trim().slice(0, 28) || "Guest User";
     setName(clean);
     localStorage.setItem(LS_NAME, clean);
   };
@@ -100,25 +108,35 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <button type="button" className="pf-nameBtn" onClick={onEditName} title="Edit name">
+        <button
+          type="button"
+          className="pf-nameBtn"
+          onClick={onEditName}
+          title="Edit name"
+        >
           {name}
         </button>
 
-        <div className="pf-sub">Member since {memberSince}</div>
+        {/* REFINED: Clarified that profile is local-only */}
+        <div className="pf-sub">
+          Local profile (stored on this device)
+        </div>
 
         <div className="pf-divider" />
 
         <div className="pf-stats">
           <div className="pf-stat">
             <div className="pf-statNum">{ratingsCount}</div>
-            <div className="pf-statLabel">Ratings</div>
+            {/* REFINED: More explicit label */}
+            <div className="pf-statLabel">Your Ratings</div>
           </div>
 
           <div className="pf-statSep" />
 
           <div className="pf-stat">
             <div className="pf-statNum">{favouritesCount}</div>
-            <div className="pf-statLabel">Favorites</div>
+            {/* REFINED: Clearer naming */}
+            <div className="pf-statLabel">Saved</div>
           </div>
         </div>
       </div>
@@ -164,17 +182,29 @@ export default function ProfilePage() {
       </div>
 
       <div className="pf-card pf-cardPad pf-actions">
-        <button type="button" className="pf-actionBtn" onClick={() => navigate("/rate")}>
+        <button
+          type="button"
+          className="pf-actionBtn"
+          onClick={() => navigate("/rate")}
+        >
           <span>My Ratings</span>
           <span className="pf-actionIcon" aria-hidden="true" />
         </button>
 
-        <button type="button" className="pf-actionBtn" onClick={() => navigate("/saved")}>
+        <button
+          type="button"
+          className="pf-actionBtn"
+          onClick={() => navigate("/saved")}
+        >
           <span>Saved Locations</span>
           <span className="pf-actionIcon" aria-hidden="true" />
         </button>
 
-        <button type="button" className="pf-actionBtn" onClick={() => navigate("/settings")}>
+        <button
+          type="button"
+          className="pf-actionBtn"
+          onClick={() => navigate("/settings")}
+        >
           <span>Settings</span>
           <span className="pf-actionIcon" aria-hidden="true" />
         </button>
