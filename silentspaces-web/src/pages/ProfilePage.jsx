@@ -9,7 +9,7 @@ const LS_NAME = "ss:profile:name";
 
 const LS_PREF_WIFI = "ss:pref:wifiRequired";
 const LS_PREF_SEATING = "ss:pref:seatingRequired";
-const LS_PREF_NOTIFS = "ss:pref:notifications";
+
 
 // Optional local keys if you already store these elsewhere.
 const LS_FAVS = "ss:favourites";
@@ -57,9 +57,7 @@ export default function ProfilePage() {
   const [seatingRequired, setSeatingRequired] = useState(() =>
     readBool(LS_PREF_SEATING, false)
   );
-  const [notifications, setNotifications] = useState(() =>
-    readBool(LS_PREF_NOTIFS, false)
-  );
+  
 
   // Favourites count can be shown even before the full saved list UI exists.
   const favouritesCount = useMemo(() => {
@@ -82,9 +80,6 @@ export default function ProfilePage() {
     localStorage.setItem(LS_PREF_SEATING, String(seatingRequired));
   }, [seatingRequired]);
 
-  useEffect(() => {
-    localStorage.setItem(LS_PREF_NOTIFS, String(notifications));
-  }, [notifications]);
 
   const onEditName = () => {
     // Uses a simple prompt for now so the UI stays minimal and commit-friendly.
@@ -167,20 +162,7 @@ export default function ProfilePage() {
             <span className="pf-slider" />
           </label>
         </div>
-
-        <div className="pf-row">
-          <div className="pf-rowText">Notifications</div>
-          <label className="pf-switch">
-            <input
-              type="checkbox"
-              checked={notifications}
-              onChange={() => setNotifications((v) => !v)}
-            />
-            <span className="pf-slider" />
-          </label>
-        </div>
       </div>
-
       <div className="pf-card pf-cardPad pf-actions">
         <button
           type="button"
