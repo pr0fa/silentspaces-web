@@ -12,18 +12,21 @@ const LS_MY_RATINGS = "ss:myRatings";
 /**
  * Saves a rating locally so it can be displayed on the user's profile.
  * No backend login = local-only storage.
+ * REFINED: Ensures only one rating per location per device.
  */
 function saveRatingToLocal(locationId, rating, comment) {
   const existing = JSON.parse(localStorage.getItem(LS_MY_RATINGS) || "[]");
 
-  existing.push({
+  const filtered = existing.filter((r) => r.locationId !== locationId);
+
+  filtered.push({
     locationId,
     rating,
     comment,
     createdAt: new Date().toISOString()
   });
 
-  localStorage.setItem(LS_MY_RATINGS, JSON.stringify(existing));
+  localStorage.setItem(LS_MY_RATINGS, JSON.stringify(filtered));
 }
 
 export default function RatePage() {
