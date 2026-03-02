@@ -6,6 +6,7 @@ import "./styles/SearchPage.css";
 // REFINED: These keys match ProfilePage so preferences auto-apply.
 const LS_PREF_WIFI = "ss:pref:wifiRequired";
 const LS_PREF_SEATING = "ss:pref:seatingRequired";
+const LS_PREF_QUIET = "ss:pref:quietRequired";
 
 function readBool(key, fallback = false) {
   const raw = localStorage.getItem(key);
@@ -33,7 +34,10 @@ export default function SearchPage() {
     readBool(LS_PREF_SEATING, false)
   );
 
-  const [quietOnly, setQuietOnly] = useState(false);
+const [quietOnly, setQuietOnly] = useState(() =>
+  readBool(LS_PREF_QUIET, false)
+);
+
   const [socketsOnly, setSocketsOnly] = useState(false);
 
   // Load locations once when the page mounts
