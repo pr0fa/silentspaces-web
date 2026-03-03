@@ -204,7 +204,7 @@ export default function ProfilePage() {
         <button
           type="button"
           className="pf-actionBtn"
-          onClick={() => navigate("/rate")}
+          onClick={() => navigate("/my-ratings")}
         >
           <span>My Ratings</span>
           <span className="pf-actionIcon" aria-hidden="true" />
