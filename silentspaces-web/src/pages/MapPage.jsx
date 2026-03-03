@@ -6,6 +6,18 @@ import L from "leaflet";
 
 import "./styles/MapPage.css";
 
+// REFINED: Profile preference keys so Map respects global defaults.
+const LS_PREF_WIFI = "ss:pref:wifiRequired";
+const LS_PREF_SEATING = "ss:pref:seatingRequired";
+const LS_PREF_QUIET = "ss:pref:quietRequired";
+const LS_PREF_SOCKETS = "ss:pref:socketsRequired";
+
+function readBool(key, fallback = false) {
+  const raw = localStorage.getItem(key);
+  if (raw == null) return fallback;
+  return raw === "true";
+}
+
 function FitBounds({ points }) {
   const map = useMap();
 
@@ -30,12 +42,24 @@ export default function MapPage() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // Search + filters
   const [query, setQuery] = useState("");
-  const [wifiOnly, setWifiOnly] = useState(false);
-  const [seatingOnly, setSeatingOnly] = useState(false);
-  const [quietOnly, setQuietOnly] = useState(false);
+
+  // REFINED: Filters now initialise from Profile preferences.
+const [wifiOnly, setWifiOnly] = useState(() =>
+  readBool(LS_PREF_WIFI, false)
+);
+
+const [seatingOnly, setSeatingOnly] = useState(() =>
+  readBool(LS_PREF_SEATING, false)
+);
+
+const [quietOnly, setQuietOnly] = useState(() =>
+  readBool(LS_PREF_QUIET, false)
+);
+
+const [socketsOnly, setSocketsOnly] = useState(() =>
+  readBool(LS_PREF_SOCKETS, false)
+);
 
   useEffect(() => {
     let alive = true;
@@ -75,7 +99,8 @@ export default function MapPage() {
 
       const matchesWifi = !wifiOnly || !!loc.wifi;
       const matchesSeating = !seatingOnly || !!loc.seating;
-
+      const matchesSockets = !socketsOnly || !!loc.sockets;
+      
       const quietness = Number(loc.quietnessScore || 0);
       const matchesQuiet = !quietOnly || quietness >= 4.0;
 
@@ -83,7 +108,14 @@ export default function MapPage() {
       const lng = Number(loc.lng);
       const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
 
-      return matchesText && matchesWifi && matchesSeating && matchesQuiet && hasCoords;
+      return (
+       matchesText &&
+       matchesWifi &&
+       matchesSeating &&
+       matchesSockets &&
+       matchesQuiet &&
+       hasCoords
+      );
     });
   }, [locations, query, wifiOnly, seatingOnly, quietOnly]);
 
@@ -130,6 +162,15 @@ export default function MapPage() {
               onChange={() => setQuietOnly((v) => !v)}
             />
             Quiet
+          </label>
+
+          <label className="mp-filter">
+            <input
+              type="checkbox"
+              checked={socketsOnly}
+              onChange={() => setSocketsOnly((v) => !v)}
+            />
+            Sockets
           </label>
         </div>
 
