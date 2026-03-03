@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../api/locationsApi";
+import "./styles/MyRatingsPage.css";
 
 const LS_MY_RATINGS = "ss:myRatings";
 
@@ -66,49 +67,43 @@ export default function MyRatingsPage() {
   }
 
   return (
-    <div style={{ padding: 16 }}>
-      <h2 style={{ marginTop: 0 }}>My Ratings</h2>
+  <div className="mr-page">
+    <h2 className="mr-title">My Ratings</h2>
 
-      {/* if user has not rated anything yet, show simple empty state */}
-      {myRatings.length === 0 && (
-        <div style={{ opacity: 0.7 }}>
-          you haven’t rated any locations yet.
+    {/* if user has not rated anything yet, show simple empty state */}
+    {myRatings.length === 0 && (
+      <div className="mr-empty">
+        you haven’t rated any locations yet.
+      </div>
+    )}
+
+    {/* render each rating as a simple clickable card */}
+    {myRatings.map((r, index) => (
+      <div
+        key={index}
+        onClick={() => navigate(`/location/${r.locationId}`)}
+        className="mr-card"
+      >
+        <div className="mr-name">
+          {getLocationName(r.locationId)}
         </div>
-      )}
 
-      {/* render each rating as a simple clickable card */}
-      {myRatings.map((r, index) => (
-        <div
-          key={index}
-          onClick={() => navigate(`/location/${r.locationId}`)}
-          style={{
-            border: "1px solid #eee",
-            borderRadius: 12,
-            padding: 12,
-            marginBottom: 12,
-            cursor: "pointer"
-          }}
-        >
-          <div style={{ fontWeight: 700 }}>
-            {getLocationName(r.locationId)}
-          </div>
-
-          <div style={{ marginTop: 6 }}>
-            rating: {"★".repeat(r.rating)}
-          </div>
-
-          {/* only show comment if user actually wrote something */}
-          {r.comment && (
-            <div style={{ marginTop: 6, fontSize: 13, opacity: 0.8 }}>
-              {r.comment}
-            </div>
-          )}
-
-          <div style={{ marginTop: 6, fontSize: 12, opacity: 0.6 }}>
-            {new Date(r.createdAt).toLocaleString()}
-          </div>
+        <div className="mr-rating">
+          rating: {"★".repeat(r.rating)}
         </div>
-      ))}
-    </div>
-  );
+
+        {/* only show comment if user actually wrote something */}
+        {r.comment && (
+          <div className="mr-comment">
+            {r.comment}
+          </div>
+        )}
+
+        <div className="mr-date">
+          {new Date(r.createdAt).toLocaleString()}
+        </div>
+      </div>
+    ))}
+  </div>
+);
 }
