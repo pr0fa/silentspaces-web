@@ -46,3 +46,67 @@
   font-size: 12px;
   opacity: 0.6;
 }
+.mr-page {
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.mr-title {
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+.mr-empty {
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.mr-card {
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #fff;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.mr-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.mr-topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.mr-name {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.mr-stars {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.mr-comment {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.mr-metaRow {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.mr-device {
+  font-style: italic;
+}

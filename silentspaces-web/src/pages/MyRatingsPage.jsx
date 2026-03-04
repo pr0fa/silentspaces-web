@@ -66,7 +66,7 @@ export default function MyRatingsPage() {
     return <div style={{ padding: 16 }}>Loading…</div>;
   }
 
-  return (
+ return (
   <div className="mr-page">
     <h2 className="mr-title">My Ratings</h2>
 
@@ -77,30 +77,41 @@ export default function MyRatingsPage() {
       </div>
     )}
 
-    {/* render each rating as a simple clickable card */}
+    {/* render each rating as a structured card instead of loose blocks */}
     {myRatings.map((r, index) => (
       <div
         key={index}
         onClick={() => navigate(`/location/${r.locationId}`)}
         className="mr-card"
       >
-        <div className="mr-name">
-          {getLocationName(r.locationId)}
-        </div>
+        {/* top row: location name + stars aligned */}
+        <div className="mr-topRow">
+          <div className="mr-name">
+            {getLocationName(r.locationId)}
+          </div>
 
-        <div className="mr-rating">
-          rating: {"★".repeat(r.rating)}
+          <div className="mr-stars">
+            {"★".repeat(r.rating)}
+            {"☆".repeat(5 - r.rating)}
+          </div>
         </div>
 
         {/* only show comment if user actually wrote something */}
-        {r.comment && (
+        {r.comment && r.comment.trim() !== "" && (
           <div className="mr-comment">
             {r.comment}
           </div>
         )}
 
-        <div className="mr-date">
-          {new Date(r.createdAt).toLocaleString()}
+        {/* bottom row: device indicator + timestamp */}
+        <div className="mr-metaRow">
+          <div className="mr-device">
+            device rating
+          </div>
+
+          <div className="mr-date">
+            {new Date(r.createdAt).toLocaleString()}
+          </div>
         </div>
       </div>
     ))}
