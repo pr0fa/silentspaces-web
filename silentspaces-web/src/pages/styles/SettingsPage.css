@@ -1,0 +1,50 @@
+.st-page {
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.st-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.st-section {
+  margin-bottom: 28px;
+}
+
+.st-sectionTitle {
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.st-btn {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 600;
+  transition: 0.15s ease;
+}
+
+.st-btn:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.st-danger {
+  border: 1px solid #ffdddd;
+  background: #fff5f5;
+  color: #b00020;
+}
+
+.st-about {
+  font-size: 13px;
+  opacity: 0.8;
+  line-height: 1.6;
+}

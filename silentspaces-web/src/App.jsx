@@ -7,6 +7,7 @@ import RatePage from "./pages/RatePage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import MyRatingsPage from "./pages/MyRatingsPage.jsx";
 import SavedLocationsPage from "./pages/SavedLocationsPage.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
 import { Toaster } from "react-hot-toast";
 
 import BottomNav from "./components/BottomNav.jsx";
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/my-ratings" element={<MyRatingsPage />} />
         <Route path="/saved" element={<SavedLocationsPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<div style={{ padding: 16 }}>404 Not Found</div>} />
       </Routes>
     </AppLayout>
