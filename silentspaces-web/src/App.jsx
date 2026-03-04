@@ -6,6 +6,7 @@ import LocationDetailsPage from "./pages/LocationDetailsPage.jsx";
 import RatePage from "./pages/RatePage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import MyRatingsPage from "./pages/MyRatingsPage.jsx";
+import SavedLocationsPage from "./pages/SavedLocationsPage.jsx";
 import { Toaster } from "react-hot-toast";
 
 import BottomNav from "./components/BottomNav.jsx";
@@ -30,11 +31,13 @@ export default function App() {
         <Route path="/map" element={<MapPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/location/:id" element={<LocationDetailsPage />} />
+        
 
         {/* Nav tab route (low fidelity for now) */}
         <Route path="/rate" element={<Navigate to="/search?mode=rate" replace />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/my-ratings" element={<MyRatingsPage />} />
+        <Route path="/saved" element={<SavedLocationsPage />} />
         <Route path="*" element={<div style={{ padding: 16 }}>404 Not Found</div>} />
       </Routes>
     </AppLayout>
