@@ -52,10 +52,21 @@
 
 body {
   margin: 0;
-  min-width: 320px;
   min-height: 100vh;
-  background: var(--color-bg);
-  color: var(--color-text-primary);
+  background: #111827;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#root {
+  width: 390px;
+  min-height: 100vh;
+  background: var(--color-surface);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+  position: relative;
 }
 
 /* ===== Typography Defaults ===== */

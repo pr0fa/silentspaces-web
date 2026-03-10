@@ -31,6 +31,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/map" replace />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/rate/:id" element={<RatePage />} />
         <Route path="/location/:id" element={<LocationDetailsPage />} />
         
 
