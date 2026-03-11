@@ -18,17 +18,15 @@ function readBool(key, fallback = false) {
 }
 
 function getMarkerColor(type) {
-  switch (type) {
-    case "library":
-      return "#4F46E5";
-    case "cafe":
-      return "#9333EA";
-    case "park":
-      return "#16A34A";
-    default:
-      return "#3B82F6";
-  }
+  const t = type?.toLowerCase() || "";
+
+  if (t.includes("library")) return "#4F46E5";
+  if (t.includes("cafe") || t.includes("coffee")) return "#9333EA";
+  if (t.includes("park")) return "#16A34A";
+
+  return "#3B82F6";
 }
+
 
 function FitBounds({ points }) {
   const map = useMap();
@@ -243,20 +241,20 @@ export default function MapPage() {
 
           {filtered.map((loc) => (
             <Marker
-              key={loc.id}
-              position={[Number(loc.lat), Number(loc.lng)]}
-              icon={L.divIcon({
-                className: "custom-marker",
-                html: `<div style="
-                  background:${getMarkerColor(loc.type)};
-                  width:18px;
-                  height:18px;
-                  border-radius:50%;
-                  border:3px solid white;
-                  box-shadow:0 3px 8px rgba(0,0,0,0.35);
-                "></div>`,
-              })}
-            >
+                key={loc.id}
+                position={[Number(loc.lat), Number(loc.lng)]}
+                icon={L.divIcon({
+                  className: "custom-marker",
+                  html: `
+                    <div class="mp-markerWrapper">
+                      <div class="mp-markerLabel">${loc.name}</div>
+                      <div class="mp-markerDot" style="background:${getMarkerColor(loc.type)}"></div>
+                    </div>
+                  `,
+                  iconSize: [30, 30],
+                  iconAnchor: [15, 30]
+                })}
+>
               <Popup>
                 <div>
                   <div style={{ fontWeight: 700 }}>{loc.name}</div>
