@@ -17,6 +17,19 @@ function readBool(key, fallback = false) {
   return raw === "true";
 }
 
+function getMarkerColor(type) {
+  switch (type) {
+    case "library":
+      return "#4F46E5";
+    case "cafe":
+      return "#9333EA";
+    case "park":
+      return "#16A34A";
+    default:
+      return "#3B82F6";
+  }
+}
+
 function FitBounds({ points }) {
   const map = useMap();
 
@@ -33,6 +46,26 @@ function FitBounds({ points }) {
 
   // This component controls map behaviour only and does not render UI.
   return null;
+}
+
+function LocateMeButton() {
+  const map = useMap();
+
+  const handleLocate = () => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const { latitude, longitude } = pos.coords;
+
+      map.setView([latitude, longitude], 15);
+    });
+  };
+
+  return (
+    <button className="mp-locateBtn" onClick={handleLocate}>
+      📍
+    </button>
+  );
 }
 
 export default function MapPage() {
@@ -128,35 +161,35 @@ export default function MapPage() {
   if (error) return <div className="mp-state">{error}</div>;
 
   return (
-     <div className="mp-page">
-    {/* ---------- Header Controls ---------- */}
-    <div className="mp-header">
-      <div className="mp-searchBar">
-        <span className="mp-searchIcon">🔍</span>
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search quiet spaces..."
-          className="mp-searchInput"
-        />
-        <button
-          className="mp-filterBtn"
-          onClick={() => setShowFilters(!showFilters)}
-        >
-          ☰
-        </button>
+    <div className="mp-page">
+      {/* ---------- Header Controls ---------- */}
+      <div className="mp-header">
+        <div className="mp-searchBar">
+          <span className="mp-searchIcon">🔍</span>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search quiet spaces..."
+            className="mp-searchInput"
+          />
+          <button
+            className="mp-filterBtn"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            ☰
+          </button>
+        </div>
       </div>
-    </div>
+
       {/* ---------- Filter Menu ---------- */}
 
       {showFilters && (
         <div className="mp-filterPanel">
-
           <label>
             <input
               type="checkbox"
               checked={wifiOnly}
-              onChange={() => setWifiOnly(v => !v)}
+              onChange={() => setWifiOnly((v) => !v)}
             />
             Wi-Fi
           </label>
@@ -165,7 +198,7 @@ export default function MapPage() {
             <input
               type="checkbox"
               checked={seatingOnly}
-              onChange={() => setSeatingOnly(v => !v)}
+              onChange={() => setSeatingOnly((v) => !v)}
             />
             Seating
           </label>
@@ -174,7 +207,7 @@ export default function MapPage() {
             <input
               type="checkbox"
               checked={quietOnly}
-              onChange={() => setQuietOnly(v => !v)}
+              onChange={() => setQuietOnly((v) => !v)}
             />
             Quiet
           </label>
@@ -183,11 +216,10 @@ export default function MapPage() {
             <input
               type="checkbox"
               checked={socketsOnly}
-              onChange={() => setSocketsOnly(v => !v)}
+              onChange={() => setSocketsOnly((v) => !v)}
             />
             Power sockets
           </label>
-
         </div>
       )}
 
@@ -207,11 +239,26 @@ export default function MapPage() {
 
           <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
 
+          <LocateMeButton />
+
           {filtered.map((loc) => (
-            <Marker key={loc.id} position={[Number(loc.lat), Number(loc.lng)]}>
+            <Marker
+              key={loc.id}
+              position={[Number(loc.lat), Number(loc.lng)]}
+              icon={L.divIcon({
+                className: "custom-marker",
+                html: `<div style="
+                  background:${getMarkerColor(loc.type)};
+                  width:18px;
+                  height:18px;
+                  border-radius:50%;
+                  border:3px solid white;
+                  box-shadow:0 3px 8px rgba(0,0,0,0.35);
+                "></div>`,
+              })}
+            >
               <Popup>
                 <div>
-
                   <div style={{ fontWeight: 700 }}>{loc.name}</div>
 
                   <div style={{ fontSize: 12, opacity: 0.8 }}>
@@ -223,7 +270,8 @@ export default function MapPage() {
                     <b>Quietness:</b>{" "}
                     {Number(loc.ratingCount || 0) === 0
                       ? "-"
-                      : (loc.quietnessScore ?? "-")} ({loc.ratingCount ?? 0})
+                      : loc.quietnessScore ?? "-"}{" "}
+                    ({loc.ratingCount ?? 0})
                   </div>
 
                   {/* Facility indicators help users decide without leaving the map */}
@@ -235,11 +283,13 @@ export default function MapPage() {
 
                   {/* Navigate to the details page for full info and ratings */}
                   <div style={{ marginTop: 10 }}>
-                    <button type="button" onClick={() => navigate(`/location/${loc.id}`)}>
+                    <button
+                      type="button"
+                      onClick={() => navigate(`/location/${loc.id}`)}
+                    >
                       View details
                     </button>
                   </div>
-
                 </div>
               </Popup>
             </Marker>
