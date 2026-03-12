@@ -18,15 +18,18 @@ function readBool(key, fallback = false) {
 }
 
 function getMarkerColor(type) {
-  const t = type?.toLowerCase() || "";
+  const t = String(type || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
   if (t.includes("library")) return "#4F46E5";
   if (t.includes("cafe") || t.includes("coffee")) return "#9333EA";
-  if (t.includes("park")) return "#16A34A";
+  if (t.includes("park") || t.includes("garden")) return "#16A34A";
+  if (t.includes("study space") || t.includes("cowork")) return "#F59E0B";
 
   return "#3B82F6";
 }
-
 
 function FitBounds({ points }) {
   const map = useMap();
@@ -247,8 +250,8 @@ export default function MapPage() {
                   className: "custom-marker",
                   html: `
                     <div class="mp-markerWrapper">
-                      <div class="mp-markerLabel">${loc.name}</div>
-                      <div class="mp-markerDot" style="background:${getMarkerColor(loc.type)}"></div>
+                      <div class="mp-markerLabel">${loc.type}</div>
+                      <div class="mp-markerDot" style="background:${getMarkerColor(String(loc.type))}"></div>
                     </div>
                   `,
                   iconSize: [30, 30],
