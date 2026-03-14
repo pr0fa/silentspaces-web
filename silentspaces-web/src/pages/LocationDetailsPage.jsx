@@ -101,52 +101,57 @@ export default function LocationDetailsPage() {
         ← Back
       </button>
 
-      {/* Location name (was missing) */}
-      <h2 className="ldp-title">{loc.name}</h2>
+      <div className="ldp-headerCard">
+          <div className="ldp-headerLeft">
+            <div className="ldp-title">{loc.name}</div>
+            <div className="ldp-meta">
+              {loc.area} • {loc.type} • {distanceText}
+            </div>
 
-      <div className="ldp-headerRow">
-        <div className="ldp-meta">
-          {loc.area} • {loc.type} • {distanceText}
+            <div className="ldp-rating">
+              ⭐ {quietnessText} ({ratingCount} ratings)
+            </div>
+          </div>
+
+          <button
+            onClick={toggleFavourite}
+            title="Save to favourites"
+            className="ldp-favBtn"
+          >
+            {favourite ? "♥" : "♡"}
+          </button>
+
         </div>
-
-        {/* NEW: uses toggleFavourite instead of setFavourite */}
-        <button
-          onClick={toggleFavourite}
-          title="Save to favourites"
-          className="ldp-favBtn"
-        >
-          {favourite ? "♥" : "♡"}
-        </button>
-      </div>
 
       <div className="ldp-card">
         <div>
           <b>Quietness:</b> {quietnessText} ({ratingCount} ratings)
         </div>
 
-        <div className="ldp-section">
-          <b>Facilities:</b>
-          <div className="ldp-facilities">
-            Wi-Fi: {loc.wifi ? "Yes" : "No"} <br />
-            Seating: {loc.seating ? "Yes" : "No"} <br />
-            Sockets: {loc.sockets ? "Yes" : "No"}
-          </div>
-        </div>
-
-        <div className="ldp-section">
-          <b>Best time to visit:</b> {loc.bestTime}
+    <div className="ldp-section">
+    <div className="ldp-sectionTitle">Facilities</div>
+        <div className="ldp-facilities">
+          {loc.wifi && <span className="ldp-chip">📶 Wi-Fi</span>}
+          {loc.seating && <span className="ldp-chip">💺 Seating</span>}
+          {loc.sockets && <span className="ldp-chip">🔌 Power</span>}
         </div>
       </div>
 
-      {/* show stored ratings + average */}
-      <RatingsPanel locationId={loc.id} />
-
-      <button
-        onClick={() => navigate(`/rate/${loc.id}`)}
-        className="ldp-rateBtn"
-      >
-        Rate this place
-      </button>
+        <div className="ldp-section">
+          <b>Best time to visit:</b> {loc.bestTime}
+      </div>
     </div>
-  );
-}
+          {/* Ratings Section */}
+          <div className="ldp-ratingsSection">
+            <RatingsPanel locationId={loc.id} />
+          </div>
+
+          <button
+            onClick={() => navigate(`/rate/${loc.id}`)}
+            className="ldp-rateBtn"
+          >
+            Rate this place
+          </button>
+              </div>
+      );
+    }
