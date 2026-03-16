@@ -144,6 +144,17 @@ export default function LocationDetailsPage() {
         </div>
       </div>
 
+      <div className="ldp-section">
+          <a
+            href={`https://www.google.com/maps?q=${loc.lat},${loc.lng}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ldp-mapBtn"
+          >
+            Open in Google Maps
+          </a>
+        </div>
+
       {/* show stored ratings + average */}
       <div className="ldp-ratingsSection">
         <RatingsPanel locationId={loc.id} />
