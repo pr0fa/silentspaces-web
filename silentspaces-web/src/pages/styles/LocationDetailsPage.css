@@ -100,6 +100,16 @@
   font-size: 13px;
 }
 
+.ldp-chip.is-available {
+  background: #E8F5E9;
+  color: #1B5E20;
+}
+
+.ldp-chip.is-missing {
+  background: #F5F5F5;
+  color: #9AA0A6;
+}
+
 /* ---------- Best Time ---------- */
 
 .ldp-bestTime {

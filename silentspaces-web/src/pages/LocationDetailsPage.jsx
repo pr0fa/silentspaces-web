@@ -137,19 +137,18 @@ export default function LocationDetailsPage() {
         </div>
         <div className="ldp-section">
           <b>Facilities:</b>
-
-          <div className="ldp-facilities">
-            {loc.wifi && (
-              <span className="ldp-chip">📶 Wi-Fi</span>
-            )}
-            {loc.seating && (
-              <span className="ldp-chip">💺 Seating</span>
-            )}
-            {loc.sockets && (
-              <span className="ldp-chip">🔌 Sockets</span>
-            )}
-          </div>
+        <div className="ldp-facilities">
+          <span className={`ldp-chip ${loc.wifi ? "is-available" : "is-missing"}`}>
+            {loc.wifi ? "📶 Wi-Fi" : "❌ Wi-Fi"}
+          </span>
+          <span className={`ldp-chip ${loc.seating ? "is-available" : "is-missing"}`}>
+            {loc.seating ? "💺 Seating" : "❌ Seating"}
+          </span>
+          <span className={`ldp-chip ${loc.sockets ? "is-available" : "is-missing"}`}>
+            {loc.sockets ? "🔌 Sockets" : "❌ Sockets"}
+          </span>
         </div>
+      </div>
 
         <div className="ldp-section">
           <b>Best time to visit:</b> {loc.bestTime}
