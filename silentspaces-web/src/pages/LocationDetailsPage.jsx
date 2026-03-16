@@ -127,14 +127,23 @@ export default function LocationDetailsPage() {
       
       <div className="ldp-card">
         <div className="ldp-ratingRow">
-          <span className="ldp-ratingLabel">Quietness</span>
-          <span className="ldp-stars">
-            {"⭐".repeat(Math.round(loc.quietnessScore || 0))}
+        <span className="ldp-ratingLabel">Quietness</span>
+        {ratingCount === 0 ? (
+          <span className="ldp-ratingEmpty">
+            ⭐ No ratings yet
           </span>
-          <span className="ldp-ratingValue">
-            {quietnessText} ({ratingCount} ratings)
-          </span>
-        </div>
+        ) : (
+          <>
+            <span className="ldp-stars">
+              {"⭐".repeat(Math.round(loc.quietnessScore))}
+            </span>
+
+            <span className="ldp-ratingValue">
+              {quietnessText} ({ratingCount} ratings)
+            </span>
+          </>
+        )}
+      </div>
         <div className="ldp-section">
           <b>Facilities:</b>
         <div className="ldp-facilities">

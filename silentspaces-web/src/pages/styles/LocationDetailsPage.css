@@ -169,6 +169,11 @@
   color: var(--color-text-secondary);
 }
 
+.ldp-ratingEmpty {
+  font-size: var(--font-sm);
+  color: #9AA0A6;
+}
+
 /* ---------- Footer ---------- */
 
 .ldp-footer {
