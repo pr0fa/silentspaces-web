@@ -21,6 +21,17 @@
   font-weight: var(--font-weight-bold);
 }
 
+.ldp-titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ldp-rating {
+  font-size: 14px;
+  font-weight: 600;
+}
+
 /* ---------- Header ---------- */
 
 .ldp-headerRow {
