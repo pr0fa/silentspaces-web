@@ -142,16 +142,19 @@ export default function LocationDetailsPage() {
       </div>
     </div>
           {/* Ratings Section */}
-          <div className="ldp-ratingsSection">
-            <RatingsPanel locationId={loc.id} />
-          </div>
+          {/* show stored ratings + average */}
+      <div className="ldp-ratingsSection">
+        <RatingsPanel locationId={loc.id} />
+      </div>
 
-          <button
-            onClick={() => navigate(`/rate/${loc.id}`)}
-            className="ldp-rateBtn"
-          >
-            Rate this place
-          </button>
-              </div>
-      );
-    }
+      <div className="ldp-footer">
+        <button
+          onClick={() => navigate(`/rate/${loc.id}`)}
+          className="ldp-rateBtn"
+        >
+          Rate this place
+        </button>
+      </div>
+    </div>
+  );
+}
