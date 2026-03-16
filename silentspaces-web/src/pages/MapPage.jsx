@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { getLocations } from "../api/locationsApi";
+import { Navigation } from "lucide-react";
 import L from "leaflet";
 import "./styles/MapPage.css";
 
@@ -64,7 +65,7 @@ function LocateMeButton() {
 
   return (
     <button className="mp-locateBtn" onClick={handleLocate}>
-      📍
+      <Navigation size={22} />
     </button>
   );
 }
@@ -76,6 +77,8 @@ export default function MapPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
+
+  const [suggestions, setSuggestions] = useState([]);
 
   const [showFilters, setShowFilters] = useState(false);
 
@@ -121,6 +124,31 @@ export default function MapPage() {
     };
   }, []);
 
+  // NEW: Search suggestions for names and postcodes
+  useEffect(() => {
+    const q = query.trim().toLowerCase();
+
+    if (!q) {
+      setSuggestions([]);
+      return;
+    }
+
+    const results = locations
+      .filter((loc) => {
+        const name = (loc.name || "").toLowerCase();
+        const postcode = (loc.postcode || "").toLowerCase();
+        return name.includes(q) || postcode.includes(q);
+      })
+      .slice(0, 5);
+
+    setSuggestions(results);
+  }, [query, locations]);
+
+  const handleSuggestionClick = (loc) => {
+    setQuery(loc.name);
+    setSuggestions([]);
+  };
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
 
@@ -128,9 +156,14 @@ export default function MapPage() {
       const name = (loc.name || "").toLowerCase();
       const area = (loc.area || "").toLowerCase();
       const type = (loc.type || "").toLowerCase();
+      const postcode = (loc.postcode || "").toLowerCase();
 
       const matchesText =
-        q === "" || name.includes(q) || area.includes(q) || type.includes(q);
+        q === "" ||
+        name.includes(q) ||
+        area.includes(q) ||
+        type.includes(q) ||
+        postcode.includes(q);
 
       const matchesWifi = !wifiOnly || !!loc.wifi;
       const matchesSeating = !seatingOnly || !!loc.seating;
@@ -167,12 +200,14 @@ export default function MapPage() {
       <div className="mp-header">
         <div className="mp-searchBar">
           <span className="mp-searchIcon">🔍</span>
+
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search quiet spaces..."
+            placeholder="Search quiet spaces or postcode..."
             className="mp-searchInput"
           />
+
           <button
             className="mp-filterBtn"
             onClick={() => setShowFilters(!showFilters)}
@@ -180,6 +215,22 @@ export default function MapPage() {
             ☰
           </button>
         </div>
+
+        {/* NEW: suggestions dropdown */}
+        {suggestions.length > 0 && (
+          <div className="mp-suggestions">
+            {suggestions.map((loc) => (
+              <div
+                key={loc.id}
+                className="mp-suggestionItem"
+                onClick={() => handleSuggestionClick(loc)}
+              >
+                <strong>{loc.name}</strong>
+                <span>{loc.postcode}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ---------- Filter Menu ---------- */}
@@ -244,20 +295,20 @@ export default function MapPage() {
 
           {filtered.map((loc) => (
             <Marker
-                key={loc.id}
-                position={[Number(loc.lat), Number(loc.lng)]}
-                icon={L.divIcon({
-                  className: "custom-marker",
-                  html: `
+              key={loc.id}
+              position={[Number(loc.lat), Number(loc.lng)]}
+              icon={L.divIcon({
+                className: "custom-marker",
+                html: `
                     <div class="mp-markerWrapper">
                       <div class="mp-markerLabel">${loc.type}</div>
                       <div class="mp-markerDot" style="background:${getMarkerColor(String(loc.type))}"></div>
                     </div>
                   `,
-                  iconSize: [30, 30],
-                  iconAnchor: [15, 30]
-                })}
->
+                iconSize: [30, 30],
+                iconAnchor: [15, 30]
+              })}
+            >
               <Popup>
                 <div>
                   <div style={{ fontWeight: 700 }}>{loc.name}</div>
