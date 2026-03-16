@@ -138,6 +138,27 @@
   border: 1px solid var(--color-border);
 }
 
+.ldp-ratingRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-sm);
+}
+
+.ldp-ratingLabel {
+  font-weight: var(--font-weight-bold);
+}
+
+.ldp-stars {
+  color: #F59E0B;
+  font-size: 16px;
+}
+
+.ldp-ratingValue {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
 /* ---------- Footer ---------- */
 
 .ldp-footer {

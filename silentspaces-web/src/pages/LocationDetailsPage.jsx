@@ -124,10 +124,16 @@ export default function LocationDetailsPage() {
           {favourite ? "♥" : "♡"}
         </button>
       </div>
-
+      
       <div className="ldp-card">
-        <div>
-          <b>Quietness:</b> {quietnessText} ({ratingCount} ratings)
+        <div className="ldp-ratingRow">
+          <span className="ldp-ratingLabel">Quietness</span>
+          <span className="ldp-stars">
+            {"⭐".repeat(Math.round(loc.quietnessScore || 0))}
+          </span>
+          <span className="ldp-ratingValue">
+            {quietnessText} ({ratingCount} ratings)
+          </span>
         </div>
 
         <div className="ldp-section">
