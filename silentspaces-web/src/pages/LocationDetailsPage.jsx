@@ -135,13 +135,19 @@ export default function LocationDetailsPage() {
             {quietnessText} ({ratingCount} ratings)
           </span>
         </div>
-
         <div className="ldp-section">
           <b>Facilities:</b>
+
           <div className="ldp-facilities">
-            Wi-Fi: {loc.wifi ? "Yes" : "No"} <br />
-            Seating: {loc.seating ? "Yes" : "No"} <br />
-            Sockets: {loc.sockets ? "Yes" : "No"}
+            {loc.wifi && (
+              <span className="ldp-chip">📶 Wi-Fi</span>
+            )}
+            {loc.seating && (
+              <span className="ldp-chip">💺 Seating</span>
+            )}
+            {loc.sockets && (
+              <span className="ldp-chip">🔌 Sockets</span>
+            )}
           </div>
         </div>
 
