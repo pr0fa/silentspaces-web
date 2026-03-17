@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { getLocations } from "../api/locationsApi";
 import { Navigation } from "lucide-react";
 import L from "leaflet";
-import "./styles/MapPage.css";
+import "./MapPage.css";
 
 // REFINED: Profile preference keys so Map respects global defaults.
 const LS_PREF_WIFI = "ss:pref:wifiRequired";
@@ -124,7 +124,7 @@ export default function MapPage() {
     };
   }, []);
 
-  // NEW: Search suggestions for names and postcodes
+  // Search suggestions for names and areas
   useEffect(() => {
     const q = query.trim().toLowerCase();
 
@@ -136,8 +136,8 @@ export default function MapPage() {
     const results = locations
       .filter((loc) => {
         const name = (loc.name || "").toLowerCase();
-        const postcode = (loc.postcode || "").toLowerCase();
-        return name.includes(q) || postcode.includes(q);
+        const area = (loc.area || "").toLowerCase();
+        return name.includes(q) || area.includes(q);
       })
       .slice(0, 5);
 
@@ -156,14 +156,11 @@ export default function MapPage() {
       const name = (loc.name || "").toLowerCase();
       const area = (loc.area || "").toLowerCase();
       const type = (loc.type || "").toLowerCase();
-      const postcode = (loc.postcode || "").toLowerCase();
-
       const matchesText =
         q === "" ||
         name.includes(q) ||
         area.includes(q) ||
-        type.includes(q) ||
-        postcode.includes(q);
+        type.includes(q);
 
       const matchesWifi = !wifiOnly || !!loc.wifi;
       const matchesSeating = !seatingOnly || !!loc.seating;
@@ -204,7 +201,7 @@ export default function MapPage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search quiet spaces or postcode..."
+            placeholder="Search by name or area..."
             className="mp-searchInput"
           />
 
@@ -226,7 +223,7 @@ export default function MapPage() {
                 onClick={() => handleSuggestionClick(loc)}
               >
                 <strong>{loc.name}</strong>
-                <span>{loc.postcode}</span>
+                <span>{loc.area}</span>
               </div>
             ))}
           </div>

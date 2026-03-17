@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles/ProfilePage.css";
+import "./ProfilePage.css";
 
 const LS_NAME = "ss:profile:name";
 // Keeping identity fully local to avoid implying backend account storage.

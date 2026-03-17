@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../api/locationsApi";
-import "./styles/SearchPage.css";
+import "./SearchPage.css";
 
 // REFINED: These keys match ProfilePage so preferences auto-apply.
 const LS_PREF_WIFI = "ss:pref:wifiRequired";
@@ -177,7 +177,7 @@ export default function SearchPage() {
 
             <div className="sp-cardMeta">
               {loc.area} • {loc.type} •{" "}
-              {Number(loc.distanceMiles || 0).toFixed(1)} mi
+              {Number(loc.distanceKm || 0).toFixed(1)} km
             </div>
 
             <div className="sp-cardQuiet">

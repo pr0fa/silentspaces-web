@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./styles/SettingsPage.css";
+import "./SettingsPage.css";
 
 const LS_FAVS = "ss:favourites";
 const LS_MY_RATINGS = "ss:myRatings";

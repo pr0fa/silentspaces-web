@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../api/locationsApi";
-import "./styles/SavedLocationsPage.css";
+import "./SavedLocationsPage.css";
 
 const LS_FAVS = "ss:favourites";
 

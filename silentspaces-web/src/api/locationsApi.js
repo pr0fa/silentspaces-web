@@ -1,22 +1,19 @@
 // src/api/locationsApi.js
-// Small helper for talking to the backend locations endpoints.
-// Keeps fetch logic in one place so pages/components stay clean.
+// Reads location data directly from Firestore.
+// The rest of the app calls these functions exactly as before.
 
+import { db } from "../config/firebase";
+import { collection, doc, getDocs, getDoc } from "firebase/firestore";
+
+// Returns all locations as an array (used by SearchPage, MapPage, etc.)
 export async function getLocations() {
-  // Uses Vite proxy in dev (/api -> backend) so we don't hardcode URLs.
-  const res = await fetch("/api/locations");
-
-  // Fail fast if the backend responds with an error.
-  if (!res.ok) throw new Error("Failed to load locations");
-
-  return res.json();
+  const snapshot = await getDocs(collection(db, "locations"));
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
+// Returns a single location by its Firestore document ID
 export async function getLocationById(id) {
-  // Fetch a single location for details/rate pages.
-  const res = await fetch(`/api/locations/${id}`);
-
-  if (!res.ok) throw new Error("Failed to load location");
-
-  return res.json();
+  const snap = await getDoc(doc(db, "locations", id));
+  if (!snap.exists()) throw new Error("Location not found");
+  return { id: snap.id, ...snap.data() };
 }

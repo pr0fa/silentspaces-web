@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../api/locationsApi";
-import "./styles/MyRatingsPage.css";
+import "./MyRatingsPage.css";
 
 const LS_MY_RATINGS = "ss:myRatings";
 

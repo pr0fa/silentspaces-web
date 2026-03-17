@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import MyRatingsPage from "./pages/MyRatingsPage.jsx";
 import SavedLocationsPage from "./pages/SavedLocationsPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
+import SeedPage from "./pages/SeedPage.jsx";
 import { Toaster } from "react-hot-toast";
 
 import BottomNav from "./components/BottomNav.jsx";
@@ -33,7 +34,6 @@ export default function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/rate/:id" element={<RatePage />} />
         <Route path="/location/:id" element={<LocationDetailsPage />} />
-        
 
         {/* Nav tab route (low fidelity for now) */}
         <Route path="/rate" element={<Navigate to="/search?mode=rate" replace />} />
@@ -41,6 +41,8 @@ export default function App() {
         <Route path="/my-ratings" element={<MyRatingsPage />} />
         <Route path="/saved" element={<SavedLocationsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        {/* One-time DB seeding utility — visit /seed once to populate Firestore */}
+        <Route path="/seed" element={<SeedPage />} />
         <Route path="*" element={<div style={{ padding: 16 }}>404 Not Found</div>} />
       </Routes>
     </AppLayout>

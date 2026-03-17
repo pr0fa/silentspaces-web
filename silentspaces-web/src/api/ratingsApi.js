@@ -1,31 +1,81 @@
 // src/api/ratingsApi.js
-// Uses Vite proxy, so /api goes to http://localhost:3001
+// Reads and writes ratings directly to Firestore.
+// Each location has a "ratings" subcollection: /locations/{id}/ratings/{ratingId}
+// When a rating is submitted, the parent location doc is updated atomically
+// so quietnessScore and ratingCount always stay in sync.
 
-// Submit a new rating for a location.
-// Now also sends "bestTime" so it can be saved to the database.
-export async function submitRating(id, rating, comment, bestTime) {
-  return fetch(`/api/locations/${id}/ratings`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      rating,
-      comment,
-      bestTime // new field sent to backend
-    })
-  }).then(res => {
-    if (!res.ok) throw new Error("Failed to submit rating");
-    return res.json();
-  });
+import { db } from "../config/firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  runTransaction,
+  serverTimestamp,
+  orderBy,
+  query,
+} from "firebase/firestore";
+
+// Fetches all ratings for a location and computes the average.
+// Returns the same shape the old REST API did: { average, count, ratings[] }
+export async function getRatings(locationId) {
+  const ratingsRef = collection(db, "locations", locationId, "ratings");
+  const q = query(ratingsRef, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+
+  const ratings = snapshot.docs.map(d => ({
+    id: d.id,
+    ...d.data(),
+    // Firestore Timestamps need converting to ISO strings for display
+    createdAt: d.data().createdAt?.toDate().toISOString() ?? new Date().toISOString(),
+  }));
+
+  const count = ratings.length;
+  const average =
+    count > 0
+      ? Math.round((ratings.reduce((sum, r) => sum + r.rating, 0) / count) * 10) / 10
+      : 0;
+
+  return { average, count, ratings };
 }
 
+// Adds a new rating and updates the location's quietnessScore + ratingCount
+// inside a single transaction so the aggregates are always consistent.
+export async function submitRating(locationId, rating, comment, bestTime) {
+  const locationRef = doc(db, "locations", locationId);
+  const ratingRef = doc(collection(db, "locations", locationId, "ratings"));
 
-export async function getRatings(locationId) {
-  const res = await fetch(`/api/locations/${locationId}/ratings`);
+  let savedRating;
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || "Failed to load ratings");
-  }
+  await runTransaction(db, async (tx) => {
+    const locSnap = await tx.get(locationRef);
+    if (!locSnap.exists()) throw new Error("Location not found");
 
-  return res.json();
+    const { ratingCount = 0, quietnessScore = 0 } = locSnap.data();
+
+    const newCount = ratingCount + 1;
+    const newScore =
+      Math.round(((quietnessScore * ratingCount + rating) / newCount) * 10) / 10;
+
+    tx.set(ratingRef, {
+      rating,
+      comment: comment ?? "",
+      bestTime: bestTime ?? "",
+      createdAt: serverTimestamp(),
+    });
+
+    tx.update(locationRef, {
+      ratingCount: newCount,
+      quietnessScore: newScore,
+    });
+
+    savedRating = {
+      id: ratingRef.id,
+      rating,
+      comment: comment ?? "",
+      bestTime: bestTime ?? "",
+      createdAt: new Date().toISOString(),
+    };
+  });
+
+  return savedRating;
 }

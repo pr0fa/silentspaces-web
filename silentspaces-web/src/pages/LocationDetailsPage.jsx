@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import RatingsPanel from "../components/RatingsPanel";
 import { getLocationById } from "../api/locationsApi";
-import "./styles/LocationDetailsPage.css";
+import "./LocationDetailsPage.css";
 
 // localStorage key for storing favourite location IDs
 const LS_FAVS = "ss:favourites";
@@ -73,7 +73,7 @@ export default function LocationDetailsPage() {
     return <div className="ldp-state">Location not found.</div>;
   }
 
-  const distanceText = `${Number(loc.distanceMiles || 0).toFixed(1)} mi`;
+  const distanceText = `${Number(loc.distanceKm || 0).toFixed(1)} km`;
   const ratingCount = Number(loc.ratingCount || 0);
 
   // Keep summary output stable even when values are missing.

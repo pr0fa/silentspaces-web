@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { submitRating } from "../api/ratingsApi";
 import { getLocationById } from "../api/locationsApi";
-import "./styles/RatePage.css";
+import "./RatePage.css";
 import toast, { Toaster } from "react-hot-toast";
 
 
