@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import RatingsPanel from "../components/RatingsPanel";
-import { getLocationById } from "../api/locationsApi";
+import RatingsPanel from "../../views/RatingsPanel/RatingsPanel";
+import { getLocationById } from "../../models/locationModel";
 import "./LocationDetailsPage.css";
 
 // localStorage key for storing favourite location IDs

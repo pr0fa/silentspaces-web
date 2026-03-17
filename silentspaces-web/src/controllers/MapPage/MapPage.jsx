@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { getLocations } from "../api/locationsApi";
+import { getLocations } from "../../models/locationModel";
 import { Navigation } from "lucide-react";
 import L from "leaflet";
 import "./MapPage.css";

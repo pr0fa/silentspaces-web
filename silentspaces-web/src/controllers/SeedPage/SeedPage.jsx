@@ -1,16 +1,11 @@
 // src/pages/SeedPage.jsx
 // One-time utility page to seed the Firestore "locations" collection
 // from the local mock JSON file.
-//
-// Usage:
-//   1. Visit /seed in your browser
-//   2. Click "Seed Database" once
-//   3. Done — never visit this page again (it won't overwrite existing data)
 
 import { useState } from "react";
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
-import locations from "../data/locations.mock.json";
+import locations from "../../data/locations.mock.json";
 
 export default function SeedPage() {
   const [status, setStatus] = useState("idle"); // idle | seeding | done | error

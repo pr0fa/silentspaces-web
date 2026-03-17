@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRatings } from "../api/ratingsApi";
+import { getRatings } from "../../models/ratingModel";
 import "./RatingsPanel.css";
 
 export default function RatingsPanel({ locationId }) {

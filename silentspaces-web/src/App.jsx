@@ -1,17 +1,17 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import MapPage from "./pages/MapPage.jsx";
-import SearchPage from "./pages/SearchPage.jsx";
-import LocationDetailsPage from "./pages/LocationDetailsPage.jsx";
-import RatePage from "./pages/RatePage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
-import MyRatingsPage from "./pages/MyRatingsPage.jsx";
-import SavedLocationsPage from "./pages/SavedLocationsPage.jsx";
-import SettingsPage from "./pages/SettingsPage.jsx";
-import SeedPage from "./pages/SeedPage.jsx";
+import MapPage from "./controllers/MapPage/MapPage.jsx";
+import SearchPage from "./controllers/SearchPage/SearchPage.jsx";
+import LocationDetailsPage from "./controllers/LocationDetailsPage/LocationDetailsPage.jsx";
+import RatePage from "./controllers/RatePage/RatePage.jsx";
+import ProfilePage from "./controllers/ProfilePage/ProfilePage.jsx";
+import MyRatingsPage from "./controllers/MyRatingsPage/MyRatingsPage.jsx";
+import SavedLocationsPage from "./controllers/SavedLocationsPage/SavedLocationsPage.jsx";
+import SettingsPage from "./controllers/SettingsPage/SettingsPage.jsx";
+import SeedPage from "./controllers/SeedPage/SeedPage.jsx";
 import { Toaster } from "react-hot-toast";
 
-import BottomNav from "./components/BottomNav.jsx";
+import BottomNav from "./views/BottomNav/BottomNav.jsx";
 
 // Leaflet base styles (needed for tiles/controls/popups/icons)
 import "leaflet/dist/leaflet.css";
@@ -34,7 +34,6 @@ export default function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/rate/:id" element={<RatePage />} />
         <Route path="/location/:id" element={<LocationDetailsPage />} />
-
         {/* Nav tab route (low fidelity for now) */}
         <Route path="/rate" element={<Navigate to="/search?mode=rate" replace />} />
         <Route path="/profile" element={<ProfilePage />} />
