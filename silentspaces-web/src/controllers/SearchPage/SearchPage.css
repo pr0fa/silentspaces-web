@@ -6,6 +6,11 @@
 
 .sp-state {
   padding: var(--space-md);
+  color: var(--color-text-secondary);
+}
+
+.sp-state--error {
+  color: var(--color-danger);
 }
 
 .sp-title {
@@ -18,41 +23,74 @@
 
 .sp-search {
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid var(--color-border);
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--color-border);
   outline: none;
   font-size: var(--font-md);
   background: var(--color-surface);
-  transition: 0.2s ease;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 
 .sp-search:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
 }
 
-/* ---------- Filters ---------- */
+/* ---------- Section Labels ---------- */
 
-.sp-filters {
-  display: flex;
-  gap: var(--space-md);
-  margin-top: var(--space-md);
-  flex-wrap: wrap;
-}
-
-.sp-filter {
-  display: flex;
-  gap: var(--space-xs);
-  align-items: center;
+.sp-section-label {
+  margin: var(--space-md) 0 var(--space-sm);
   font-size: var(--font-sm);
-  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Chips ---------- */
+
+.sp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.sp-chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.sp-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.sp-chip--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.sp-chip--active:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  color: #fff;
 }
 
 /* ---------- Result Count ---------- */
 
 .sp-count {
-  margin-top: var(--space-md);
+  margin: var(--space-md) 0 var(--space-sm);
   font-size: var(--font-sm);
   color: var(--color-text-secondary);
 }
@@ -61,52 +99,100 @@
 
 .sp-grid {
   display: grid;
-  gap: var(--space-md);
-  margin-top: var(--space-md);
+  gap: var(--space-sm);
 }
 
 /* ---------- Card ---------- */
 
 .sp-card {
   padding: var(--space-md);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 14px;
   cursor: pointer;
   background: var(--color-surface);
-  transition: 0.2s ease;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
 
 .sp-card:hover {
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
+}
+
+.sp-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.sp-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-sm);
 }
 
 .sp-cardTitle {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-md);
+  color: var(--color-text-primary);
 }
 
 .sp-cardMeta {
   font-size: var(--font-xs);
   color: var(--color-text-secondary);
-  margin-top: var(--space-xs);
+  margin-top: 2px;
 }
 
-.sp-cardQuiet {
+.sp-cardDist {
   font-size: var(--font-xs);
-  margin-top: var(--space-xs);
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
 }
+
+/* ---------- Quietness Badge ---------- */
+
+.sp-badge {
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-medium);
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sp-badge--very-quiet {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.sp-badge--quiet {
+  background: #FFF8E1;
+  color: #F57F17;
+}
+
+.sp-badge--moderate {
+  background: #FBE9E7;
+  color: #BF360C;
+}
+
+.sp-badge--none {
+  background: #F5F5F5;
+  color: #9E9E9E;
+}
+
+/* ---------- Facility Tags ---------- */
 
 .sp-cardFacilities {
-  font-size: var(--font-xs);
-  color: var(--color-text-secondary);
-  margin-top: var(--space-xs);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
 }
 
-.sp-rateHint {
-  margin-top: var(--space-sm);
-  margin-bottom: var(--space-sm);
-  font-size: var(--font-sm);
+.sp-fac {
+  font-size: var(--font-xs);
+  background: #F3F4F6;
   color: var(--color-text-secondary);
+  padding: 3px 8px;
+  border-radius: 999px;
 }
