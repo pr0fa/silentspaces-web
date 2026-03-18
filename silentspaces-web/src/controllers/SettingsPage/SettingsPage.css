@@ -1,50 +1,125 @@
 .st-page {
-  padding: 16px;
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
+  padding: 16px;
 }
 
-.st-title {
-  margin-top: 0;
+/* Header */
+.st-header {
+  background: linear-gradient(135deg, #2E7D32 0%, #43A047 100%);
+  border-radius: 16px;
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
-.st-section {
-  margin-bottom: 28px;
+.st-back {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
-.st-sectionTitle {
+.st-heading {
+  color: #fff;
+  font-size: 20px;
   font-weight: 700;
-  margin-bottom: 12px;
-  font-size: 14px;
-  opacity: 0.8;
 }
 
+/* Section */
+.st-section {
+  margin-bottom: 20px;
+}
+
+.st-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+/* Card */
+.st-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  overflow: hidden;
+}
+
+/* Button rows */
 .st-btn {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 14px;
-  border: 1px solid #eee;
-  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: none;
+  border: none;
   cursor: pointer;
   text-align: left;
-  font-weight: 600;
-  transition: 0.15s ease;
 }
 
 .st-btn:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  background: #f9f9f9;
 }
 
-.st-danger {
-  border: 1px solid #ffdddd;
-  background: #fff5f5;
+.st-btn-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.st-btn-label {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.st-btn-arrow {
+  color: #bbb;
+  font-size: 18px;
+}
+
+/* Danger button */
+.st-btn--danger .st-btn-label {
   color: #b00020;
 }
 
-.st-about {
-  font-size: 13px;
-  opacity: 0.8;
-  line-height: 1.6;
+/* Divider */
+.st-divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 0 16px;
+}
+
+/* About rows */
+.st-about-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  font-size: 14px;
+}
+
+.st-about-row span:first-child {
+  color: #666;
+}
+
+.st-about-row span:last-child {
+  font-weight: 500;
+  color: #1a1a1a;
 }
