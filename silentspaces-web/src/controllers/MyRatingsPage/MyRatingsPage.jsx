@@ -5,8 +5,6 @@ import "./MyRatingsPage.css";
 
 const LS_MY_RATINGS = "ss:myRatings";
 
-// small helper to safely read ratings from localStorage
-// since there is no authentication, this is device-based only
 function readRatings() {
   try {
     const raw = localStorage.getItem(LS_MY_RATINGS);
@@ -14,107 +12,145 @@ function readRatings() {
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
-    // if something breaks in storage parsing, just return empty
     return [];
   }
+}
+
+function typeEmoji(type) {
+  const t = (type || "").toLowerCase();
+  if (t.includes("library"))           return "📚";
+  if (t.includes("cafe") || t.includes("coffee")) return "☕";
+  if (t.includes("park") || t.includes("garden")) return "🌳";
+  if (t.includes("study") || t.includes("cowork")) return "💻";
+  return "📍";
 }
 
 export default function MyRatingsPage() {
   const navigate = useNavigate();
 
   const [allLocations, setAllLocations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]           = useState(true);
 
-  // load all locations so we can map rating.locationId -> actual location name
-  // this keeps the ratings page readable instead of just showing ids
   useEffect(() => {
     let alive = true;
-
     getLocations()
-      .then((data) => {
-        if (!alive) return;
-        setAllLocations(Array.isArray(data) ? data : []);
-      })
-      .finally(() => {
-        if (!alive) return;
-        setLoading(false);
-      });
-
-    return () => {
-      alive = false;
-    };
+      .then((data) => { if (alive) setAllLocations(Array.isArray(data) ? data : []); })
+      .finally(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
   }, []);
 
-  // read ratings from localStorage and sort them newest first
-  // since we store createdAt, we can order properly
-  const myRatings = useMemo(() => {
-    const ratings = readRatings();
-
-    return [...ratings].sort(
+  const allRatings = useMemo(() => {
+    return [...readRatings()].sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
   }, []);
 
-  // helper to get the name of the location from the loaded list
-  // if location is missing for some reason, fallback to unknown
-  const getLocationName = (id) => {
-    const match = allLocations.find((l) => l.id === id);
-    return match ? match.name : "Unknown location";
-  };
+  const average = useMemo(() => {
+    if (allRatings.length === 0) return 0;
+    const sum = allRatings.reduce((acc, r) => acc + r.rating, 0);
+    return Math.round((sum / allRatings.length) * 10) / 10;
+  }, [allRatings]);
 
-  if (loading) {
-    return <div style={{ padding: 16 }}>Loading…</div>;
-  }
+  const getLocation = (id) => allLocations.find((l) => l.id === id) ?? null;
 
- return (
-  <div className="mr-page">
-    <h2 className="mr-title">My Ratings</h2>
+  if (loading) return <div className="mr-state">Loading…</div>;
 
-    {/* if user has not rated anything yet, show simple empty state */}
-    {myRatings.length === 0 && (
-      <div className="mr-empty">
-        you haven’t rated any locations yet.
+  return (
+    <div className="mr-page">
+
+      {/* Header */}
+      <div className="mr-header">
+        <button className="mr-back" onClick={() => navigate("/profile")}>‹</button>
+        <span className="mr-heading">My Ratings</span>
       </div>
-    )}
 
-    {/* render each rating as a structured card instead of loose blocks */}
-    {myRatings.map((r, index) => (
-      <div
-        key={index}
-        onClick={() => navigate(`/location/${r.locationId}`)}
-        className="mr-card"
-      >
-        {/* top row: location name + stars aligned */}
-        <div className="mr-topRow">
-          <div className="mr-name">
-            {getLocationName(r.locationId)}
+      {/* Summary stat */}
+      {allRatings.length > 0 && (
+        <div className="mr-summary">
+          <div className="mr-summary-stat">
+            <span className="mr-summary-num">{allRatings.length}</span>
+            <span className="mr-summary-label">Total</span>
           </div>
-
-          <div className="mr-stars">
-            {"★".repeat(r.rating)}
-            {"☆".repeat(5 - r.rating)}
+          <div className="mr-summary-sep" />
+          <div className="mr-summary-stat">
+            <span className="mr-summary-num">⭐ {average}</span>
+            <span className="mr-summary-label">Average</span>
+          </div>
+          <div className="mr-summary-sep" />
+          <div className="mr-summary-stat">
+            <span className="mr-summary-num">
+              {allRatings.filter((r) => r.rating >= 4).length}
+            </span>
+            <span className="mr-summary-label">4★ or above</span>
           </div>
         </div>
+      )}
 
-        {/* only show comment if user actually wrote something */}
-        {r.comment && r.comment.trim() !== "" && (
-          <div className="mr-comment">
-            {r.comment}
-          </div>
-        )}
+      <p className="mr-count">
+        {allRatings.length} rating{allRatings.length !== 1 ? "s" : ""}
+      </p>
 
-        {/* bottom row: device indicator + timestamp */}
-        <div className="mr-metaRow">
-          <div className="mr-device">
-            device rating
-          </div>
-
-          <div className="mr-date">
-            {new Date(r.createdAt).toLocaleString()}
-          </div>
+      {/* Empty state */}
+      {allRatings.length === 0 && (
+        <div className="mr-empty">
+          <div className="mr-empty-icon">⭐</div>
+          <div className="mr-empty-text">No ratings yet</div>
+          <div className="mr-empty-sub">Rate a location and it will appear here</div>
         </div>
+      )}
+
+      {/* Cards */}
+      <div className="mr-list">
+        {allRatings.map((r, index) => {
+          const loc = getLocation(r.locationId);
+          const name = loc ? loc.name : "Unknown location";
+          const type = loc ? loc.type : "";
+
+          return (
+            <div
+              key={index}
+              className="mr-card"
+              onClick={() => navigate(`/location/${r.locationId}`)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") navigate(`/location/${r.locationId}`);
+              }}
+            >
+              <div className="mr-card-top">
+                <div>
+                  <div className="mr-name">{name}</div>
+                  {type && (
+                    <span className="mr-type-badge">
+                      {typeEmoji(type)} {type}
+                    </span>
+                  )}
+                </div>
+                <div className="mr-right">
+                  <div className="mr-stars">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
+                  <span className="mr-chevron">›</span>
+                </div>
+              </div>
+
+              {r.comment && r.comment.trim() !== "" && (
+                <div className="mr-comment">"{r.comment}"</div>
+              )}
+
+              <div className="mr-card-bottom">
+                {r.bestTime && r.bestTime.trim() !== "" && (
+                  <span className="mr-best-time">🕐 {r.bestTime}</span>
+                )}
+                <span className="mr-date">
+                  {new Date(r.createdAt).toLocaleDateString("en-GB", {
+                    day: "numeric", month: "short", year: "numeric"
+                  })}
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
-    ))}
-  </div>
-);
+
+    </div>
+  );
 }
