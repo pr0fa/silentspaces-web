@@ -2,20 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProfilePage.css";
 
-const LS_NAME = "ss:profile:name";
-// Keeping identity fully local to avoid implying backend account storage.
-// const LS_MEMBER_SINCE = "ss:profile:memberSince";
-
-const LS_PREF_WIFI = "ss:pref:wifiRequired";
-const LS_PREF_SEATING = "ss:pref:seatingRequired";
-const LS_PREF_QUIET = "ss:pref:quietRequired";
-const LS_PREF_SOCKETS = "ss:pref:socketsRequired";
-
-// Optional local keys if you already store these elsewhere.
-const LS_FAVS = "ss:favourites";
-
-// key for ratings you store locally when user submits a rating
-const LS_MY_RATINGS = "ss:myRatings";
+const LS_NAME          = "ss:profile:name";
+const LS_PREF_WIFI     = "ss:pref:wifiRequired";
+const LS_PREF_SEATING  = "ss:pref:seatingRequired";
+const LS_PREF_QUIET    = "ss:pref:quietRequired";
+const LS_PREF_SOCKETS  = "ss:pref:socketsRequired";
+const LS_FAVS          = "ss:favourites";
+const LS_MY_RATINGS    = "ss:myRatings";
 
 function readBool(key, fallback = false) {
   const raw = localStorage.getItem(key);
@@ -42,184 +35,120 @@ function readJson(key, fallback) {
 export default function ProfilePage() {
   const navigate = useNavigate();
 
-  // Profile identity is local-only until authentication exists.
   const [name, setName] = useState(() => readText(LS_NAME, "Guest User"));
 
-  // Preferences are stored locally and used across Search + Map.
-  const [wifiRequired, setWifiRequired] = useState(() =>
-    readBool(LS_PREF_WIFI, false)
-  );
-  const [seatingRequired, setSeatingRequired] = useState(() =>
-    readBool(LS_PREF_SEATING, false)
-  );
-  const [quietRequired, setQuietRequired] = useState(() =>
-    readBool(LS_PREF_QUIET, false)
-  );
-  const [socketsRequired, setSocketsRequired] = useState(() =>
-    readBool(LS_PREF_SOCKETS, false)
-  );
+  const [wifiRequired,    setWifiRequired]    = useState(() => readBool(LS_PREF_WIFI,     false));
+  const [seatingRequired, setSeatingRequired] = useState(() => readBool(LS_PREF_SEATING,  false));
+  const [quietRequired,   setQuietRequired]   = useState(() => readBool(LS_PREF_QUIET,    false));
+  const [socketsRequired, setSocketsRequired] = useState(() => readBool(LS_PREF_SOCKETS,  false));
 
-  // Favourites count shown for quick overview.
   const favouritesCount = useMemo(() => {
     const favs = readJson(LS_FAVS, []);
     return Array.isArray(favs) ? favs.length : 0;
   }, []);
 
-  // Ratings count pulled from local device storage.
   const ratingsCount = useMemo(() => {
     const list = readJson(LS_MY_RATINGS, []);
     return Array.isArray(list) ? list.length : 0;
   }, []);
 
-  // persist preferences whenever toggled
-  useEffect(() => {
-    localStorage.setItem(LS_PREF_WIFI, String(wifiRequired));
-  }, [wifiRequired]);
-
-  useEffect(() => {
-    localStorage.setItem(LS_PREF_SEATING, String(seatingRequired));
-  }, [seatingRequired]);
-
-  useEffect(() => {
-    localStorage.setItem(LS_PREF_QUIET, String(quietRequired));
-  }, [quietRequired]);
-
-  useEffect(() => {
-    localStorage.setItem(LS_PREF_SOCKETS, String(socketsRequired));
-  }, [socketsRequired]);
+  useEffect(() => { localStorage.setItem(LS_PREF_WIFI,     String(wifiRequired));    }, [wifiRequired]);
+  useEffect(() => { localStorage.setItem(LS_PREF_SEATING,  String(seatingRequired)); }, [seatingRequired]);
+  useEffect(() => { localStorage.setItem(LS_PREF_QUIET,    String(quietRequired));   }, [quietRequired]);
+  useEffect(() => { localStorage.setItem(LS_PREF_SOCKETS,  String(socketsRequired)); }, [socketsRequired]);
 
   const onEditName = () => {
-    // simple prompt keeps it minimal and avoids building full edit modal
     const next = prompt("Display name", name);
     if (next == null) return;
-
-  
     const clean = next.trim().slice(0, 28) || "Guest User";
     setName(clean);
     localStorage.setItem(LS_NAME, clean);
   };
 
+  // Get initials for avatar
+  const initials = name
+    .split(" ")
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+
   return (
     <div className="pf-page">
-      <div className="pf-title">Profile</div>
 
-      <div className="pf-card">
-        <div className="pf-avatarWrap">
-          <div className="pf-avatarOuter">
-            <div className="pf-avatarInner" />
-          </div>
+      {/* Header */}
+      <div className="pf-header">
+        <div className="pf-avatar" onClick={onEditName} title="Edit name">
+          {initials}
         </div>
-
-        <button
-          type="button"
-          className="pf-nameBtn"
-          onClick={onEditName}
-          title="Edit name"
-        >
+        <div className="pf-name" onClick={onEditName} title="Edit name">
           {name}
-        </button>
-
-        {/* clarify that this is not a real backend account */}
-        <div className="pf-sub">
-          Local profile (stored on this device)
         </div>
+        <div className="pf-sub">Tap your name to edit</div>
+      </div>
 
-        <div className="pf-divider" />
-        <div className="pf-stats">
-          <div className="pf-stat">
-            <div className="pf-statNum">{ratingsCount}</div>
-            <div className="pf-statLabel">Your Ratings</div>
-          </div>
-
-          <div className="pf-statSep" />
-
-          <div className="pf-stat">
-            <div className="pf-statNum">{favouritesCount}</div>
-            <div className="pf-statLabel">Saved</div>
-          </div>
+      {/* Stats row */}
+      <div className="pf-stats-row">
+        <div className="pf-stat" onClick={() => navigate("/my-ratings")} role="button" tabIndex={0}>
+          <div className="pf-stat-num">{ratingsCount}</div>
+          <div className="pf-stat-label">Ratings</div>
+        </div>
+        <div className="pf-stat-sep" />
+        <div className="pf-stat" onClick={() => navigate("/saved")} role="button" tabIndex={0}>
+          <div className="pf-stat-num">{favouritesCount}</div>
+          <div className="pf-stat-label">Saved</div>
         </div>
       </div>
 
-      <div className="pf-sectionLabel">Preferences</div>
-
-      <div className="pf-card pf-cardPad">
+      {/* Preferences */}
+      <p className="pf-section-label">Preferences</p>
+      <div className="pf-card">
         <div className="pf-row">
-          <div className="pf-rowText">Wi-Fi Required</div>
+          <span className="pf-row-text">📶 Wi-Fi Required</span>
           <label className="pf-switch">
-            <input
-              type="checkbox"
-              checked={wifiRequired}
-              onChange={() => setWifiRequired((v) => !v)}
-            />
+            <input type="checkbox" checked={wifiRequired} onChange={() => setWifiRequired(v => !v)} />
             <span className="pf-slider" />
           </label>
         </div>
-
         <div className="pf-row">
-          <div className="pf-rowText">Seating Required</div>
+          <span className="pf-row-text">🪑 Seating Required</span>
           <label className="pf-switch">
-            <input
-              type="checkbox"
-              checked={seatingRequired}
-              onChange={() => setSeatingRequired((v) => !v)}
-            />
+            <input type="checkbox" checked={seatingRequired} onChange={() => setSeatingRequired(v => !v)} />
             <span className="pf-slider" />
           </label>
         </div>
-
         <div className="pf-row">
-          <div className="pf-rowText">Quiet Required</div>
+          <span className="pf-row-text">🤫 Quiet Required</span>
           <label className="pf-switch">
-            <input
-              type="checkbox"
-              checked={quietRequired}
-              onChange={() => setQuietRequired((v) => !v)}
-            />
+            <input type="checkbox" checked={quietRequired} onChange={() => setQuietRequired(v => !v)} />
             <span className="pf-slider" />
           </label>
         </div>
-
         <div className="pf-row">
-          <div className="pf-rowText">Sockets Required</div>
+          <span className="pf-row-text">🔌 Sockets Required</span>
           <label className="pf-switch">
-            <input
-              type="checkbox"
-              checked={socketsRequired}
-              onChange={() => setSocketsRequired((v) => !v)}
-            />
+            <input type="checkbox" checked={socketsRequired} onChange={() => setSocketsRequired(v => !v)} />
             <span className="pf-slider" />
           </label>
         </div>
       </div>
 
-      <div className="pf-card pf-cardPad pf-actions">
-        <button
-          type="button"
-          className="pf-actionBtn"
-          onClick={() => navigate("/my-ratings")}
-        >
-          <span>My Ratings</span>
-          <span className="pf-actionChevron" aria-hidden="true">›</span>
+      {/* Quick links */}
+      <p className="pf-section-label">My Activity</p>
+      <div className="pf-card">
+        <button type="button" className="pf-link-btn" onClick={() => navigate("/my-ratings")}>
+          <span>⭐ My Ratings</span>
+          <span className="pf-chevron">›</span>
         </button>
-
-        <button
-          type="button"
-          className="pf-actionBtn"
-          onClick={() => navigate("/saved")}
-        >
-          <span>Saved Locations</span>
-          <span className="pf-actionChevron" aria-hidden="true">›</span>
+        <button type="button" className="pf-link-btn" onClick={() => navigate("/saved")}>
+          <span>🔖 Saved Locations</span>
+          <span className="pf-chevron">›</span>
         </button>
-
-        <button
-          type="button"
-          className="pf-actionBtn"
-          onClick={() => navigate("/settings")}
-        >
-          <span>Settings</span>
-          <span className="pf-actionChevron" aria-hidden="true">›</span>
+        <button type="button" className="pf-link-btn" onClick={() => navigate("/settings")}>
+          <span>⚙️ Settings</span>
+          <span className="pf-chevron">›</span>
         </button>
       </div>
+
     </div>
   );
 }
