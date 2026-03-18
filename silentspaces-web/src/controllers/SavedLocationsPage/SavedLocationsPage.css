@@ -1,43 +1,216 @@
 .sl-page {
-  padding: 16px;
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
+  padding: var(--space-md);
 }
 
-.sl-title {
-  margin-top: 0;
-  margin-bottom: 18px;
+.sl-state {
+  padding: var(--space-md);
+  color: var(--color-text-secondary);
 }
+
+/* ---------- Header ---------- */
+
+.sl-header {
+  background: linear-gradient(135deg, #2E7D32 0%, #43A047 100%);
+  border-radius: 16px;
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.sl-back {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.sl-back:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.sl-heading {
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-bold);
+  color: #fff;
+}
+
+/* ---------- Count ---------- */
+
+.sl-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  border: 1.5px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+  padding: var(--space-sm) var(--space-md);
+  margin: 0 0 var(--space-md);
+}
+
+.sl-count-num {
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.sl-count-label {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Empty State ---------- */
 
 .sl-empty {
-  opacity: 0.7;
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
 }
 
-.sl-card {
-  border: 1px solid #eee;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background: #fff;
-  cursor: pointer;
-  transition: 0.15s ease;
+.sl-empty-icon {
+  font-size: 40px;
+  margin-bottom: var(--space-sm);
 }
 
-.sl-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+.sl-empty-text {
+  font-size: var(--font-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
 }
 
-.sl-name {
-  font-weight: 700;
-}
-
-.sl-meta {
-  font-size: 13px;
-  opacity: 0.7;
+.sl-empty-sub {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
   margin-top: 4px;
 }
 
+/* ---------- List ---------- */
+
+.sl-list {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+/* ---------- Card ---------- */
+
+.sl-card {
+  border: 1.5px solid var(--color-border);
+  border-radius: 14px;
+  padding: var(--space-md);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.sl-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.sl-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.sl-name {
+  font-size: var(--font-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.sl-meta {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.sl-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.sl-chevron {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  transition: transform 0.1s ease;
+}
+
+.sl-card:hover .sl-chevron {
+  transform: translateX(2px);
+}
+
+/* ---------- Quietness Badge ---------- */
+
+.sl-badge {
+  font-size: var(--font-xs);
+  font-weight: var(--font-weight-medium);
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.sl-badge--very-quiet { background: #E8F5E9; color: #2E7D32; }
+.sl-badge--quiet      { background: #FFF8E1; color: #F57F17; }
+.sl-badge--moderate   { background: #FBE9E7; color: #BF360C; }
+.sl-badge--none       { background: #F5F5F5; color: #9E9E9E; }
+
+/* ---------- Facilities ---------- */
+
 .sl-facilities {
-  margin-top: 8px;
-  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.sl-fac {
+  font-size: var(--font-xs);
+  background: #F3F4F6;
+  color: var(--color-text-secondary);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.sl-rating-count {
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Card Bottom ---------- */
+
+.sl-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-sm);
+}
+
+.sl-best-time {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  background: #F3F4F6;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.sl-distance {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  margin-left: auto;
 }
