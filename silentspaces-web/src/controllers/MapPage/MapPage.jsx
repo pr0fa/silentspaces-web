@@ -5,6 +5,7 @@ import { getLocations } from "../../models/locationModel";
 import { Navigation, Search, ListFilter, Wifi, Armchair, Zap, VolumeX } from "lucide-react";
 import L from "leaflet";
 import "./MapPage.css";
+import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
 const LS_PREF_WIFI    = "ss:pref:wifiRequired";
 const LS_PREF_SEATING = "ss:pref:seatingRequired";
@@ -110,7 +111,7 @@ export default function MapPage() {
     });
   }, [locations, query, wifiOnly, seatingOnly, quietOnly, socketsOnly]);
 
-  if (loading) return <div className="mp-state">Loading map…</div>;
+  if (loading) return <LoadingScreen message="Loading the map..." />;
   if (error)   return <div className="mp-state">{error}</div>;
 
   return (

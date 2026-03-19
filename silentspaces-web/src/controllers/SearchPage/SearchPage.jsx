@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
 import { Wifi, Armchair, Zap, Search } from "lucide-react";
 import "./SearchPage.css";
+import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
 export default function SearchPage() {
   const navigate   = useNavigate();
@@ -34,7 +35,7 @@ export default function SearchPage() {
     return true;
   });
 
-  if (loading) return <div className="sp-state">Loading…</div>;
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="sp-page">

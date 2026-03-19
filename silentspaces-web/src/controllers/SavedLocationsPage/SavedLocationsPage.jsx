@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
 import { Wifi, Armchair, Zap, Clock, Bookmark } from "lucide-react";
 import "./SavedLocationsPage.css";
+import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
 const LS_FAVS = "ss:favourites";
 
@@ -38,7 +39,7 @@ export default function SavedLocationsPage() {
     });
   }, []);
 
-  if (loading) return <div className="sl-state">Loading…</div>;
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="sl-page">

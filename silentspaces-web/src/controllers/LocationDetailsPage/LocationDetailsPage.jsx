@@ -4,6 +4,7 @@ import RatingsPanel from "../../views/RatingsPanel/RatingsPanel";
 import { getLocationById } from "../../models/locationModel";
 import { Wifi, Armchair, Zap } from "lucide-react";
 import "./LocationDetailsPage.css";
+import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
 // localStorage key for storing favourite location IDs
 const LS_FAVS = "ss:favourites";
@@ -47,7 +48,7 @@ export default function LocationDetailsPage() {
   }, [id]);
 
   if (loading) {
-    return <div className="ldp-state">Loading…</div>;
+    return <LoadingScreen />;
   }
 
   // If someone writes down a random ID, don't crash the app.

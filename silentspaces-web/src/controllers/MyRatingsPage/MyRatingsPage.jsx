@@ -3,6 +3,7 @@ import { BookOpen, Coffee, Trees, Monitor, MapPin, Clock, Star } from "lucide-re
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
 import "./MyRatingsPage.css";
+import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
 const LS_MY_RATINGS = "ss:myRatings";
 
@@ -54,7 +55,7 @@ export default function MyRatingsPage() {
 
   const getLocation = (id) => allLocations.find((l) => l.id === id) ?? null;
 
-  if (loading) return <div className="mr-state">Loading…</div>;
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="mr-page">
