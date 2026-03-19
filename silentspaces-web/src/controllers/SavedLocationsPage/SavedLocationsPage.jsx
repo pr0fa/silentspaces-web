@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
+import { Wifi, Armchair, Zap, Clock, Bookmark } from "lucide-react";
 import "./SavedLocationsPage.css";
 
 const LS_FAVS = "ss:favourites";
@@ -17,15 +18,14 @@ function readFavourites() {
 }
 
 function getBadge(score) {
-  if (score >= 4.0)  return { label: `🤫 ${score}`, cls: "sl-badge sl-badge--very-quiet" };
-  if (score >= 2.5)  return { label: `🔉 ${score}`, cls: "sl-badge sl-badge--quiet" };
-  if (score > 0)     return { label: `🔊 ${score}`, cls: "sl-badge sl-badge--moderate" };
+  if (score >= 4.0)  return { label: `Very Quiet ${score}`, cls: "sl-badge sl-badge--very-quiet" };
+  if (score >= 2.5)  return { label: `Quiet ${score}`,      cls: "sl-badge sl-badge--quiet" };
+  if (score > 0)     return { label: `Moderate ${score}`,   cls: "sl-badge sl-badge--moderate" };
   return { label: "No ratings", cls: "sl-badge sl-badge--none" };
 }
 
 export default function SavedLocationsPage() {
   const navigate = useNavigate();
-
   const [saved, setSaved]     = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -55,7 +55,7 @@ export default function SavedLocationsPage() {
 
       {saved.length === 0 && (
         <div className="sl-empty">
-          <div className="sl-empty-icon">🔖</div>
+          <div className="sl-empty-icon"><Bookmark size={32} /></div>
           <div className="sl-empty-text">No saved locations</div>
           <div className="sl-empty-sub">Save a location and it will appear here</div>
         </div>
@@ -64,10 +64,8 @@ export default function SavedLocationsPage() {
       <div className="sl-list">
         {saved.map((loc) => {
           const badge = getBadge(Number(loc.quietnessScore || 0));
-
           return (
             <div key={loc.id} className="sl-card" onClick={() => navigate(`/location/${loc.id}`)}>
-
               <div className="sl-card-top">
                 <div>
                   <div className="sl-name">{loc.name}</div>
@@ -81,18 +79,15 @@ export default function SavedLocationsPage() {
                   <span className="sl-chevron">›</span>
                 </div>
               </div>
-
               <div className="sl-facilities">
-                {loc.wifi    && <span className="sl-fac">📶 Wi-Fi</span>}
-                {loc.seating && <span className="sl-fac">🪑 Seating</span>}
-                {loc.sockets && <span className="sl-fac">🔌 Sockets</span>}
+                {loc.wifi    && <span className="sl-fac"><Wifi size={12} /> Wi-Fi</span>}
+                {loc.seating && <span className="sl-fac"><Armchair size={12} /> Seating</span>}
+                {loc.sockets && <span className="sl-fac"><Zap size={12} /> Sockets</span>}
               </div>
-
               <div className="sl-card-bottom">
-                {loc.bestTime && <span className="sl-best-time">🕐 {loc.bestTime}</span>}
+                {loc.bestTime && <span className="sl-best-time"><Clock size={12} /> {loc.bestTime}</span>}
                 <span className="sl-distance">{Number(loc.distanceKm || 0).toFixed(1)} km away</span>
               </div>
-
             </div>
           );
         })}

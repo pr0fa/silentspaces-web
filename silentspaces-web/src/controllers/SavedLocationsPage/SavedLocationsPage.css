@@ -12,7 +12,7 @@
 /* ---------- Header ---------- */
 
 .sl-header {
-  background: linear-gradient(135deg, #2E7D32 0%, #43A047 100%);
+  background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%);
   border-radius: 16px;
   padding: var(--space-md);
   margin-bottom: var(--space-md);
@@ -166,7 +166,7 @@
   white-space: nowrap;
 }
 
-.sl-badge--very-quiet { background: #E8F5E9; color: #2E7D32; }
+.sl-badge--very-quiet { background: #EDE9FE; color: #5B21B6; }
 .sl-badge--quiet      { background: #FFF8E1; color: #F57F17; }
 .sl-badge--moderate   { background: #FBE9E7; color: #BF360C; }
 .sl-badge--none       { background: #F5F5F5; color: #9E9E9E; }

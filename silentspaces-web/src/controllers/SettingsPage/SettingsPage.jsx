@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Bookmark, Star, RotateCcw, Trash2 } from "lucide-react";
 import "./SettingsPage.css";
 
-const LS_FAVS        = "ss:favourites";
-const LS_MY_RATINGS  = "ss:myRatings";
-const LS_PREF_WIFI   = "ss:pref:wifiRequired";
-const LS_PREF_SEATING= "ss:pref:seatingRequired";
-const LS_PREF_QUIET  = "ss:pref:quietRequired";
-const LS_PREF_SOCKETS= "ss:pref:socketsRequired";
-const LS_NAME        = "ss:profile:name";
+const LS_FAVS         = "ss:favourites";
+const LS_MY_RATINGS   = "ss:myRatings";
+const LS_PREF_WIFI    = "ss:pref:wifiRequired";
+const LS_PREF_SEATING = "ss:pref:seatingRequired";
+const LS_PREF_QUIET   = "ss:pref:quietRequired";
+const LS_PREF_SOCKETS = "ss:pref:socketsRequired";
+const LS_NAME         = "ss:profile:name";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -53,26 +54,21 @@ export default function SettingsPage() {
 
       <div className="st-section">
         <div className="st-section-title">Data Management</div>
-
         <div className="st-card">
           <button className="st-btn" onClick={clearSaved}>
-            <span className="st-btn-icon">🔖</span>
+            <Bookmark size={18} className="st-btn-icon" />
             <span className="st-btn-label">Clear Saved Locations</span>
             <span className="st-btn-arrow">›</span>
           </button>
-
           <div className="st-divider" />
-
           <button className="st-btn" onClick={clearRatings}>
-            <span className="st-btn-icon">⭐</span>
+            <Star size={18} className="st-btn-icon" />
             <span className="st-btn-label">Clear My Ratings</span>
             <span className="st-btn-arrow">›</span>
           </button>
-
           <div className="st-divider" />
-
           <button className="st-btn" onClick={resetPreferences}>
-            <span className="st-btn-icon">🔄</span>
+            <RotateCcw size={18} className="st-btn-icon" />
             <span className="st-btn-label">Reset Preferences</span>
             <span className="st-btn-arrow">›</span>
           </button>
@@ -83,7 +79,7 @@ export default function SettingsPage() {
         <div className="st-section-title">Danger Zone</div>
         <div className="st-card">
           <button className="st-btn st-btn--danger" onClick={resetAll}>
-            <span className="st-btn-icon">🗑️</span>
+            <Trash2 size={18} className="st-btn-icon" />
             <span className="st-btn-label">Reset All App Data</span>
             <span className="st-btn-arrow">›</span>
           </button>

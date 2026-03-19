@@ -101,8 +101,8 @@
 }
 
 .ldp-chip.is-available {
-  background: #E8F5E9;
-  color: #1B5E20;
+  background: #EDE9FE;
+  color: #4C1D95;
 }
 
 .ldp-chip.is-missing {
@@ -114,8 +114,8 @@
 
 .ldp-bestTime {
   margin-top: var(--space-md);
-  background: #E8F5E9;
-  color: #1B5E20;
+  background: #EDE9FE;
+  color: #4C1D95;
   padding: 10px 12px;
   border-radius: 12px;
   font-size: var(--font-sm);

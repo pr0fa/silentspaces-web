@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Wifi, Armchair, VolumeX, Zap, Star, Bookmark, Settings } from "lucide-react";
 import "./ProfilePage.css";
 
 const LS_NAME          = "ss:profile:name";
@@ -65,7 +66,6 @@ export default function ProfilePage() {
     localStorage.setItem(LS_NAME, clean);
   };
 
-  // Get initials for avatar
   const initials = name
     .split(" ")
     .slice(0, 2)
@@ -75,56 +75,53 @@ export default function ProfilePage() {
   return (
     <div className="pf-page">
 
-      {/* Header */}
       <div className="pf-header">
-        <div className="pf-avatar" onClick={onEditName} title="Edit name">
+        <div className="pf-avatar" onClick={onEditName}>
           {initials}
         </div>
-        <div className="pf-name" onClick={onEditName} title="Edit name">
+        <div className="pf-name" onClick={onEditName}>
           {name}
         </div>
         <div className="pf-sub">Tap your name to edit</div>
       </div>
 
-      {/* Stats row */}
       <div className="pf-stats-row">
-        <div className="pf-stat" onClick={() => navigate("/my-ratings")} role="button" tabIndex={0}>
+        <div className="pf-stat" onClick={() => navigate("/my-ratings")}>
           <div className="pf-stat-num">{ratingsCount}</div>
           <div className="pf-stat-label">Ratings</div>
         </div>
         <div className="pf-stat-sep" />
-        <div className="pf-stat" onClick={() => navigate("/saved")} role="button" tabIndex={0}>
+        <div className="pf-stat" onClick={() => navigate("/saved")}>
           <div className="pf-stat-num">{favouritesCount}</div>
           <div className="pf-stat-label">Saved</div>
         </div>
       </div>
 
-      {/* Preferences */}
       <p className="pf-section-label">Preferences</p>
       <div className="pf-card">
         <div className="pf-row">
-          <span className="pf-row-text">📶 Wi-Fi Required</span>
+          <span className="pf-row-text"><Wifi size={16} /> Wi-Fi Required</span>
           <label className="pf-switch">
             <input type="checkbox" checked={wifiRequired} onChange={() => setWifiRequired(v => !v)} />
             <span className="pf-slider" />
           </label>
         </div>
         <div className="pf-row">
-          <span className="pf-row-text">🪑 Seating Required</span>
+          <span className="pf-row-text"><Armchair size={16} /> Seating Required</span>
           <label className="pf-switch">
             <input type="checkbox" checked={seatingRequired} onChange={() => setSeatingRequired(v => !v)} />
             <span className="pf-slider" />
           </label>
         </div>
         <div className="pf-row">
-          <span className="pf-row-text">🤫 Quiet Required</span>
+          <span className="pf-row-text"><VolumeX size={16} /> Quiet Required</span>
           <label className="pf-switch">
             <input type="checkbox" checked={quietRequired} onChange={() => setQuietRequired(v => !v)} />
             <span className="pf-slider" />
           </label>
         </div>
         <div className="pf-row">
-          <span className="pf-row-text">🔌 Sockets Required</span>
+          <span className="pf-row-text"><Zap size={16} /> Sockets Required</span>
           <label className="pf-switch">
             <input type="checkbox" checked={socketsRequired} onChange={() => setSocketsRequired(v => !v)} />
             <span className="pf-slider" />
@@ -132,19 +129,18 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Quick links */}
       <p className="pf-section-label">My Activity</p>
       <div className="pf-card">
         <button type="button" className="pf-link-btn" onClick={() => navigate("/my-ratings")}>
-          <span>⭐ My Ratings</span>
+          <span className="pf-link-left"><Star size={16} /> My Ratings</span>
           <span className="pf-chevron">›</span>
         </button>
         <button type="button" className="pf-link-btn" onClick={() => navigate("/saved")}>
-          <span>🔖 Saved Locations</span>
+          <span className="pf-link-left"><Bookmark size={16} /> Saved Locations</span>
           <span className="pf-chevron">›</span>
         </button>
         <button type="button" className="pf-link-btn" onClick={() => navigate("/settings")}>
-          <span>⚙️ Settings</span>
+          <span className="pf-link-left"><Settings size={16} /> Settings</span>
           <span className="pf-chevron">›</span>
         </button>
       </div>

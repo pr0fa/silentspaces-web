@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { BookOpen, Coffee, Trees, Monitor, MapPin, Clock, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
 import "./MyRatingsPage.css";
@@ -16,13 +17,13 @@ function readRatings() {
   }
 }
 
-function typeEmoji(type) {
+function typeIcon(type) {
   const t = (type || "").toLowerCase();
-  if (t.includes("library"))           return "📚";
-  if (t.includes("cafe") || t.includes("coffee")) return "☕";
-  if (t.includes("park") || t.includes("garden")) return "🌳";
-  if (t.includes("study") || t.includes("cowork")) return "💻";
-  return "📍";
+  if (t.includes("library"))           return <BookOpen size={13} />;
+  if (t.includes("cafe") || t.includes("coffee")) return <Coffee size={13} />;
+  if (t.includes("park") || t.includes("garden")) return <Trees size={13} />;
+  if (t.includes("study") || t.includes("cowork")) return <Monitor size={13} />;
+  return <MapPin size={13} />;
 }
 
 export default function MyRatingsPage() {
@@ -73,7 +74,7 @@ export default function MyRatingsPage() {
           </div>
           <div className="mr-summary-sep" />
           <div className="mr-summary-stat">
-            <span className="mr-summary-num">⭐ {average}</span>
+            <span className="mr-summary-num">★ {average}</span>
             <span className="mr-summary-label">Average</span>
           </div>
           <div className="mr-summary-sep" />
@@ -93,7 +94,7 @@ export default function MyRatingsPage() {
       {/* Empty state */}
       {allRatings.length === 0 && (
         <div className="mr-empty">
-          <div className="mr-empty-icon">⭐</div>
+          <div className="mr-empty-icon"><Star size={32} /></div>
           <div className="mr-empty-text">No ratings yet</div>
           <div className="mr-empty-sub">Rate a location and it will appear here</div>
         </div>
@@ -122,7 +123,7 @@ export default function MyRatingsPage() {
                   <div className="mr-name">{name}</div>
                   {type && (
                     <span className="mr-type-badge">
-                      {typeEmoji(type)} {type}
+                      {typeIcon(type)} {type}
                     </span>
                   )}
                 </div>
@@ -138,7 +139,7 @@ export default function MyRatingsPage() {
 
               <div className="mr-card-bottom">
                 {r.bestTime && r.bestTime.trim() !== "" && (
-                  <span className="mr-best-time">🕐 {r.bestTime}</span>
+                  <span className="mr-best-time"><Clock size={12} /> {r.bestTime}</span>
                 )}
                 <span className="mr-date">
                   {new Date(r.createdAt).toLocaleDateString("en-GB", {
