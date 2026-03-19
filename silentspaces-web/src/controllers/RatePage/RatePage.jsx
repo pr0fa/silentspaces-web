@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { submitRating } from "../../models/ratingModel";
 import { getLocationById } from "../../models/locationModel";
 import toast from "react-hot-toast";
+import { Wifi, Armchair, Check, X } from "lucide-react";
 import "./RatePage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
@@ -97,16 +98,16 @@ export default function RatePage() {
       <div className="rp-block">
         <div className="rp-question">Wi-Fi Available?</div>
         <div className="rp-toggleRow">
-          <button type="button" className={`rp-toggle ${wifiAvailable === true  ? "is-active" : ""}`} onClick={() => setWifiAvailable(true)}>Yes</button>
-          <button type="button" className={`rp-toggle ${wifiAvailable === false ? "is-active" : ""}`} onClick={() => setWifiAvailable(false)}>No</button>
+          <button type="button" className={`rp-toggle ${wifiAvailable === true  ? "is-active" : ""}`} onClick={() => setWifiAvailable(true)}><Wifi size={15} /> Yes</button>
+          <button type="button" className={`rp-toggle ${wifiAvailable === false ? "is-active" : ""}`} onClick={() => setWifiAvailable(false)}><X size={15} /> No</button>
         </div>
       </div>
 
       <div className="rp-block">
         <div className="rp-question">Seating Available?</div>
         <div className="rp-toggleRow">
-          <button type="button" className={`rp-toggle ${seatingAvailable === true  ? "is-active" : ""}`} onClick={() => setSeatingAvailable(true)}>Yes</button>
-          <button type="button" className={`rp-toggle ${seatingAvailable === false ? "is-active" : ""}`} onClick={() => setSeatingAvailable(false)}>No</button>
+          <button type="button" className={`rp-toggle ${seatingAvailable === true  ? "is-active" : ""}`} onClick={() => setSeatingAvailable(true)}><Armchair size={15} /> Yes</button>
+          <button type="button" className={`rp-toggle ${seatingAvailable === false ? "is-active" : ""}`} onClick={() => setSeatingAvailable(false)}><X size={15} /> No</button>
         </div>
       </div>
 
