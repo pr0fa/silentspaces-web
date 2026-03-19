@@ -9,10 +9,14 @@
 }
 
 .ldp-back {
-  margin-bottom: var(--space-md);
-  font-size: var(--font-sm);
+  background: none;
+  border: none;
+  font-size: 24px;
   color: var(--color-text-secondary);
   cursor: pointer;
+  padding: 0;
+  margin-bottom: var(--space-md);
+  line-height: 1;
 }
 
 .ldp-title {
@@ -94,6 +98,9 @@
 }
 
 .ldp-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   background: #F1F3F5;
   padding: 6px 12px;
   border-radius: 20px;
@@ -122,20 +129,21 @@
 }
 
 .ldp-mapBtn {
-  display: inline-block;
-  margin-top: var(--space-sm);
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: #F1F3F5;
-  color: var(--color-text-primary);
+  display: block;
+  margin-top: var(--space-md);
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: white;
   text-decoration: none;
   font-size: var(--font-sm);
+  font-weight: 600;
+  text-align: center;
   transition: 0.2s ease;
 }
 
 .ldp-mapBtn:hover {
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-primary-dark);
 }
 
 /* ---------- Ratings ---------- */

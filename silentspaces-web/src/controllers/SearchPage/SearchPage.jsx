@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
-import { Wifi, Armchair, Zap } from "lucide-react";
+import { Wifi, Armchair, Zap, Search } from "lucide-react";
 import "./SearchPage.css";
 
 export default function SearchPage() {
@@ -40,6 +40,7 @@ export default function SearchPage() {
     <div className="sp-page">
 
       <div className="sp-search-bar">
+        <Search size={16} className="sp-search-icon" />
         <input
           className="sp-input"
           placeholder="Search locations..."
