@@ -2,6 +2,8 @@
   max-width: 480px;
   margin: 0 auto;
   padding: var(--space-md);
+  height: calc(100vh - 74px);
+  overflow-y: auto;
 }
 
 /* ---------- Header ---------- */
