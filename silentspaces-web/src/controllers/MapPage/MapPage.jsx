@@ -36,12 +36,14 @@ function FitBounds({ points }) {
   return null;
 }
 
-function LocateMeButton() {
+function LocateMeButton({ onLocate }) {
   const map = useMap();
   const handleLocate = () => {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition((pos) => {
-      map.setView([pos.coords.latitude, pos.coords.longitude], 15);
+      const coords = [pos.coords.latitude, pos.coords.longitude];
+      map.setView(coords, 15);
+      onLocate(coords);
     });
   };
   return (
@@ -60,6 +62,7 @@ export default function MapPage() {
   const [query, setQuery]             = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
   const [wifiOnly,    setWifiOnly]    = useState(() => readBool(LS_PREF_WIFI,    false));
   const [seatingOnly, setSeatingOnly] = useState(() => readBool(LS_PREF_SEATING, false));
@@ -182,7 +185,19 @@ export default function MapPage() {
           />
 
           <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
-          <LocateMeButton />
+          <LocateMeButton onLocate={setUserLocation} />
+
+          {userLocation && (
+            <Marker
+              position={userLocation}
+              icon={L.divIcon({
+                className: "",
+                html: `<div class="mp-userDot"><div class="mp-userPulse"></div></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+              })}
+            />
+          )}
 
           {filtered.map((loc) => (
             <Marker
