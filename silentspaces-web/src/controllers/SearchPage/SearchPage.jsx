@@ -66,6 +66,7 @@ export default function SearchPage() {
 
       <p className="sp-count">{filtered.length} location{filtered.length !== 1 ? "s" : ""}</p>
 
+      <div className="sp-list-container">
       <div className="sp-list">
         {filtered.map((loc) => {
           const score = Number(loc.quietnessScore || 0);
@@ -95,6 +96,7 @@ export default function SearchPage() {
             </div>
           );
         })}
+      </div>
       </div>
 
     </div>
