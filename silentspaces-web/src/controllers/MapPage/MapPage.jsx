@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { getLocations } from "../../models/locationModel";
@@ -36,6 +36,14 @@ function FitBounds({ points }) {
   return null;
 }
 
+function PanTo({ coords }) {
+  const map = useMap();
+  useEffect(() => {
+    if (coords) map.setView(coords, 14);
+  }, [coords, map]);
+  return null;
+}
+
 function LocateMeButton({ userLocation }) {
   const map = useMap();
 
@@ -66,6 +74,8 @@ export default function MapPage() {
   const [suggestions, setSuggestions] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [panCoords, setPanCoords] = useState(null);
+  const geocodeTimer = useRef(null);
 
   const [wifiOnly,    setWifiOnly]    = useState(() => readBool(LS_PREF_WIFI,    false));
   const [seatingOnly, setSeatingOnly] = useState(() => readBool(LS_PREF_SEATING, false));
@@ -92,21 +102,51 @@ export default function MapPage() {
   }, []);
 
   useEffect(() => {
-    const q = query.trim().toLowerCase();
+    const q = query.trim();
     if (!q) { setSuggestions([]); return; }
-    setSuggestions(
-      locations
-        .filter((loc) =>
-          (loc.name || "").toLowerCase().includes(q) ||
-          (loc.area || "").toLowerCase().includes(q)
-        )
-        .slice(0, 5)
-    );
+
+    // Local location matches
+    const localMatches = locations
+      .filter((loc) =>
+        (loc.name || "").toLowerCase().includes(q.toLowerCase()) ||
+        (loc.area || "").toLowerCase().includes(q.toLowerCase())
+      )
+      .slice(0, 3)
+      .map((loc) => ({ ...loc, isArea: false }));
+
+    setSuggestions(localMatches);
+
+    // Debounce geocoding so we don't call on every keystroke
+    clearTimeout(geocodeTimer.current);
+    geocodeTimer.current = setTimeout(() => {
+      const token = import.meta.env.VITE_MAPBOX_TOKEN;
+      fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?country=gb&types=place,locality,neighborhood,district&access_token=${token}`
+      )
+        .then((r) => r.json())
+        .then((data) => {
+          const areas = (data.features || []).slice(0, 3).map((f) => ({
+            id: f.id,
+            name: f.text,
+            area: f.place_name,
+            coords: [f.center[1], f.center[0]],
+            isArea: true,
+          }));
+          setSuggestions([...localMatches, ...areas]);
+        })
+        .catch(() => {});
+    }, 400);
   }, [query, locations]);
 
-  const handleSuggestionClick = (loc) => {
-    setQuery(loc.name);
-    setSuggestions([]);
+  const handleSuggestionClick = (item) => {
+    if (item.isArea) {
+      setQuery(item.name);
+      setPanCoords(item.coords);
+      setSuggestions([]);
+    } else {
+      setQuery(item.name);
+      setSuggestions([]);
+    }
   };
 
   const filtered = useMemo(() => {
@@ -154,10 +194,13 @@ export default function MapPage() {
 
         {suggestions.length > 0 && (
           <div className="mp-suggestions">
-            {suggestions.map((loc) => (
-              <div key={loc.id} className="mp-suggestionItem" onClick={() => handleSuggestionClick(loc)}>
-                <strong>{loc.name}</strong>
-                <span>{loc.area}</span>
+            {suggestions.map((item) => (
+              <div key={item.id} className="mp-suggestionItem" onClick={() => handleSuggestionClick(item)}>
+                <span className="mp-suggestionIcon">{item.isArea ? "🗺️" : "📍"}</span>
+                <div className="mp-suggestionText">
+                  <strong>{item.name}</strong>
+                  <span>{item.isArea ? item.area : item.area}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -198,6 +241,7 @@ export default function MapPage() {
           />
 
           <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
+          <PanTo coords={panCoords} />
           <LocateMeButton userLocation={userLocation} />
 
           {userLocation && (
