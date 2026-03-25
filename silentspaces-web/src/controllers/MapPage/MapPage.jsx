@@ -179,7 +179,11 @@ export default function MapPage() {
           <Search size={18} color="#9AA0A6" strokeWidth={2} />
           <input
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              if (!e.target.value.trim()) setSuggestions([]);
+            }}
+            onBlur={() => setTimeout(() => setSuggestions([]), 150)}
             placeholder="Search by name or area..."
             className="mp-searchInput"
           />
