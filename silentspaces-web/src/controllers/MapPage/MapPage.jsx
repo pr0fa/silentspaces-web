@@ -211,22 +211,22 @@ export default function MapPage() {
               })}
             >
               <Popup>
-                <div>
-                  <div style={{ fontWeight: 700 }}>{loc.name}</div>
-                  <div style={{ fontSize: 12, opacity: 0.8 }}>{loc.area} · {loc.type}</div>
-                  <div style={{ fontSize: 12, marginTop: 8 }}>
-                    <b>Quietness:</b> {Number(loc.ratingCount || 0) === 0 ? "–" : loc.quietnessScore} ({loc.ratingCount ?? 0} ratings)
+                <div className="mp-popup">
+                  <div className="mp-popup-name">{loc.name}</div>
+                  <div className="mp-popup-meta">{loc.area} · {loc.type}</div>
+                  <div className="mp-popup-quietness">
+                    {Number(loc.ratingCount || 0) === 0
+                      ? "No ratings yet"
+                      : `⭐ ${loc.quietnessScore} (${loc.ratingCount} ratings)`}
                   </div>
-                  <div style={{ fontSize: 12, marginTop: 6 }}>
-                    {loc.wifi    ? "✓ Wi-Fi  " : "✗ Wi-Fi  "}
-                    {loc.seating ? "✓ Seating  " : "✗ Seating  "}
-                    {loc.sockets ? "✓ Sockets" : "✗ Sockets"}
+                  <div className="mp-popup-facilities">
+                    {loc.wifi    && <span>📶 Wi-Fi</span>}
+                    {loc.seating && <span>🪑 Seating</span>}
+                    {loc.sockets && <span>🔌 Sockets</span>}
                   </div>
-                  <div style={{ marginTop: 10 }}>
-                    <button type="button" onClick={() => navigate(`/location/${loc.id}`)}>
-                      View details
-                    </button>
-                  </div>
+                  <button className="mp-popup-btn" type="button" onClick={() => navigate(`/location/${loc.id}`)}>
+                    View details
+                  </button>
                 </div>
               </Popup>
             </Marker>
