@@ -36,16 +36,19 @@ function FitBounds({ points }) {
   return null;
 }
 
-function LocateMeButton({ onLocate }) {
+function LocateMeButton({ userLocation }) {
   const map = useMap();
+
   const handleLocate = () => {
-    if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const coords = [pos.coords.latitude, pos.coords.longitude];
-      map.setView(coords, 15);
-      onLocate(coords);
-    });
+    if (userLocation) {
+      map.setView(userLocation, 16);
+    } else if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        map.setView([pos.coords.latitude, pos.coords.longitude], 16);
+      });
+    }
   };
+
   return (
     <button className="mp-locateBtn" onClick={handleLocate}>
       <Navigation size={20} />
@@ -68,6 +71,16 @@ export default function MapPage() {
   const [seatingOnly, setSeatingOnly] = useState(() => readBool(LS_PREF_SEATING, false));
   const [quietOnly,   setQuietOnly]   = useState(() => readBool(LS_PREF_QUIET,   false));
   const [socketsOnly, setSocketsOnly] = useState(() => readBool(LS_PREF_SOCKETS, false));
+
+  // Live location tracking
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => setUserLocation([pos.coords.latitude, pos.coords.longitude]),
+      () => {}
+    );
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -185,7 +198,7 @@ export default function MapPage() {
           />
 
           <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
-          <LocateMeButton onLocate={setUserLocation} />
+          <LocateMeButton userLocation={userLocation} />
 
           {userLocation && (
             <Marker
@@ -193,8 +206,8 @@ export default function MapPage() {
               icon={L.divIcon({
                 className: "",
                 html: `<div class="mp-userDot"><div class="mp-userPulse"></div></div>`,
-                iconSize: [20, 20],
-                iconAnchor: [10, 10],
+                iconSize: [16, 16],
+                iconAnchor: [8, 8],
               })}
             />
           )}
