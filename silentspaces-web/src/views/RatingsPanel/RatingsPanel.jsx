@@ -2,36 +2,39 @@ import { useEffect, useState } from "react";
 import { getRatings } from "../../models/ratingModel";
 import "./RatingsPanel.css";
 
-export default function RatingsPanel({ locationId, fallbackAverage = 0, fallbackCount = 0 }) {
-  // Holds ratings list + computed stats returned from the API
-  const [data, setData] = useState({ average: 0, count: 0, ratings: [] });
+const SORT_OPTIONS = [
+  { key: "newest",  label: "Newest"   },
+  { key: "oldest",  label: "Oldest"   },
+  { key: "highest", label: "Highest ★" },
+  { key: "lowest",  label: "Lowest ★"  },
+];
 
-  // Stores request failure message for display
+function sortRatings(ratings, sort) {
+  const list = [...ratings];
+  if (sort === "newest")  return list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  if (sort === "oldest")  return list.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  if (sort === "highest") return list.sort((a, b) => b.rating - a.rating);
+  if (sort === "lowest")  return list.sort((a, b) => a.rating - b.rating);
+  return list;
+}
+
+export default function RatingsPanel({ locationId, fallbackAverage = 0, fallbackCount = 0 }) {
+  const [data, setData]   = useState({ average: 0, count: 0, ratings: [] });
   const [error, setError] = useState("");
+  const [sort, setSort]   = useState("newest");
 
   useEffect(() => {
     let alive = true;
-
-    // Clear any previous error when the location changes
     setError("");
-
-    // Fetch ratings for the current location id
     getRatings(locationId)
-      .then((res) => {
-        // Prevent state updates if the component unmounts mid-request
-        if (alive) setData(res);
-      })
-      .catch((e) => {
-        if (alive) setError(e.message);
-      });
-
-    return () => {
-      alive = false;
-    };
+      .then((res) => { if (alive) setData(res); })
+      .catch((e)  => { if (alive) setError(e.message); });
+    return () => { alive = false; };
   }, [locationId]);
 
-  // Error state is rendered in-place of the panel
   if (error) return <div className="rp-error">{error}</div>;
+
+  const sorted = sortRatings(data.ratings, sort);
 
   return (
     <div className="rp-container">
@@ -42,20 +45,34 @@ export default function RatingsPanel({ locationId, fallbackAverage = 0, fallback
         <span className="rp-count">({data.count > 0 ? data.count : fallbackCount} ratings)</span>
       </div>
 
+      {/* Sort chips — only show when 5+ ratings */}
+      {data.count >= 5 && (
+        <div className="rp-sort">
+          {SORT_OPTIONS.map((opt) => (
+            <button
+              key={opt.key}
+              className={`rp-sort-chip ${sort === opt.key ? "rp-sort-chip--active" : ""}`}
+              onClick={() => setSort(opt.key)}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {data.count === 0 && fallbackCount === 0 ? (
         <div className="rp-empty">No ratings yet. Be the first.</div>
       ) : data.count === 0 && fallbackCount > 0 ? (
         <div className="rp-empty">Ratings from previous contributors are included in the score above.</div>
       ) : (
         <ul className="rp-list">
-          {/* Show up to 5 most recent ratings */}
-          {data.ratings.slice(0, 5).map((r) => (
+          {sorted.map((r) => (
             <li key={r.id} className="rp-item">
-              <strong>{r.rating}/5</strong>
-              {r.comment ? ` - ${r.comment}` : ""}
-              <div className="rp-date">
-                {new Date(r.createdAt).toLocaleString()}
+              <div className="rp-item-top">
+                <span className="rp-stars">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
+                <span className="rp-date">{new Date(r.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</span>
               </div>
+              {r.comment && <div className="rp-comment">"{r.comment}"</div>}
             </li>
           ))}
         </ul>

@@ -48,7 +48,8 @@
 
 .rp-list {
   margin: 0;
-  padding-left: var(--space-md);
+  padding: 0;
+  list-style: none;
 }
 
 .rp-item {
@@ -62,4 +63,49 @@
 .rp-date {
   font-size: var(--font-xs);
   color: var(--color-text-secondary);
+}
+/* ---------- Sort chips ---------- */
+
+.rp-sort {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.rp-sort-chip {
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  color: #555;
+}
+
+.rp-sort-chip--active {
+  background: #5B21B6;
+  color: #fff;
+  border-color: #5B21B6;
+}
+
+/* ---------- Item redesign ---------- */
+
+.rp-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.rp-stars {
+  color: #F59E0B;
+  font-size: 13px;
+}
+
+.rp-comment {
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+  margin-top: 2px;
 }
