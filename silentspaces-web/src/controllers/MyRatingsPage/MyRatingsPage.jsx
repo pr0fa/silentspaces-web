@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { BookOpen, Coffee, Trees, Monitor, MapPin, Clock, Star } from "lucide-react";
+import { BookOpen, Coffee, Trees, Monitor, MapPin, Clock, Star, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
 import "./MyRatingsPage.css";
@@ -62,7 +62,7 @@ export default function MyRatingsPage() {
 
       {/* Header */}
       <div className="mr-header">
-        <button className="mr-back" onClick={() => navigate("/profile")}>‹</button>
+        <button className="mr-back" onClick={() => navigate("/profile")}><ChevronLeft size={28} /></button>
         <span className="mr-heading">My Ratings</span>
       </div>
 

@@ -22,24 +22,15 @@
 }
 
 .mr-back {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  border-radius: 10px;
-  width: 36px;
-  height: 36px;
-  font-size: 22px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 4px 6px;
+  border: none;
   color: #fff;
   display: flex;
   align-items: center;
-  justify-content: center;
   cursor: pointer;
-  padding: 0;
   flex-shrink: 0;
-  transition: background 0.15s ease;
-}
-
-.mr-back:hover {
-  background: rgba(255, 255, 255, 0.3);
 }
 
 .mr-heading {

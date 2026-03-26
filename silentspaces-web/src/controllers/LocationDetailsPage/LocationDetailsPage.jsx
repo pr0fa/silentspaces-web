@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import RatingsPanel from "../../views/RatingsPanel/RatingsPanel";
 import { getLocationById } from "../../models/locationModel";
-import { Wifi, Armchair, Zap } from "lucide-react";
+import { Wifi, Armchair, Zap, ChevronLeft } from "lucide-react";
 import "./LocationDetailsPage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
@@ -80,17 +80,16 @@ export default function LocationDetailsPage() {
 
   return (
     <div className="ldp-page">
-      <button onClick={() => navigate(-1)} className="ldp-back">‹</button>
 
-      <div className="ldp-titleRow">
-        <h2 className="ldp-title">{loc.name}</h2>
+      <div className="ldp-header">
+        <button onClick={() => navigate(-1)} className="ldp-back"><ChevronLeft size={28} /></button>
+        <div className="ldp-header-info">
+          <h2 className="ldp-title">{loc.name}</h2>
+          <div className="ldp-meta">{loc.area} • {loc.type} • {distanceText}</div>
+        </div>
         <button onClick={toggleFavourite} className="ldp-favBtn">
           {favourite ? "♥" : "♡"}
         </button>
-      </div>
-
-      <div className="ldp-meta">
-        {loc.area} • {loc.type} • {distanceText}
       </div>
 
       <div className="ldp-card">

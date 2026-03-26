@@ -16,18 +16,15 @@
 }
 
 .st-back {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 4px 6px;
   border: none;
   color: #fff;
-  font-size: 22px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .st-heading {

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Bookmark, Star, RotateCcw, Trash2 } from "lucide-react";
+import { Bookmark, Star, RotateCcw, Trash2, ChevronLeft } from "lucide-react";
 import "./SettingsPage.css";
 
 const LS_FAVS         = "ss:favourites";
@@ -48,7 +48,7 @@ export default function SettingsPage() {
     <div className="st-page">
 
       <div className="st-header">
-        <button className="st-back" onClick={() => navigate("/profile")}>‹</button>
+        <button className="st-back" onClick={() => navigate("/profile")}><ChevronLeft size={28} /></button>
         <span className="st-heading">Settings</span>
       </div>
 

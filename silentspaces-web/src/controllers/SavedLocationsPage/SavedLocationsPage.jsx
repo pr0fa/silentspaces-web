@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
-import { Wifi, Armchair, Zap, Clock, Bookmark } from "lucide-react";
+import { Wifi, Armchair, Zap, Clock, Bookmark, ChevronLeft } from "lucide-react";
 import "./SavedLocationsPage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
@@ -45,7 +45,7 @@ export default function SavedLocationsPage() {
     <div className="sl-page">
 
       <div className="sl-header">
-        <button className="sl-back" onClick={() => navigate("/profile")}>‹</button>
+        <button className="sl-back" onClick={() => navigate("/profile")}><ChevronLeft size={28} /></button>
         <span className="sl-heading">Saved Locations</span>
       </div>
 
