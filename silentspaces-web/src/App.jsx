@@ -10,7 +10,6 @@ import ProfilePage from "./controllers/ProfilePage/ProfilePage.jsx";
 import MyRatingsPage from "./controllers/MyRatingsPage/MyRatingsPage.jsx";
 import SavedLocationsPage from "./controllers/SavedLocationsPage/SavedLocationsPage.jsx";
 import SettingsPage from "./controllers/SettingsPage/SettingsPage.jsx";
-import SeedPage from "./controllers/SeedPage/SeedPage.jsx";
 import { Toaster } from "react-hot-toast";
 
 import BottomNav from "./views/BottomNav/BottomNav.jsx";
@@ -52,8 +51,6 @@ export default function App() {
         <Route path="/my-ratings" element={<MyRatingsPage />} />
         <Route path="/saved" element={<SavedLocationsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
-        {/* One-time DB seeding utility — visit /seed once to populate Firestore */}
-        <Route path="/seed" element={<SeedPage />} />
         <Route path="*" element={<div style={{ padding: 16 }}>404 Not Found</div>} />
       </Routes>
     </AppLayout>
