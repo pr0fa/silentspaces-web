@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
+import SplashScreen from "./views/SplashScreen/SplashScreen.jsx";
 
 import MapPage from "./controllers/MapPage/MapPage.jsx";
 import SearchPage from "./controllers/SearchPage/SearchPage.jsx";
@@ -22,6 +24,16 @@ function AppLayout({ children }) {
 }
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(
+    () => !sessionStorage.getItem("ss:splashShown")
+  );
+
+  if (showSplash) {
+    sessionStorage.setItem("ss:splashShown", "1");
+    setTimeout(() => setShowSplash(false), 2300);
+    return <SplashScreen />;
+  }
+
   return (
     <AppLayout>
       
