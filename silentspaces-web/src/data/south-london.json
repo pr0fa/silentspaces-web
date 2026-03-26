@@ -1,1043 +1,23 @@
 [
   {
-    "id": "1",
-    "name": "Holborn Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5210756,
-    "lng": -0.1156142,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.8,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo-Th 10:00-19:00, Fr 10:00-17:00, Sa 11:00-17:00"
-  },
-  {
-    "id": "2",
-    "name": "Catford Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.4461634,
-    "lng": -0.0212195,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.8,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo-Fr 09:00-19:00; Sa 09:00-17:00; Su 10:00-16:00"
-  },
-  {
-    "id": "3",
-    "name": "Shepherd's Bush Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.50587,
-    "lng": -0.2243572,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 0.9,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo-Fr 10:00-20:00; Sa 10:00-17:00; Su 11:00-17:00"
-  },
-  {
-    "id": "4",
-    "name": "Walthamstow Central Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5843808,
-    "lng": -0.0210473,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.8,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "5",
-    "name": "Shortlands Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.3997112,
-    "lng": -0.0070943,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 5,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo,Tu,Fr 09:30-13:00,14:00-17:30; Sa 09:30-13:00,14:00-17:00; Su closed; "
-  },
-  {
-    "id": "6",
-    "name": "West Ealing Community Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5093573,
-    "lng": -0.3245923,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.3,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Tu-Fr 10:00-17:00"
-  },
-  {
-    "id": "7",
-    "name": "Shoreditch Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5301768,
-    "lng": -0.0800915,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.1,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo-Th 10:00-20:00; Fr 10:00-18:00; Sa 10:00-17:00"
-  },
-  {
-    "id": "8",
-    "name": "Paddington Children’s Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5184638,
-    "lng": -0.1895813,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.8,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "9",
-    "name": "Dulwich Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.448832,
-    "lng": -0.0744988,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.6,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo, We-Fr 09:00-20:00; Tu 10:00-20:00; Sa 09:00-17:00; Su 12:00-16:00"
-  },
-  {
-    "id": "10",
-    "name": "Aragon Public Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.3881527,
-    "lng": -0.2199633,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.7,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "11",
-    "name": "Chiswick Area Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.4917562,
-    "lng": -0.2610858,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.7,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "12",
-    "name": "St Martins Library Centre",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.444615,
-    "lng": -0.1116142,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2,
-    "bestTime": "Weekday afternoons (1PM–4PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "13",
-    "name": "Pimlico Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.487979,
-    "lng": -0.137889,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.1,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "14",
-    "name": "Middleton Circle Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.3855897,
-    "lng": -0.1746541,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.8,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "15",
-    "name": "Harrow Green Community Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5581169,
-    "lng": 0.0063876,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.4,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "16",
-    "name": "Ealing Central Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5123207,
-    "lng": -0.3024731,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 0.3,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "17",
-    "name": "St. John's Wood Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5336505,
-    "lng": -0.1724301,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 0.2,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo-Tu,Th 09:30-19:00; We 10:00-19:00; Fr 09:30-20:00; Sa 09:30-17:00; Su 11:30-15:00"
-  },
-  {
-    "id": "18",
-    "name": "Brompton Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.4900365,
-    "lng": -0.1882974,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.9,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "19",
-    "name": "Idea Store, Bow",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5327503,
-    "lng": -0.029746,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 0.3,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo-Th 09:00-21:00; Fr 09:00-18:00; Sa 09:00-17:00; Su 11:00-15:00"
-  },
-  {
-    "id": "20",
+    "id": "200",
     "name": "Tudor Library",
-    "area": "London",
     "type": "Library",
+    "area": "Kingston upon Thames",
     "lat": 51.4263456,
     "lng": -0.2975396,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
+    "distanceKm": "4.0",
     "quietnessScore": 0,
     "ratingCount": 0,
-    "distanceKm": 3.8,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "21",
-    "name": "Southgate Public Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.6303732,
-    "lng": -0.1282901,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.4,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo 09:00-17:00; Tu 09:00-18:00; We 09:00-17:00; Th 09:00-18:00; Fr 09:00-16:00; Mo 09:00-01:00"
-  },
-  {
-    "id": "22",
-    "name": "Shoe Lane Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5154661,
-    "lng": -0.1064782,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 0.9,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo,We-Fr 09:30-17:30, Tu 09:30-18:30"
-  },
-  {
-    "id": "23",
-    "name": "Lewis Carroll Children's Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.537135,
-    "lng": -0.1189539,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.8,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "24",
-    "name": "Ridge Avenue Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.6361231,
-    "lng": -0.0819676,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "25",
-    "name": "Hackney Central Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5446215,
-    "lng": -0.0556753,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.9,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo-Th 09:00-20:00; Fr 09:00-18:00; Sa 09:00-17:00"
-  },
-  {
-    "id": "26",
-    "name": "Lambeth Archives & Minet Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.4713817,
-    "lng": -0.1052039,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.2,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": ""
-  },
-  {
-    "id": "27",
-    "name": "Crofton Park Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.4554165,
-    "lng": -0.0363675,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.2,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo 09:00-17:00; Tu,Th 09:00-19:00; Fr 09:00-13:00, Sa 09:00-17:00; Mo-Fr,Su off"
-  },
-  {
-    "id": "28",
-    "name": "Victoria Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.4927856,
-    "lng": -0.1479538,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.7,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo 09:30-20:00; Tu,Th,Fr 09:30-19:00; We 10:00-19:00; Sa 09:30-17:00; Su off"
-  },
-  {
-    "id": "29",
-    "name": "Westminster Reference Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.5096404,
-    "lng": -0.129873,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.3,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo-Fr 10:00-20:00; Sa 10:00-17:00"
-  },
-  {
-    "id": "30",
-    "name": "Brixton Library",
-    "area": "London",
-    "type": "Library",
-    "lat": 51.4609462,
-    "lng": -0.1148482,
-    "wifi": true,
-    "seating": true,
-    "sockets": true,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.4,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A quiet library in London — ideal for focused reading and study.",
-    "openingHours": "Mo 13:00-20:00; Tu,Th 10:00-20:00; We,Fr 10:00-18:00; Sa 09:00-17:00; Su 12:00-17:00"
-  },
-  {
-    "id": "31",
-    "name": "Woburn Cafe",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5265807,
-    "lng": -0.1292505,
     "wifi": true,
     "seating": true,
     "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 5,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
+    "openingHours": "Mon–Fri 9AM–6PM",
+    "description": "A library in Kingston upon Thames.",
+    "bestTime": ""
   },
   {
-    "id": "32",
-    "name": "Cafe Angel",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5247641,
-    "lng": -0.1161125,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.7,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "33",
-    "name": "Jack's Cafe",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5509046,
-    "lng": -0.0724776,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.2,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "34",
-    "name": "Springfield Park Cafe",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5691513,
-    "lng": -0.0598633,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.4,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": "Mo-Su 10:00-18:00"
-  },
-  {
-    "id": "35",
-    "name": "Perks and White",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4400001,
-    "lng": -0.1051929,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.3,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "36",
-    "name": "Greedies",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4686299,
-    "lng": -0.3275195,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.5,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "37",
-    "name": "The Serpentine Lido Cafe",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5046688,
-    "lng": -0.1696555,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 0.1,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "38",
-    "name": "Starbucks",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4989916,
-    "lng": -0.1354995,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.9,
-    "bestTime": "Weekday afternoons (1PM–4PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": "Mo-Fr 06:00-19:00; Sa 09:00-17:00"
-  },
-  {
-    "id": "39",
-    "name": "Buckingham Coffee Lounge",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4987752,
-    "lng": -0.1412257,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.5,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "40",
-    "name": "Victoria Plaza café",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4781383,
-    "lng": -0.2909155,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.3,
-    "bestTime": "Weekday afternoons (1PM–4PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "41",
-    "name": "Beans & Beyond",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5246924,
-    "lng": -0.0752813,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.4,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "42",
-    "name": "Kalendar",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5620412,
-    "lng": -0.1496786,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.8,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "43",
-    "name": "Turk's Head Cafe",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5042616,
-    "lng": -0.0612495,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 0.5,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": "Mo 16:00-22:00; Tu-Fr 18:00-23:00; Sa 09:00-23:00"
-  },
-  {
-    "id": "45",
-    "name": "The Garrick",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5134807,
-    "lng": -0.1165232,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.7,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": "Mo-Fr 08:00-19:00"
-  },
-  {
-    "id": "46",
-    "name": "Colicci Roehampton Gate",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4527114,
-    "lng": -0.2553944,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.8,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": "spring,summer 08:00-17:30; autumn,winter 08:00-16:00"
-  },
-  {
-    "id": "47",
-    "name": "Caffe Nomma Italian",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5044528,
-    "lng": -0.0784709,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "48",
-    "name": "Neds Noodle Bar",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5270245,
-    "lng": -0.0837537,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 5,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "49",
-    "name": "Riverside Terrace Cafe",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5059312,
-    "lng": -0.1171709,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.6,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": "Mo-Tu 10:00-18:00; We-Su 10:00-20:30"
-  },
-  {
-    "id": "50",
-    "name": "The Brew House Café",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5717552,
-    "lng": -0.1667879,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.7,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": "Dec-Jan: Mo-Su 09:00-16:00; Feb-Mar: Mo-Su 09:00-17:00; Apr-Sep: Mo-Su 09:00-18:00; Oct-Nov: Mo-Su 09:00-17:00"
-  },
-  {
-    "id": "51",
-    "name": "City Brunch",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.496539,
-    "lng": -0.1354705,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.1,
-    "bestTime": "Weekday afternoons (1PM–4PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "52",
-    "name": "Cafe Nuvo",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4964968,
-    "lng": -0.1357931,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.3,
-    "bestTime": "Weekends (10AM–2PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": "Mo-Fr 06:00-16:00; Sa 07:00-14:00"
-  },
-  {
-    "id": "53",
-    "name": "Costa",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.489,
-    "lng": -0.1920131,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1,
-    "bestTime": "Weekday afternoons (1PM–4PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "54",
-    "name": "Caffè du Coin",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4899869,
-    "lng": -0.190421,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.2,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "55",
-    "name": "Treat's",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4931224,
-    "lng": -0.1444353,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "56",
-    "name": "Pembroke Lodge",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4424027,
-    "lng": -0.294468,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.1,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "57",
-    "name": "George's Cafe",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.3846322,
-    "lng": -0.1739087,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 4.6,
-    "bestTime": "Weekday afternoons (1PM–4PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "58",
-    "name": "Cafe Donatella",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.5154204,
-    "lng": -0.0603671,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.5,
-    "bestTime": "Late afternoons (4PM–6PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "59",
-    "name": "The Courts Café at The Regent's Park",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.525503,
-    "lng": -0.1538118,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.9,
-    "bestTime": "Weekday afternoons (1PM–4PM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "60",
-    "name": "Tea Terrace",
-    "area": "London",
-    "type": "Café",
-    "lat": 51.4804805,
-    "lng": -0.1589365,
-    "wifi": true,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 1.6,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A relaxed café in London with a calm atmosphere for working or studying.",
-    "openingHours": ""
-  },
-  {
-    "id": "61",
-    "name": "Laburnum Close Green",
-    "area": "London",
-    "type": "Park",
-    "lat": 51.475998,
-    "lng": -0.0563023,
-    "wifi": false,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 3.1,
-    "bestTime": "Weekday mornings (9AM–12PM)",
-    "description": "A peaceful outdoor space in London, great for a quiet break.",
-    "openingHours": ""
-  },
-  {
-    "id": "62",
-    "name": "Church Green",
-    "area": "London",
-    "type": "Park",
-    "lat": 51.5124098,
-    "lng": -0.0205752,
-    "wifi": false,
-    "seating": true,
-    "sockets": false,
-    "quietnessScore": 0,
-    "ratingCount": 0,
-    "distanceKm": 2.2,
-    "bestTime": "Early mornings (7AM–9AM)",
-    "description": "A peaceful outdoor space in London, great for a quiet break.",
-    "openingHours": "Mo-Su 08:00-20:00"
-  },
-  {
-    "id": "64",
+    "id": "201",
     "name": "Kingston Library",
     "type": "Library",
     "area": "Kingston upon Thames",
@@ -1054,7 +34,7 @@
     "bestTime": ""
   },
   {
-    "id": "65",
+    "id": "202",
     "name": "Richmond Reference Library",
     "type": "Library",
     "area": "Richmond",
@@ -1071,7 +51,7 @@
     "bestTime": ""
   },
   {
-    "id": "66",
+    "id": "203",
     "name": "Bonjour Brioche",
     "type": "Café",
     "area": "Wimbledon",
@@ -1088,7 +68,7 @@
     "bestTime": ""
   },
   {
-    "id": "67",
+    "id": "204",
     "name": "Caffè Nero",
     "type": "Café",
     "area": "Wimbledon",
@@ -1105,7 +85,24 @@
     "bestTime": ""
   },
   {
-    "id": "69",
+    "id": "205",
+    "name": "Starbucks",
+    "type": "Café",
+    "area": "Wimbledon",
+    "lat": 51.421114,
+    "lng": -0.2076829,
+    "distanceKm": "1.1",
+    "quietnessScore": 0,
+    "ratingCount": 0,
+    "wifi": false,
+    "seating": true,
+    "sockets": true,
+    "openingHours": "Mon–Fri 9AM–6PM",
+    "description": "A café in Wimbledon.",
+    "bestTime": ""
+  },
+  {
+    "id": "206",
     "name": "Joe & The Juice",
     "type": "Café",
     "area": "Wimbledon",
@@ -1122,7 +119,7 @@
     "bestTime": ""
   },
   {
-    "id": "70",
+    "id": "207",
     "name": "Wimbledon Park Cafe",
     "type": "Café",
     "area": "Wimbledon",
@@ -1139,7 +136,7 @@
     "bestTime": ""
   },
   {
-    "id": "71",
+    "id": "208",
     "name": "Arthur",
     "type": "Café",
     "area": "Wimbledon",
@@ -1156,7 +153,7 @@
     "bestTime": ""
   },
   {
-    "id": "72",
+    "id": "209",
     "name": "Mamma Mia",
     "type": "Café",
     "area": "Wimbledon",
@@ -1173,7 +170,7 @@
     "bestTime": ""
   },
   {
-    "id": "73",
+    "id": "210",
     "name": "Kings Cafe",
     "type": "Café",
     "area": "Wimbledon",
@@ -1190,7 +187,7 @@
     "bestTime": ""
   },
   {
-    "id": "74",
+    "id": "211",
     "name": "GAIL's",
     "type": "Café",
     "area": "Wimbledon",
@@ -1207,7 +204,7 @@
     "bestTime": ""
   },
   {
-    "id": "75",
+    "id": "213",
     "name": "Guild Café",
     "type": "Café",
     "area": "Wimbledon",
@@ -1224,7 +221,7 @@
     "bestTime": ""
   },
   {
-    "id": "76",
+    "id": "214",
     "name": "Cafe Mori",
     "type": "Café",
     "area": "Wimbledon",
@@ -1241,7 +238,7 @@
     "bestTime": ""
   },
   {
-    "id": "77",
+    "id": "215",
     "name": "Rosy Lea Cafe",
     "type": "Café",
     "area": "Wimbledon",
@@ -1258,7 +255,7 @@
     "bestTime": ""
   },
   {
-    "id": "78",
+    "id": "216",
     "name": "Polka Café",
     "type": "Café",
     "area": "Wimbledon",
@@ -1275,7 +272,7 @@
     "bestTime": ""
   },
   {
-    "id": "79",
+    "id": "217",
     "name": "Bliss in the Park",
     "type": "Café",
     "area": "Wimbledon",
@@ -1292,7 +289,7 @@
     "bestTime": ""
   },
   {
-    "id": "80",
+    "id": "218",
     "name": "The Wingfield",
     "type": "Café",
     "area": "Wimbledon",
@@ -1309,7 +306,7 @@
     "bestTime": ""
   },
   {
-    "id": "81",
+    "id": "219",
     "name": "Eggs Benedict",
     "type": "Café",
     "area": "Wimbledon",
@@ -1326,7 +323,7 @@
     "bestTime": ""
   },
   {
-    "id": "82",
+    "id": "220",
     "name": "Galaxy Cafe & Restaurant",
     "type": "Café",
     "area": "Wimbledon",
@@ -1343,7 +340,7 @@
     "bestTime": ""
   },
   {
-    "id": "83",
+    "id": "221",
     "name": "Aya",
     "type": "Café",
     "area": "Wimbledon",
@@ -1360,7 +357,24 @@
     "bestTime": ""
   },
   {
-    "id": "85",
+    "id": "222",
+    "name": "Costa",
+    "type": "Café",
+    "area": "Wimbledon",
+    "lat": 51.4096172,
+    "lng": -0.213249,
+    "distanceKm": "3.9",
+    "quietnessScore": 0,
+    "ratingCount": 0,
+    "wifi": true,
+    "seating": true,
+    "sockets": false,
+    "openingHours": "Mon–Fri 9AM–6PM",
+    "description": "A café in Wimbledon.",
+    "bestTime": ""
+  },
+  {
+    "id": "223",
     "name": "Express By Gourmet",
     "type": "Café",
     "area": "Wimbledon",
@@ -1377,7 +391,7 @@
     "bestTime": ""
   },
   {
-    "id": "86",
+    "id": "225",
     "name": "Lantern Coffee House",
     "type": "Café",
     "area": "Wimbledon",
@@ -1394,7 +408,7 @@
     "bestTime": ""
   },
   {
-    "id": "87",
+    "id": "227",
     "name": "Good Kind",
     "type": "Café",
     "area": "Wimbledon",
@@ -1411,7 +425,7 @@
     "bestTime": ""
   },
   {
-    "id": "88",
+    "id": "228",
     "name": "Willow Bough Tea Rooms",
     "type": "Café",
     "area": "Wimbledon",
@@ -1428,7 +442,7 @@
     "bestTime": ""
   },
   {
-    "id": "89",
+    "id": "229",
     "name": "21 Grams",
     "type": "Café",
     "area": "Wimbledon",
@@ -1445,7 +459,7 @@
     "bestTime": ""
   },
   {
-    "id": "90",
+    "id": "230",
     "name": "Abundance Cafe",
     "type": "Café",
     "area": "Wimbledon",
@@ -1462,7 +476,7 @@
     "bestTime": ""
   },
   {
-    "id": "91",
+    "id": "232",
     "name": "Crust Coffee",
     "type": "Café",
     "area": "Wimbledon",
@@ -1479,7 +493,7 @@
     "bestTime": ""
   },
   {
-    "id": "92",
+    "id": "233",
     "name": "Milk No Milk",
     "type": "Café",
     "area": "Wimbledon",
@@ -1496,7 +510,7 @@
     "bestTime": ""
   },
   {
-    "id": "93",
+    "id": "235",
     "name": "Multea Choice",
     "type": "Café",
     "area": "Wimbledon",
@@ -1513,7 +527,7 @@
     "bestTime": ""
   },
   {
-    "id": "94",
+    "id": "236",
     "name": "Cafe SW19",
     "type": "Café",
     "area": "Wimbledon",
@@ -1530,7 +544,7 @@
     "bestTime": ""
   },
   {
-    "id": "95",
+    "id": "237",
     "name": "Mooboo",
     "type": "Café",
     "area": "Wimbledon",
@@ -1547,7 +561,7 @@
     "bestTime": ""
   },
   {
-    "id": "96",
+    "id": "238",
     "name": "The Fire Station Café",
     "type": "Café",
     "area": "Wimbledon",
@@ -1564,7 +578,7 @@
     "bestTime": ""
   },
   {
-    "id": "97",
+    "id": "239",
     "name": "One Tea",
     "type": "Café",
     "area": "Wimbledon",
@@ -1581,7 +595,7 @@
     "bestTime": ""
   },
   {
-    "id": "98",
+    "id": "241",
     "name": "Surbiton Library",
     "type": "Library",
     "area": "Surbiton",
@@ -1598,7 +612,7 @@
     "bestTime": ""
   },
   {
-    "id": "99",
+    "id": "242",
     "name": "Nero Express",
     "type": "Café",
     "area": "Surbiton",
@@ -1615,7 +629,7 @@
     "bestTime": ""
   },
   {
-    "id": "100",
+    "id": "244",
     "name": "Local Hero",
     "type": "Café",
     "area": "Surbiton",
@@ -1632,7 +646,7 @@
     "bestTime": ""
   },
   {
-    "id": "101",
+    "id": "245",
     "name": "Cafe Jax",
     "type": "Café",
     "area": "Surbiton",
@@ -1649,7 +663,7 @@
     "bestTime": ""
   },
   {
-    "id": "102",
+    "id": "246",
     "name": "Cafe St. James",
     "type": "Café",
     "area": "Surbiton",
@@ -1666,7 +680,7 @@
     "bestTime": ""
   },
   {
-    "id": "103",
+    "id": "247",
     "name": "The Press Room",
     "type": "Café",
     "area": "Surbiton",
@@ -1683,7 +697,7 @@
     "bestTime": ""
   },
   {
-    "id": "104",
+    "id": "248",
     "name": "The French Tarte",
     "type": "Café",
     "area": "Surbiton",
@@ -1700,7 +714,7 @@
     "bestTime": ""
   },
   {
-    "id": "105",
+    "id": "250",
     "name": "The Chip Club",
     "type": "Café",
     "area": "Surbiton",
@@ -1717,7 +731,7 @@
     "bestTime": ""
   },
   {
-    "id": "106",
+    "id": "251",
     "name": "Italian Taste",
     "type": "Café",
     "area": "Surbiton",
@@ -1734,7 +748,7 @@
     "bestTime": ""
   },
   {
-    "id": "107",
+    "id": "252",
     "name": "FIKA [fee-ka]",
     "type": "Café",
     "area": "Surbiton",
@@ -1751,7 +765,7 @@
     "bestTime": ""
   },
   {
-    "id": "108",
+    "id": "253",
     "name": "Ace of Spades",
     "type": "Café",
     "area": "Surbiton",
@@ -1768,7 +782,7 @@
     "bestTime": ""
   },
   {
-    "id": "109",
+    "id": "254",
     "name": "Brunch Cafe",
     "type": "Café",
     "area": "Surbiton",
@@ -1785,7 +799,7 @@
     "bestTime": ""
   },
   {
-    "id": "110",
+    "id": "255",
     "name": "Fortunella Cafe",
     "type": "Café",
     "area": "Surbiton",
@@ -1802,7 +816,7 @@
     "bestTime": ""
   },
   {
-    "id": "111",
+    "id": "256",
     "name": "The Terrace",
     "type": "Café",
     "area": "Surbiton",
@@ -1819,7 +833,7 @@
     "bestTime": ""
   },
   {
-    "id": "112",
+    "id": "257",
     "name": "Black Swan",
     "type": "Café",
     "area": "Surbiton",
@@ -1836,7 +850,7 @@
     "bestTime": ""
   },
   {
-    "id": "113",
+    "id": "258",
     "name": "Coffee on the Corner",
     "type": "Café",
     "area": "Surbiton",
@@ -1853,7 +867,7 @@
     "bestTime": ""
   },
   {
-    "id": "114",
+    "id": "259",
     "name": "Spuds",
     "type": "Café",
     "area": "Surbiton",
@@ -1870,7 +884,7 @@
     "bestTime": ""
   },
   {
-    "id": "115",
+    "id": "260",
     "name": "Munchies Cafe",
     "type": "Café",
     "area": "Surbiton",
@@ -1887,7 +901,7 @@
     "bestTime": ""
   },
   {
-    "id": "116",
+    "id": "261",
     "name": "Café Rosa",
     "type": "Café",
     "area": "Surbiton",
@@ -1904,7 +918,7 @@
     "bestTime": ""
   },
   {
-    "id": "117",
+    "id": "264",
     "name": "Patisserie Les 3 Chocolats",
     "type": "Café",
     "area": "Surbiton",
@@ -1921,7 +935,7 @@
     "bestTime": ""
   },
   {
-    "id": "118",
+    "id": "265",
     "name": "Caffè Amici",
     "type": "Café",
     "area": "Surbiton",
@@ -1938,7 +952,7 @@
     "bestTime": ""
   },
   {
-    "id": "119",
+    "id": "266",
     "name": "Ex Cellar",
     "type": "Café",
     "area": "Surbiton",
@@ -1955,7 +969,7 @@
     "bestTime": ""
   },
   {
-    "id": "120",
+    "id": "267",
     "name": "Monte Bianco",
     "type": "Café",
     "area": "Surbiton",
@@ -1972,7 +986,7 @@
     "bestTime": ""
   },
   {
-    "id": "121",
+    "id": "268",
     "name": "The Deli",
     "type": "Café",
     "area": "Surbiton",
@@ -1989,7 +1003,7 @@
     "bestTime": ""
   },
   {
-    "id": "122",
+    "id": "269",
     "name": "La Fonatana Pizza",
     "type": "Café",
     "area": "Surbiton",
@@ -2006,7 +1020,7 @@
     "bestTime": ""
   },
   {
-    "id": "123",
+    "id": "270",
     "name": "Nice Buns",
     "type": "Café",
     "area": "Surbiton",
@@ -2023,7 +1037,7 @@
     "bestTime": ""
   },
   {
-    "id": "124",
+    "id": "271",
     "name": "Hatay Brasserie",
     "type": "Café",
     "area": "Surbiton",
@@ -2040,7 +1054,7 @@
     "bestTime": ""
   },
   {
-    "id": "125",
+    "id": "272",
     "name": "Zega",
     "type": "Café",
     "area": "Surbiton",
@@ -2057,7 +1071,7 @@
     "bestTime": ""
   },
   {
-    "id": "126",
+    "id": "274",
     "name": "Icon Community Coffee House",
     "type": "Café",
     "area": "Surbiton",
@@ -2074,7 +1088,7 @@
     "bestTime": ""
   },
   {
-    "id": "127",
+    "id": "275",
     "name": "Cafe Delight",
     "type": "Café",
     "area": "Surbiton",
@@ -2091,7 +1105,7 @@
     "bestTime": ""
   },
   {
-    "id": "128",
+    "id": "276",
     "name": "Theatre cafe",
     "type": "Café",
     "area": "Surbiton",
@@ -2108,7 +1122,7 @@
     "bestTime": ""
   },
   {
-    "id": "129",
+    "id": "277",
     "name": "Church cafe",
     "type": "Café",
     "area": "Surbiton",
@@ -2125,7 +1139,7 @@
     "bestTime": ""
   },
   {
-    "id": "130",
+    "id": "278",
     "name": "Cheeky Pea",
     "type": "Café",
     "area": "Surbiton",
@@ -2142,7 +1156,7 @@
     "bestTime": ""
   },
   {
-    "id": "131",
+    "id": "279",
     "name": "Marna",
     "type": "Café",
     "area": "Surbiton",
@@ -2159,7 +1173,7 @@
     "bestTime": ""
   },
   {
-    "id": "132",
+    "id": "280",
     "name": "Cafe",
     "type": "Café",
     "area": "Surbiton",
@@ -2176,7 +1190,7 @@
     "bestTime": ""
   },
   {
-    "id": "133",
+    "id": "281",
     "name": "Thames coffee",
     "type": "Café",
     "area": "Surbiton",
@@ -2193,7 +1207,7 @@
     "bestTime": ""
   },
   {
-    "id": "134",
+    "id": "282",
     "name": "Liv's Telecafe",
     "type": "Café",
     "area": "Twickenham",
@@ -2210,7 +1224,7 @@
     "bestTime": ""
   },
   {
-    "id": "135",
+    "id": "283",
     "name": "Swiss Bread Bakery & Café",
     "type": "Café",
     "area": "Twickenham",
@@ -2227,7 +1241,7 @@
     "bestTime": ""
   },
   {
-    "id": "136",
+    "id": "284",
     "name": "Don's Coffee",
     "type": "Café",
     "area": "Twickenham",
@@ -2244,7 +1258,7 @@
     "bestTime": ""
   },
   {
-    "id": "137",
+    "id": "285",
     "name": "Nemo's Cafe",
     "type": "Café",
     "area": "Twickenham",
@@ -2261,7 +1275,7 @@
     "bestTime": ""
   },
   {
-    "id": "138",
+    "id": "286",
     "name": "Water Lane~",
     "type": "Café",
     "area": "Twickenham",
@@ -2278,7 +1292,7 @@
     "bestTime": ""
   },
   {
-    "id": "139",
+    "id": "287",
     "name": "Puccino",
     "type": "Café",
     "area": "Twickenham",
@@ -2295,7 +1309,7 @@
     "bestTime": ""
   },
   {
-    "id": "140",
+    "id": "289",
     "name": "Café Nova",
     "type": "Café",
     "area": "Twickenham",
@@ -2312,7 +1326,7 @@
     "bestTime": ""
   },
   {
-    "id": "141",
+    "id": "290",
     "name": "Express",
     "type": "Café",
     "area": "Twickenham",
@@ -2329,7 +1343,7 @@
     "bestTime": ""
   },
   {
-    "id": "142",
+    "id": "291",
     "name": "Better Bagels",
     "type": "Café",
     "area": "Twickenham",
@@ -2346,7 +1360,7 @@
     "bestTime": ""
   },
   {
-    "id": "143",
+    "id": "292",
     "name": "Soul",
     "type": "Café",
     "area": "Twickenham",
@@ -2363,7 +1377,7 @@
     "bestTime": ""
   },
   {
-    "id": "144",
+    "id": "293",
     "name": "Buongiorno",
     "type": "Café",
     "area": "Twickenham",
@@ -2380,7 +1394,7 @@
     "bestTime": ""
   },
   {
-    "id": "145",
+    "id": "294",
     "name": "La Casetta",
     "type": "Café",
     "area": "Twickenham",
@@ -2397,7 +1411,7 @@
     "bestTime": ""
   },
   {
-    "id": "146",
+    "id": "295",
     "name": "Cheeky Chops Play Cafe",
     "type": "Café",
     "area": "Twickenham",
@@ -2414,7 +1428,7 @@
     "bestTime": ""
   },
   {
-    "id": "147",
+    "id": "296",
     "name": "Puccino's",
     "type": "Café",
     "area": "Twickenham",
@@ -2431,7 +1445,7 @@
     "bestTime": ""
   },
   {
-    "id": "148",
+    "id": "297",
     "name": "Grounded Cafe",
     "type": "Café",
     "area": "Twickenham",
@@ -2448,7 +1462,7 @@
     "bestTime": ""
   },
   {
-    "id": "149",
+    "id": "298",
     "name": "Studio17",
     "type": "Café",
     "area": "Twickenham",
@@ -2465,7 +1479,7 @@
     "bestTime": ""
   },
   {
-    "id": "150",
+    "id": "301",
     "name": "Cheam Library",
     "type": "Library",
     "area": "Sutton",
@@ -2482,7 +1496,7 @@
     "bestTime": ""
   },
   {
-    "id": "151",
+    "id": "303",
     "name": "Coffee Zone",
     "type": "Café",
     "area": "Sutton",
@@ -2499,7 +1513,7 @@
     "bestTime": ""
   },
   {
-    "id": "152",
+    "id": "304",
     "name": "Crostini",
     "type": "Café",
     "area": "Sutton",
@@ -2516,7 +1530,7 @@
     "bestTime": ""
   },
   {
-    "id": "153",
+    "id": "305",
     "name": "Piggies",
     "type": "Café",
     "area": "Sutton",
@@ -2533,7 +1547,7 @@
     "bestTime": ""
   },
   {
-    "id": "154",
+    "id": "306",
     "name": "Cheam Cottage",
     "type": "Café",
     "area": "Sutton",
@@ -2550,7 +1564,7 @@
     "bestTime": ""
   },
   {
-    "id": "155",
+    "id": "308",
     "name": "La Petite Boulangerie",
     "type": "Café",
     "area": "Sutton",
@@ -2567,7 +1581,7 @@
     "bestTime": ""
   },
   {
-    "id": "156",
+    "id": "310",
     "name": "Mad Coffee Bar",
     "type": "Café",
     "area": "Sutton",
@@ -2584,7 +1598,7 @@
     "bestTime": ""
   },
   {
-    "id": "157",
+    "id": "312",
     "name": "Bella",
     "type": "Café",
     "area": "Sutton",
@@ -2601,7 +1615,7 @@
     "bestTime": ""
   },
   {
-    "id": "158",
+    "id": "313",
     "name": "Delight",
     "type": "Café",
     "area": "Sutton",
@@ -2618,7 +1632,7 @@
     "bestTime": ""
   },
   {
-    "id": "159",
+    "id": "314",
     "name": "Coughlan's Bakery",
     "type": "Café",
     "area": "Sutton",
@@ -2635,7 +1649,7 @@
     "bestTime": ""
   },
   {
-    "id": "160",
+    "id": "315",
     "name": "Sutton Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2652,7 +1666,7 @@
     "bestTime": ""
   },
   {
-    "id": "161",
+    "id": "317",
     "name": "Brunchies Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2669,7 +1683,7 @@
     "bestTime": ""
   },
   {
-    "id": "162",
+    "id": "318",
     "name": "Caffe Melo",
     "type": "Café",
     "area": "Sutton",
@@ -2686,7 +1700,7 @@
     "bestTime": ""
   },
   {
-    "id": "163",
+    "id": "319",
     "name": "The Brunch Bar",
     "type": "Café",
     "area": "Sutton",
@@ -2703,7 +1717,7 @@
     "bestTime": ""
   },
   {
-    "id": "164",
+    "id": "320",
     "name": "Tazza",
     "type": "Café",
     "area": "Sutton",
@@ -2720,7 +1734,7 @@
     "bestTime": ""
   },
   {
-    "id": "165",
+    "id": "322",
     "name": "Tea San - Taiwanese Bubble Tea",
     "type": "Café",
     "area": "Sutton",
@@ -2737,7 +1751,7 @@
     "bestTime": ""
   },
   {
-    "id": "166",
+    "id": "324",
     "name": "Peckish Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2754,7 +1768,7 @@
     "bestTime": ""
   },
   {
-    "id": "167",
+    "id": "325",
     "name": "Savoy Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2771,7 +1785,7 @@
     "bestTime": ""
   },
   {
-    "id": "168",
+    "id": "326",
     "name": "Morrisons Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2788,7 +1802,7 @@
     "bestTime": ""
   },
   {
-    "id": "169",
+    "id": "327",
     "name": "Tudor Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2805,7 +1819,7 @@
     "bestTime": ""
   },
   {
-    "id": "170",
+    "id": "328",
     "name": "The Coffee Lounge",
     "type": "Café",
     "area": "Sutton",
@@ -2822,7 +1836,7 @@
     "bestTime": ""
   },
   {
-    "id": "171",
+    "id": "329",
     "name": "Beeches Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2839,7 +1853,7 @@
     "bestTime": ""
   },
   {
-    "id": "172",
+    "id": "330",
     "name": "H's Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2856,7 +1870,7 @@
     "bestTime": ""
   },
   {
-    "id": "173",
+    "id": "331",
     "name": "Cheam Park Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2873,7 +1887,7 @@
     "bestTime": ""
   },
   {
-    "id": "174",
+    "id": "332",
     "name": "Wild Bean Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2890,7 +1904,7 @@
     "bestTime": ""
   },
   {
-    "id": "175",
+    "id": "333",
     "name": "Jaconelli's Espresso Bar",
     "type": "Café",
     "area": "Sutton",
@@ -2907,7 +1921,7 @@
     "bestTime": ""
   },
   {
-    "id": "176",
+    "id": "334",
     "name": "Pumpkin",
     "type": "Café",
     "area": "Sutton",
@@ -2924,7 +1938,7 @@
     "bestTime": ""
   },
   {
-    "id": "177",
+    "id": "335",
     "name": "Asda Café",
     "type": "Café",
     "area": "Sutton",
@@ -2941,7 +1955,7 @@
     "bestTime": ""
   },
   {
-    "id": "178",
+    "id": "336",
     "name": "Orange Bay Cafe",
     "type": "Café",
     "area": "Sutton",
@@ -2958,7 +1972,7 @@
     "bestTime": ""
   },
   {
-    "id": "179",
+    "id": "338",
     "name": "Sutton Green Café",
     "type": "Café",
     "area": "Sutton",
@@ -2975,7 +1989,7 @@
     "bestTime": ""
   },
   {
-    "id": "180",
+    "id": "339",
     "name": "Crepe Salut",
     "type": "Café",
     "area": "Sutton",
@@ -2992,7 +2006,7 @@
     "bestTime": ""
   },
   {
-    "id": "181",
+    "id": "340",
     "name": "Belmont station park",
     "type": "Park",
     "area": "Sutton",
