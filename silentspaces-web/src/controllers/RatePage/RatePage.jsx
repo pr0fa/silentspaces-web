@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { submitRating } from "../../models/ratingModel";
 import { getLocationById } from "../../models/locationModel";
 import toast from "react-hot-toast";
-import { Wifi, Armchair, Check, X } from "lucide-react";
+import { Wifi, Armchair, Check, X, ChevronLeft } from "lucide-react";
 import "./RatePage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
@@ -71,12 +71,14 @@ export default function RatePage() {
     <div className="rp-page">
 
       <div className="rp-header">
-        <button className="rp-back" onClick={() => navigate(-1)}>‹</button>
-        <span className="rp-heading">Rate Location</span>
+        <button className="rp-back" onClick={() => navigate(-1)}><ChevronLeft size={28} /></button>
+        <div>
+          <div className="rp-heading">Rate Location</div>
+          <div className="rp-location-name">{loc.name}</div>
+        </div>
       </div>
 
-      <div className="rp-location-name">{loc.name}</div>
-      <div className="rp-subtitle">Share your experience</div>
+      <div className="rp-card">
 
       <div className="rp-block">
         <div className="rp-question">How quiet is this space?</div>
@@ -113,12 +115,23 @@ export default function RatePage() {
 
       <div className="rp-block">
         <div className="rp-question">Best time to visit?</div>
-        <select value={bestTime} onChange={(e) => setBestTime(e.target.value)} className="rp-select">
-          <option value="">Select time</option>
-          <option value="Morning">Morning</option>
-          <option value="Afternoon">Afternoon</option>
-          <option value="Evening">Evening</option>
-        </select>
+        <div className="rp-toggleRow">
+          {[
+            { label: "Morning",   icon: "🌅" },
+            { label: "Afternoon", icon: "☀️" },
+            { label: "Evening",   icon: "🌙" },
+            { label: "Weekends",  icon: "📅" },
+          ].map(({ label, icon }) => (
+            <button
+              key={label}
+              type="button"
+              className={`rp-time-chip ${bestTime === label ? "is-active" : ""}`}
+              onClick={() => setBestTime(bestTime === label ? "" : label)}
+            >
+              <span>{icon}</span> {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="rp-block">
@@ -131,6 +144,8 @@ export default function RatePage() {
           className="rp-textarea"
         />
       </div>
+
+      </div>{/* end rp-card */}
 
       <button type="button" onClick={onSubmit} disabled={!canSubmit} className={`rp-submit ${canSubmit ? "" : "is-disabled"}`}>
         {isSubmitting ? "Submitting..." : "Submit rating"}

@@ -19,18 +19,15 @@
 }
 
 .rp-back {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 4px 6px;
   border: none;
   color: #fff;
-  font-size: 22px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  line-height: 1;
+  flex-shrink: 0;
 }
 
 .rp-heading {
@@ -40,21 +37,34 @@
 }
 
 .rp-location-name {
-  font-size: var(--font-xl);
-  font-weight: var(--font-weight-bold);
-  margin-bottom: 4px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 2px;
 }
 
-.rp-subtitle {
-  font-size: var(--font-sm);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-sm);
+.rp-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
 /* ---------- Blocks ---------- */
 
 .rp-block {
-  margin-top: var(--space-xl);
+  margin-top: 0;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.rp-block:first-child {
+  padding-top: 0;
+}
+
+.rp-block:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .rp-question {
@@ -136,23 +146,34 @@
   border-color: var(--color-primary);
 }
 
-/* ---------- Select ---------- */
-
-.rp-select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text-primary);
-  font-size: var(--font-md);
-  outline: none;
-  transition: 0.2s ease;
+.rp-toggleRow {
+  flex-wrap: wrap;
 }
 
-.rp-select:focus {
+.rp-time-chip {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rp-time-chip:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(91, 33, 182, 0.15);
+  color: var(--color-primary);
+}
+
+.rp-time-chip.is-active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
 }
 
 /* ---------- Textarea ---------- */
