@@ -21,7 +21,7 @@ function readBool(key, fallback = false) {
 function getMarkerColor(type) {
   const t = String(type || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   if (t.includes("library"))                        return "#5B21B6";
-  if (t.includes("cafe") || t.includes("coffee"))  return "#9333EA";
+  if (t.includes("cafe") || t.includes("coffee"))  return "#DB2777";
   if (t.includes("park") || t.includes("garden"))  return "#16A34A";
   if (t.includes("study") || t.includes("cowork")) return "#F59E0B";
   return "#7C3AED";
@@ -231,6 +231,12 @@ export default function MapPage() {
 
       {/* Map */}
       <div className="mp-map">
+        <div className="mp-legend">
+          <span><span className="mp-legend-dot" style={{ background: "#5B21B6" }}></span>Library</span>
+          <span><span className="mp-legend-dot" style={{ background: "#DB2777" }}></span>Café</span>
+          <span><span className="mp-legend-dot" style={{ background: "#16A34A" }}></span>Park</span>
+          <span><span className="mp-legend-dot" style={{ background: "#F59E0B" }}></span>Study</span>
+        </div>
         <MapContainer
           center={[51.5074, -0.1278]}
           zoom={13}
@@ -266,9 +272,9 @@ export default function MapPage() {
               position={[Number(loc.lat), Number(loc.lng)]}
               icon={L.divIcon({
                 className: "custom-marker",
-                html: `<div class="mp-markerWrapper"><div class="mp-markerLabel">${loc.type}</div><div class="mp-markerDot" style="background:${getMarkerColor(String(loc.type))}"></div></div>`,
-                iconSize: [30, 30],
-                iconAnchor: [15, 30],
+                html: `<div class="mp-markerDot" style="background:${getMarkerColor(String(loc.type))}"></div>`,
+                iconSize: [14, 14],
+                iconAnchor: [7, 7],
               })}
             >
               <Popup>

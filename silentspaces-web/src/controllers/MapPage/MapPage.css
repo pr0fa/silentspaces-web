@@ -318,3 +318,35 @@
 .mp-popup-btn:hover {
   background: #7C3AED;
 }
+
+/* Legend */
+.mp-legend {
+  position: absolute;
+  bottom: 40px;
+  left: 10px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.92);
+  border-radius: 10px;
+  padding: 6px 10px;
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  pointer-events: none;
+}
+
+.mp-legend span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mp-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
