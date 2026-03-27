@@ -26,6 +26,14 @@ function getMarkerColor(type) {
   return "#6366F1";
 }
 
+function getQuietnessColour(score) {
+  const s = Number(score || 0);
+  if (s >= 4.0) return "#22C55E";
+  if (s >= 2.5) return "#F59E0B";
+  if (s > 0)    return "#EF4444";
+  return "#D1D5DB";
+}
+
 function FitBounds({ points }) {
   const map = useMap();
   const fitted = useRef(false);
@@ -239,9 +247,11 @@ export default function MapPage() {
       {/* Map */}
       <div className="mp-map">
         <div className="mp-legend">
-          <span><span className="mp-legend-dot" style={{ background: "#6366F1" }}></span>Library</span>
-          <span><span className="mp-legend-dot" style={{ background: "#14B8A6" }}></span>Café</span>
-          <span><span className="mp-legend-dot" style={{ background: "#38BDF8" }}></span>Park</span>
+          <div className="mp-legend-section">
+            <span><span className="mp-legend-dot" style={{ background: "#6366F1" }}></span>Library</span>
+            <span><span className="mp-legend-dot" style={{ background: "#14B8A6" }}></span>Café</span>
+            <span><span className="mp-legend-dot" style={{ background: "#38BDF8" }}></span>Park</span>
+          </div>
         </div>
         <MapContainer
           center={[51.5074, -0.1278]}
@@ -300,6 +310,13 @@ export default function MapPage() {
                     {loc.seating && <span>🪑 Seating</span>}
                     {loc.sockets && <span>🔌 Sockets</span>}
                   </div>
+                  {Number(loc.ratingCount || 0) > 0 && (
+                    <div className="mp-popup-busyness">
+                      {Number(loc.ratingCount) <= 20 ? "🟢 Usually Quiet"
+                        : Number(loc.ratingCount) <= 60 ? "🟡 Moderately Busy"
+                        : "🔴 Often Busy"}
+                    </div>
+                  )}
                   <button className="mp-popup-btn" type="button" onClick={() => navigate(`/location/${loc.id}`)}>
                     View details
                   </button>

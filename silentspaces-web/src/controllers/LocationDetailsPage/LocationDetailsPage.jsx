@@ -120,8 +120,23 @@ export default function LocationDetailsPage() {
           </div>
         </div>
 
+        {loc.bestTime && (
+          <div className="ldp-section">
+            <b>Best time to visit:</b> {loc.bestTime}
+          </div>
+        )}
+
         <div className="ldp-section">
-          <b>Best time to visit:</b> {loc.bestTime}
+          <b>Busyness:</b>{" "}
+          {ratingCount === 0 ? (
+            <span className="ldp-busy ldp-busy--none">No data yet</span>
+          ) : ratingCount <= 20 ? (
+            <span className="ldp-busy ldp-busy--low">Usually Quiet</span>
+          ) : ratingCount <= 60 ? (
+            <span className="ldp-busy ldp-busy--mid">Moderately Busy</span>
+          ) : (
+            <span className="ldp-busy ldp-busy--high">Often Busy</span>
+          )}
         </div>
       </div>
 

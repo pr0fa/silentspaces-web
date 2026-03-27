@@ -100,6 +100,13 @@ a:hover {
   text-decoration: underline;
 }
 
+/* ===== Fix SVG icon rendering on mobile ===== */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
 /* ===== Button Base Reset ===== */
 
 button {

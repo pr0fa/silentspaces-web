@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
 import { Wifi, Armchair, Zap, Search } from "lucide-react";
@@ -22,18 +22,27 @@ export default function SearchPage() {
     });
   }, []);
 
-  const filtered = locations.filter((loc) => {
-    const q = query.toLowerCase();
-    if (q && !loc.name?.toLowerCase().includes(q) && !loc.area?.toLowerCase().includes(q)) return false;
-    if (wifiOnly    && !loc.wifi)    return false;
-    if (seatingOnly && !loc.seating) return false;
-    if (socketsOnly && !loc.sockets) return false;
-    const score = Number(loc.quietnessScore || 0);
-    if (noiseLevel === "very-quiet" && score < 4.0)  return false;
-    if (noiseLevel === "quiet"      && (score < 2.5 || score >= 4.0)) return false;
-    if (noiseLevel === "moderate"   && score >= 2.5) return false;
-    return true;
-  });
+  const filtered = useMemo(() => {
+    return locations.filter((loc) => {
+      const q = query.toLowerCase();
+      if (q && !loc.name?.toLowerCase().includes(q) && !loc.area?.toLowerCase().includes(q)) return false;
+      if (wifiOnly    && !loc.wifi)    return false;
+      if (seatingOnly && !loc.seating) return false;
+      if (socketsOnly && !loc.sockets) return false;
+      const score = Number(loc.quietnessScore || 0);
+      if (noiseLevel === "very-quiet" && score < 4.0)  return false;
+      if (noiseLevel === "quiet"      && (score < 2.5 || score >= 4.0)) return false;
+      if (noiseLevel === "moderate"   && score >= 2.5) return false;
+      return true;
+    });
+  }, [locations, query, wifiOnly, seatingOnly, socketsOnly, noiseLevel]);
+
+  function getBusyness(count) {
+    if (!count || count === 0) return null;
+    if (count <= 20)  return { label: "Usually Quiet", cls: "sp-busy sp-busy--low" };
+    if (count <= 60)  return { label: "Moderately Busy", cls: "sp-busy sp-busy--mid" };
+    return { label: "Often Busy", cls: "sp-busy sp-busy--high" };
+  }
 
   if (loading) return <LoadingScreen />;
 
@@ -76,6 +85,8 @@ export default function SearchPage() {
           else if (score >= 2.5) { badgeLabel = `Quiet ${score}`;      badgeClass = "sp-badge sp-badge--quiet"; }
           else if (score > 0)    { badgeLabel = `Moderate ${score}`;   badgeClass = "sp-badge sp-badge--moderate"; }
 
+          const busyness = getBusyness(Number(loc.ratingCount || 0));
+
           return (
             <div key={loc.id} className="sp-card" onClick={() => navigate(`/location/${loc.id}`)}>
               <div className="sp-card-top">
@@ -92,6 +103,7 @@ export default function SearchPage() {
                 {loc.wifi    && <span className="sp-fac"><Wifi size={12} /> Wi-Fi</span>}
                 {loc.seating && <span className="sp-fac"><Armchair size={12} /> Seating</span>}
                 {loc.sockets && <span className="sp-fac"><Zap size={12} /> Sockets</span>}
+                {busyness && <span className={busyness.cls}>{busyness.label}</span>}
               </div>
             </div>
           );

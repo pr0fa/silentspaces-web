@@ -302,6 +302,13 @@
   margin-bottom: 10px;
 }
 
+.mp-popup-busyness {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #444;
+}
+
 .mp-popup-btn {
   width: 100%;
   padding: 8px 0;
@@ -329,12 +336,23 @@
   border-radius: 10px;
   padding: 6px 10px;
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  gap: 6px;
   font-size: 11px;
   font-weight: 500;
   color: #333;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   pointer-events: none;
+}
+
+.mp-legend-section {
+  display: flex;
+  gap: 10px;
+}
+
+.mp-legend-divider {
+  height: 1px;
+  background: #eee;
 }
 
 .mp-legend span {
