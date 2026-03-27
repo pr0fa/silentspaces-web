@@ -2,6 +2,10 @@
   max-width: 480px;
   margin: 0 auto;
   padding: var(--space-md);
+  height: calc(100vh - 74px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .mr-state {
@@ -124,6 +128,11 @@
 .mr-list {
   display: grid;
   gap: var(--space-sm);
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: #e0d7f7 transparent;
+  padding-bottom: var(--space-sm);
 }
 
 /* ---------- Card ---------- */
