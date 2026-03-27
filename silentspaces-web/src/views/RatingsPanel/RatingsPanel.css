@@ -50,10 +50,18 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #e0d7f7 transparent;
 }
 
 .rp-item {
-  margin-bottom: var(--space-sm);
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
   font-size: var(--font-sm);
   color: var(--color-text-primary);
 }
