@@ -350,3 +350,42 @@
   display: inline-block;
   flex-shrink: 0;
 }
+
+/* Teardrop pin marker */
+.mp-pin-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.mp-pin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+  flex-shrink: 0;
+}
+
+.mp-pin-inner {
+  width: 6px;
+  height: 6px;
+  background: rgba(255,255,255,0.75);
+  border-radius: 50%;
+  transform: rotate(45deg);
+}
+
+.mp-pin-label {
+  background: white;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a1a1a;
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}

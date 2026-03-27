@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import { getLocations } from "../../models/locationModel";
 import { Navigation, Search, ListFilter, Wifi, Armchair, Zap, VolumeX } from "lucide-react";
 import L from "leaflet";
@@ -20,18 +20,19 @@ function readBool(key, fallback = false) {
 
 function getMarkerColor(type) {
   const t = String(type || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  if (t.includes("library"))                        return "#5B21B6";
-  if (t.includes("cafe") || t.includes("coffee"))  return "#DB2777";
-  if (t.includes("park") || t.includes("garden"))  return "#16A34A";
-  if (t.includes("study") || t.includes("cowork")) return "#F59E0B";
-  return "#7C3AED";
+  if (t.includes("library"))                        return "#6366F1";
+  if (t.includes("cafe") || t.includes("coffee"))  return "#14B8A6";
+  if (t.includes("park") || t.includes("garden"))  return "#38BDF8";
+  return "#6366F1";
 }
 
 function FitBounds({ points }) {
   const map = useMap();
+  const fitted = useRef(false);
   useEffect(() => {
-    if (!points || points.length === 0) return;
+    if (fitted.current || !points || points.length === 0) return;
     map.fitBounds(L.latLngBounds(points), { padding: [30, 30] });
+    fitted.current = true;
   }, [map, points]);
   return null;
 }
@@ -41,6 +42,11 @@ function PanTo({ coords }) {
   useEffect(() => {
     if (coords) map.setView(coords, 14);
   }, [coords, map]);
+  return null;
+}
+
+function ZoomWatcher({ onZoom }) {
+  useMapEvents({ zoomend: (e) => onZoom(e.target.getZoom()) });
   return null;
 }
 
@@ -75,6 +81,7 @@ export default function MapPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [panCoords, setPanCoords] = useState(null);
+  const [zoom, setZoom] = useState(13);
   const geocodeTimer = useRef(null);
 
   const [wifiOnly,    setWifiOnly]    = useState(() => readBool(LS_PREF_WIFI,    false));
@@ -232,10 +239,9 @@ export default function MapPage() {
       {/* Map */}
       <div className="mp-map">
         <div className="mp-legend">
-          <span><span className="mp-legend-dot" style={{ background: "#5B21B6" }}></span>Library</span>
-          <span><span className="mp-legend-dot" style={{ background: "#DB2777" }}></span>Café</span>
-          <span><span className="mp-legend-dot" style={{ background: "#16A34A" }}></span>Park</span>
-          <span><span className="mp-legend-dot" style={{ background: "#F59E0B" }}></span>Study</span>
+          <span><span className="mp-legend-dot" style={{ background: "#6366F1" }}></span>Library</span>
+          <span><span className="mp-legend-dot" style={{ background: "#14B8A6" }}></span>Café</span>
+          <span><span className="mp-legend-dot" style={{ background: "#38BDF8" }}></span>Park</span>
         </div>
         <MapContainer
           center={[51.5074, -0.1278]}
@@ -252,6 +258,7 @@ export default function MapPage() {
 
           <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
           <PanTo coords={panCoords} />
+          <ZoomWatcher onZoom={setZoom} />
           <LocateMeButton userLocation={userLocation} />
 
           {userLocation && (
@@ -272,9 +279,11 @@ export default function MapPage() {
               position={[Number(loc.lat), Number(loc.lng)]}
               icon={L.divIcon({
                 className: "custom-marker",
-                html: `<div class="mp-markerDot" style="background:${getMarkerColor(String(loc.type))}"></div>`,
-                iconSize: [14, 14],
-                iconAnchor: [7, 7],
+                html: zoom >= 15
+                  ? `<div class="mp-pin-wrapper"><span class="mp-pin-label">${loc.name}</span><div class="mp-pin" style="background:${getMarkerColor(String(loc.type))}"><div class="mp-pin-inner"></div></div></div>`
+                  : `<div class="mp-pin" style="background:${getMarkerColor(String(loc.type))}"><div class="mp-pin-inner"></div></div>`,
+                iconSize: zoom >= 15 ? [120, 40] : [16, 22],
+                iconAnchor: zoom >= 15 ? [60, 40] : [8, 22],
               })}
             >
               <Popup>
