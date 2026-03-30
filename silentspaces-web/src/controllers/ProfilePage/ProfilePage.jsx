@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Wifi, Armchair, VolumeX, Zap, Star, Bookmark, Settings } from "lucide-react";
+import { Wifi, Armchair, VolumeX, Zap, Star, Bookmark, Settings, Info, HelpCircle } from "lucide-react";
 import "./ProfilePage.css";
 
 const LS_NAME          = "ss:profile:name";
@@ -141,6 +141,14 @@ export default function ProfilePage() {
         </button>
         <button type="button" className="pf-link-btn" onClick={() => navigate("/settings")}>
           <span className="pf-link-left"><Settings size={16} /> Settings</span>
+          <span className="pf-chevron">›</span>
+        </button>
+        <button type="button" className="pf-link-btn" onClick={() => navigate("/help")}>
+          <span className="pf-link-left"><HelpCircle size={16} /> Help & Support</span>
+          <span className="pf-chevron">›</span>
+        </button>
+        <button type="button" className="pf-link-btn" onClick={() => navigate("/about")}>
+          <span className="pf-link-left"><Info size={16} /> About</span>
           <span className="pf-chevron">›</span>
         </button>
       </div>

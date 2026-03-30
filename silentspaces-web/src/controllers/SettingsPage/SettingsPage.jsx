@@ -86,25 +86,6 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <div className="st-section">
-        <div className="st-section-title">About</div>
-        <div className="st-card st-about">
-          <div className="st-about-row">
-            <span>App</span>
-            <span>SilentSpaces v1.0</span>
-          </div>
-          <div className="st-divider" />
-          <div className="st-about-row">
-            <span>Built with</span>
-            <span>React + Firebase</span>
-          </div>
-          <div className="st-divider" />
-          <div className="st-about-row">
-            <span>Auth</span>
-            <span>Device-based</span>
-          </div>
-        </div>
-      </div>
 
     </div>
   );

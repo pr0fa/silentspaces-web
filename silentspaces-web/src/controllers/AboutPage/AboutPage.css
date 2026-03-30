@@ -1,0 +1,199 @@
+.ab-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Header */
+.ab-header {
+  background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%);
+  border-radius: 16px;
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.ab-back {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.ab-heading {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Hero */
+.ab-hero {
+  background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%);
+  border-radius: 16px;
+  padding: 28px 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.ab-logo {
+  margin-bottom: 12px;
+}
+
+.ab-app-name {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.ab-version {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.ab-tagline {
+  color: rgba(255,255,255,0.85);
+  font-size: 14px;
+}
+
+/* Stats */
+.ab-stats {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.ab-stat {
+  flex: 1;
+  text-align: center;
+}
+
+.ab-stat-num {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #5B21B6;
+  margin-bottom: 2px;
+}
+
+.ab-stat-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.ab-stat-sep {
+  width: 1px;
+  height: 36px;
+  background: #eee;
+}
+
+/* Section */
+.ab-section {
+  margin-bottom: 16px;
+}
+
+.ab-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.ab-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+/* Mission */
+.ab-mission {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555;
+}
+
+/* Tech pills */
+.ab-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ab-tech-pill {
+  background: #f3f0ff;
+  color: #5B21B6;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* FAQ */
+.ab-faq-item {
+  padding: 12px 0;
+}
+
+.ab-faq-border {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ab-faq-q {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.ab-faq-a {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Developer */
+.ab-dev {
+  text-align: center;
+}
+
+.ab-dev-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.ab-dev-sub {
+  font-size: 13px;
+  color: #888;
+}
+
+/* Contact rows */
+.ab-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  font-size: 14px;
+  color: #5B21B6;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.ab-contact-row:hover {
+  opacity: 0.8;
+}

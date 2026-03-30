@@ -1,0 +1,98 @@
+.hp-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Header */
+.hp-header {
+  background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%);
+  border-radius: 16px;
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.hp-back {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.hp-heading {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Section */
+.hp-section {
+  margin-bottom: 16px;
+}
+
+.hp-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.hp-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+/* Contact rows */
+.hp-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  font-size: 14px;
+  color: #5B21B6;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.hp-contact-row:hover {
+  opacity: 0.8;
+}
+
+.hp-divider {
+  height: 1px;
+  background: #f0f0f0;
+}
+
+/* FAQ */
+.hp-faq-item {
+  padding: 12px 0;
+}
+
+.hp-faq-border {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.hp-faq-q {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.hp-faq-a {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
