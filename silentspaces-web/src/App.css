@@ -25,6 +25,19 @@
     margin-left: 220px;
     min-height: 100dvh;
   }
+
+  /* Widen all content pages so they don't look like a narrow mobile card on desktop */
+  .sp-page  { max-width: 860px; }
+
+  .pf-page,
+  .mr-page,
+  .sl-page,
+  .ldp-page,
+  .rp-page  { max-width: 720px; }
+
+  .st-page,
+  .ab-page,
+  .hp-page  { max-width: 640px; }
 }
 
 /* ===== Main App Wrapper (Mobile First) ===== */

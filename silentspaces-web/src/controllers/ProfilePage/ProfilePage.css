@@ -215,3 +215,5 @@
 }
 
 @media (min-width: 768px) { .pf-page { height: 100dvh; } }
+
+@media (min-width: 768px) { .pf-page { height: auto; overflow-y: visible; padding-bottom: 32px; } }
