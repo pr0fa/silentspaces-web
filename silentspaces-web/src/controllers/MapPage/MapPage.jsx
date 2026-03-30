@@ -310,13 +310,6 @@ export default function MapPage() {
                     {loc.seating && <span>🪑 Seating</span>}
                     {loc.sockets && <span>🔌 Sockets</span>}
                   </div>
-                  {Number(loc.ratingCount || 0) > 0 && (
-                    <div className="mp-popup-busyness">
-                      {Number(loc.ratingCount) <= 20 ? "🟢 Usually Quiet"
-                        : Number(loc.ratingCount) <= 60 ? "🟡 Moderately Busy"
-                        : "🔴 Often Busy"}
-                    </div>
-                  )}
                   <button className="mp-popup-btn" type="button" onClick={() => navigate(`/location/${loc.id}`)}>
                     View details
                   </button>

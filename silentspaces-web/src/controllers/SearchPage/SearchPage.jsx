@@ -37,12 +37,6 @@ export default function SearchPage() {
     });
   }, [locations, query, wifiOnly, seatingOnly, socketsOnly, noiseLevel]);
 
-  function getBusyness(count) {
-    if (!count || count === 0) return null;
-    if (count <= 20)  return { label: "Usually Quiet", cls: "sp-busy sp-busy--low" };
-    if (count <= 60)  return { label: "Moderately Busy", cls: "sp-busy sp-busy--mid" };
-    return { label: "Often Busy", cls: "sp-busy sp-busy--high" };
-  }
 
   if (loading) return <LoadingScreen />;
 
@@ -85,7 +79,6 @@ export default function SearchPage() {
           else if (score >= 2.5) { badgeLabel = `Quiet ${score}`;      badgeClass = "sp-badge sp-badge--quiet"; }
           else if (score > 0)    { badgeLabel = `Moderate ${score}`;   badgeClass = "sp-badge sp-badge--moderate"; }
 
-          const busyness = getBusyness(Number(loc.ratingCount || 0));
 
           return (
             <div key={loc.id} className="sp-card" onClick={() => navigate(`/location/${loc.id}`)}>
@@ -103,7 +96,6 @@ export default function SearchPage() {
                 {loc.wifi    && <span className="sp-fac"><Wifi size={12} /> Wi-Fi</span>}
                 {loc.seating && <span className="sp-fac"><Armchair size={12} /> Seating</span>}
                 {loc.sockets && <span className="sp-fac"><Zap size={12} /> Sockets</span>}
-                {busyness && <span className={busyness.cls}>{busyness.label}</span>}
               </div>
             </div>
           );

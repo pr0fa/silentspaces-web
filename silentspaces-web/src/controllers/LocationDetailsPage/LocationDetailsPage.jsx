@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import RatingsPanel from "../../views/RatingsPanel/RatingsPanel";
+import PopularTimes from "../../views/PopularTimes/PopularTimes";
 import { getLocationById } from "../../models/locationModel";
 import { Wifi, Armchair, Zap, ChevronLeft } from "lucide-react";
 import "./LocationDetailsPage.css";
@@ -126,19 +127,9 @@ export default function LocationDetailsPage() {
           </div>
         )}
 
-        <div className="ldp-section">
-          <b>Busyness:</b>{" "}
-          {ratingCount === 0 ? (
-            <span className="ldp-busy ldp-busy--none">No data yet</span>
-          ) : ratingCount <= 20 ? (
-            <span className="ldp-busy ldp-busy--low">Usually Quiet</span>
-          ) : ratingCount <= 60 ? (
-            <span className="ldp-busy ldp-busy--mid">Moderately Busy</span>
-          ) : (
-            <span className="ldp-busy ldp-busy--high">Often Busy</span>
-          )}
-        </div>
       </div>
+
+      <PopularTimes locationId={loc.id} />
 
       <a
         href={`https://www.google.com/maps?q=${loc.lat},${loc.lng}`}
