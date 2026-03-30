@@ -129,7 +129,7 @@ export default function LocationDetailsPage() {
 
       </div>
 
-      <PopularTimes locationId={loc.id} />
+      <PopularTimes dayVisits={loc.dayVisits} />
 
       <a
         href={`https://www.google.com/maps?q=${loc.lat},${loc.lng}`}

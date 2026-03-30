@@ -300,11 +300,26 @@ export default function MapPage() {
                 <div className="mp-popup">
                   <div className="mp-popup-name">{loc.name}</div>
                   <div className="mp-popup-meta">{loc.area} · {loc.type}</div>
-                  <div className="mp-popup-quietness">
-                    {Number(loc.ratingCount || 0) === 0
-                      ? "No ratings yet"
-                      : `⭐ ${loc.quietnessScore} (${loc.ratingCount} ratings)`}
-                  </div>
+                  {Number(loc.ratingCount || 0) === 0 ? (
+                    <div className="mp-popup-no-ratings">No ratings yet</div>
+                  ) : (
+                    <div className="mp-popup-bars">
+                      <div className="mp-popup-bar-row">
+                        <span className="mp-popup-bar-label">Quietness</span>
+                        <div className="mp-popup-bar-track">
+                          <div className="mp-popup-bar-fill mp-popup-bar--quiet" style={{ width: `${(Number(loc.quietnessScore) / 5) * 100}%` }} />
+                        </div>
+                        <span className="mp-popup-bar-val">{loc.quietnessScore}</span>
+                      </div>
+                      <div className="mp-popup-bar-row">
+                        <span className="mp-popup-bar-label">Busy</span>
+                        <div className="mp-popup-bar-track">
+                          <div className="mp-popup-bar-fill mp-popup-bar--busy" style={{ width: loc.busynessLevel === "High" ? "100%" : loc.busynessLevel === "Mid" ? "55%" : "25%" }} />
+                        </div>
+                        <span className="mp-popup-bar-val">{loc.busynessLevel || "Low"}</span>
+                      </div>
+                    </div>
+                  )}
                   <div className="mp-popup-facilities">
                     {loc.wifi    && <span>📶 Wi-Fi</span>}
                     {loc.seating && <span>🪑 Seating</span>}

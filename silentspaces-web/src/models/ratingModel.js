@@ -50,11 +50,18 @@ export async function submitRating(locationId, rating, comment, bestTime) {
     const locSnap = await tx.get(locationRef);
     if (!locSnap.exists()) throw new Error("Location not found");
 
-    const { ratingCount = 0, quietnessScore = 0 } = locSnap.data();
+    const { ratingCount = 0, quietnessScore = 0, dayVisits = [0,0,0,0,0,0,0] } = locSnap.data();
 
     const newCount = ratingCount + 1;
     const newScore =
       Math.round(((quietnessScore * ratingCount + rating) / newCount) * 10) / 10;
+
+    const newDayVisits = [...dayVisits];
+    newDayVisits[new Date().getDay()]++;
+    const maxDay = Math.max(...newDayVisits);
+    const totalVisits = newDayVisits.reduce((a, b) => a + b, 0);
+    const ratio = totalVisits > 0 ? maxDay / totalVisits : 0;
+    const busynessLevel = ratio >= 0.35 ? "High" : ratio >= 0.2 ? "Mid" : "Low";
 
     tx.set(ratingRef, {
       rating,
@@ -66,6 +73,8 @@ export async function submitRating(locationId, rating, comment, bestTime) {
     tx.update(locationRef, {
       ratingCount: newCount,
       quietnessScore: newScore,
+      dayVisits: newDayVisits,
+      busynessLevel,
     });
 
     savedRating = {
