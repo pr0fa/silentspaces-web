@@ -1,8 +1,30 @@
 /* ===== Root App Container ===== */
 
 #root {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--color-bg);
+}
+
+/* ===== Responsive App Shell ===== */
+
+.app-layout {
+  position: relative;
+  min-height: 100dvh;
+}
+
+/* Mobile: content sits above fixed bottom nav */
+.app-main {
+  padding-bottom: 74px;
+}
+
+/* Desktop: sidebar is position:fixed so app-layout stays a normal block.
+   app-main just needs margin-left to clear the sidebar. */
+@media (min-width: 768px) {
+  .app-main {
+    padding-bottom: 0;
+    margin-left: 220px;
+    min-height: 100dvh;
+  }
 }
 
 /* ===== Main App Wrapper (Mobile First) ===== */

@@ -1,7 +1,16 @@
 .mp-page {
   position: relative;
-  height: calc(100vh - 64px);
+  /* Mobile: viewport minus the bottom nav height */
+  height: calc(100dvh - 74px);
   background: #EEF1F5;
+  overflow: hidden; /* prevents page scroll so touch pans the map */
+}
+
+/* Desktop: no bottom nav, full height */
+@media (min-width: 768px) {
+  .mp-page {
+    height: 100dvh;
+  }
 }
 
 .mp-header {
@@ -187,6 +196,12 @@
   cursor: pointer;
   z-index: 1000;
   color: #5B21B6;
+}
+
+@media (min-width: 768px) {
+  .mp-locateBtn {
+    bottom: 24px; /* no bottom nav on desktop */
+  }
 }
 
 .mp-markerWrapper {

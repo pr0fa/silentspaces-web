@@ -2,7 +2,7 @@
   max-width: 480px;
   margin: 0 auto;
   padding: var(--space-md);
-  height: calc(100vh - 74px);
+  height: calc(100dvh - 74px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -214,3 +214,5 @@
   color: var(--color-text-secondary);
   margin-left: auto;
 }
+
+@media (min-width: 768px) { .sl-page { height: 100dvh; } }

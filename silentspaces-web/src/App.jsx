@@ -18,10 +18,17 @@ import BottomNav from "./views/BottomNav/BottomNav.jsx";
 
 // Leaflet base styles (needed for tiles/controls/popups/icons)
 import "leaflet/dist/leaflet.css";
+import "./App.css";
 
 function AppLayout({ children }) {
-  // Bottom padding prevents pages being covered by the fixed nav bar.
-  return <div style={{ paddingBottom: 74 }}>{children}<BottomNav /></div>;
+  return (
+    <div className="app-layout">
+      <BottomNav />
+      <main className="app-main">
+        {children}
+      </main>
+    </div>
+  );
 }
 
 export default function App() {

@@ -1,38 +1,35 @@
+/* ── Mobile: fixed bottom bar (default) ── */
+
 .bn {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   border-top: 1px solid var(--color-border);
   background: var(--color-surface);
 }
 
-.bn-inner {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: var(--space-sm) var(--space-md)
-    calc(var(--space-sm) + env(safe-area-inset-bottom));
+.bn-logo {
+  display: none; /* hidden on mobile */
+}
 
+.bn-inner {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md)
+    calc(var(--space-sm) + env(safe-area-inset-bottom));
 }
 
-/* ---------- Item ---------- */
-
 .bn-item {
-  appearance: none;
-  border: none;
-  background: transparent;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   gap: var(--space-xs);
   padding: var(--space-sm);
   border-radius: 10px;
-
   color: var(--color-text-secondary);
   text-decoration: none;
   cursor: pointer;
@@ -48,16 +45,56 @@
   font-weight: var(--font-weight-medium);
 }
 
-/* ---------- Icon ---------- */
-
-.bn-icon {
-  font-size: var(--font-lg);
-  line-height: 1;
-}
-
-/* ---------- Label ---------- */
-
 .bn-label {
   font-size: var(--font-xs);
   line-height: 1;
+}
+
+/* ── Desktop: left sidebar ── */
+
+@media (min-width: 768px) {
+  .bn {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    width: 220px;
+    border-top: none;
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bn-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .bn-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 12px;
+    grid-template-columns: unset;
+    max-width: none;
+    margin: 0;
+  }
+
+  .bn-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: 12px;
+  }
+
+  .bn-label {
+    font-size: 14px;
+  }
 }
