@@ -77,6 +77,12 @@ export default function MapPage() {
   const [quietOnly,   setQuietOnly]   = useState(() => readBool(LS_PREF_QUIET,   false));
   const [socketsOnly, setSocketsOnly] = useState(() => readBool(LS_PREF_SOCKETS, false));
 
+  // Persist filter preferences to localStorage
+  useEffect(() => { localStorage.setItem(LS_PREF_WIFI,    String(wifiOnly));    }, [wifiOnly]);
+  useEffect(() => { localStorage.setItem(LS_PREF_SEATING, String(seatingOnly)); }, [seatingOnly]);
+  useEffect(() => { localStorage.setItem(LS_PREF_QUIET,   String(quietOnly));   }, [quietOnly]);
+  useEffect(() => { localStorage.setItem(LS_PREF_SOCKETS, String(socketsOnly)); }, [socketsOnly]);
+
   // Live user location
   useEffect(() => {
     if (!navigator.geolocation) return;

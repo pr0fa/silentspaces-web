@@ -113,13 +113,11 @@
   padding: 10px 12px;
   border-radius: 14px;
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   z-index: 2000;
 }
-.mp-filterPanel::-webkit-scrollbar { display: none; }
 
 .mp-chip {
   display: flex;
@@ -139,6 +137,7 @@
 }
 .mp-chip:hover          { border-color: var(--color-primary); color: var(--color-primary); }
 .mp-chip--active        { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+.mp-chip                { touch-action: manipulation; } /* prevent double-tap zoom on mobile */
 
 /* ── Map container ── */
 
