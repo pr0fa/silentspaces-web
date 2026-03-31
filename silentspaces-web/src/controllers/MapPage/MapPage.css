@@ -135,9 +135,12 @@
   white-space: nowrap;
   font-family: inherit;
 }
-.mp-chip:hover          { border-color: var(--color-primary); color: var(--color-primary); }
-.mp-chip--active        { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-.mp-chip                { touch-action: manipulation; } /* prevent double-tap zoom on mobile */
+.mp-chip:hover                  { border-color: var(--color-primary); color: var(--color-primary); }
+.mp-chip--active,
+.mp-chip--active:hover,
+.mp-chip--active:focus,
+.mp-chip--active:active         { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+.mp-chip                        { touch-action: manipulation; }
 
 /* ── Map container ── */
 
