@@ -1,0 +1,263 @@
+.ob-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 0 24px;
+}
+
+/* ── Progress bar ── */
+.ob-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px 0;
+}
+
+.ob-progress-track {
+  flex: 1;
+  height: 4px;
+  background: #E5E7EB;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.ob-progress-fill {
+  height: 100%;
+  background: #7C3AED;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.ob-progress-label {
+  font-size: 12px;
+  color: #9CA3AF;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── Content area ── */
+.ob-content {
+  flex: 1;
+  padding: 32px 24px 0;
+}
+
+.ob-heading {
+  margin-bottom: 28px;
+}
+
+.ob-heading h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.ob-heading p {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* ── Space type cards (step 0) ── */
+.ob-type-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ob-type-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 18px 48px 18px 20px;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  background: #F9FAFB;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  width: 100%;
+}
+
+.ob-type-card:active { transform: scale(0.98); }
+
+.ob-type-card--on {
+  border-color: #7C3AED;
+  background: #F5F3FF;
+}
+
+.ob-type-emoji {
+  font-size: 28px;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.ob-type-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.ob-type-desc {
+  font-size: 13px;
+  color: #6B7280;
+}
+
+.ob-type-check {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #7C3AED;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.ob-type-card--on .ob-type-check { opacity: 1; }
+
+/* ── Feature rows (step 1) ── */
+.ob-feat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ob-feat-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  background: #F9FAFB;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  width: 100%;
+}
+
+.ob-feat-row:active { transform: scale(0.99); }
+
+.ob-feat-row--on {
+  border-color: #7C3AED;
+  background: #F5F3FF;
+}
+
+.ob-feat-icon {
+  color: #7C3AED;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ob-feat-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ob-feat-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.ob-feat-desc {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+/* ── Toggle ── */
+.ob-toggle {
+  width: 46px;
+  height: 26px;
+  border-radius: 13px;
+  background: #E5E7EB;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.ob-toggle--on { background: #7C3AED; }
+
+.ob-toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.ob-toggle--on .ob-toggle-knob { transform: translateX(20px); }
+
+/* ── Footer actions ── */
+.ob-footer {
+  padding: 24px 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ob-btn-next {
+  width: 100%;
+  padding: 15px;
+  background: #7C3AED;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.ob-btn-next:hover:not(:disabled) { background: #6D28D9; }
+.ob-btn-next:active { transform: scale(0.98); }
+.ob-btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.ob-btn-skip {
+  background: none;
+  border: none;
+  color: #9CA3AF;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px;
+  text-align: center;
+}
+
+.ob-btn-skip:hover { color: #6B7280; }
+
+/* ── Desktop ── */
+@media (min-width: 768px) {
+  .ob-page {
+    min-height: 100dvh;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .ob-progress { padding-top: 0; }
+}

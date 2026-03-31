@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Wifi, Armchair, VolumeX, Zap, Star, Bookmark, Settings, Info, HelpCircle } from "lucide-react";
+import { Wifi, Armchair, VolumeX, Zap, Star, Bookmark, Settings, Info, HelpCircle, LogOut } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import toast from "react-hot-toast";
 import "./ProfilePage.css";
 
-const LS_NAME          = "ss:profile:name";
 const LS_PREF_WIFI     = "ss:pref:wifiRequired";
 const LS_PREF_SEATING  = "ss:pref:seatingRequired";
 const LS_PREF_QUIET    = "ss:pref:quietRequired";
@@ -15,12 +16,6 @@ function readBool(key, fallback = false) {
   const raw = localStorage.getItem(key);
   if (raw == null) return fallback;
   return raw === "true";
-}
-
-function readText(key, fallback) {
-  const raw = localStorage.getItem(key);
-  if (raw == null || raw.trim() === "") return fallback;
-  return raw;
 }
 
 function readJson(key, fallback) {
@@ -35,8 +30,7 @@ function readJson(key, fallback) {
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-
-  const [name, setName] = useState(() => readText(LS_NAME, "Guest User"));
+  const { currentUser, logout } = useAuth();
 
   const [wifiRequired,    setWifiRequired]    = useState(() => readBool(LS_PREF_WIFI,     false));
   const [seatingRequired, setSeatingRequired] = useState(() => readBool(LS_PREF_SEATING,  false));
@@ -58,31 +52,33 @@ export default function ProfilePage() {
   useEffect(() => { localStorage.setItem(LS_PREF_QUIET,    String(quietRequired));   }, [quietRequired]);
   useEffect(() => { localStorage.setItem(LS_PREF_SOCKETS,  String(socketsRequired)); }, [socketsRequired]);
 
-  const onEditName = () => {
-    const next = prompt("Display name", name);
-    if (next == null) return;
-    const clean = next.trim().slice(0, 28) || "Guest User";
-    setName(clean);
-    localStorage.setItem(LS_NAME, clean);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login", { replace: true });
+    } catch {
+      toast.error("Failed to sign out.");
+    }
   };
 
-  const initials = name
-    .split(" ")
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? "")
-    .join("");
+  // Avatar: photo from Google, or initials
+  const name     = currentUser?.displayName || "User";
+  const email    = currentUser?.email || "";
+  const photoURL = currentUser?.photoURL;
+  const initials = name.split(" ").slice(0, 2).map(w => w[0]?.toUpperCase() ?? "").join("");
 
   return (
     <div className="pf-page">
 
       <div className="pf-header">
-        <div className="pf-avatar" onClick={onEditName}>
-          {initials}
+        <div className="pf-avatar">
+          {photoURL
+            ? <img src={photoURL} alt={name} className="pf-avatar-img" />
+            : initials
+          }
         </div>
-        <div className="pf-name" onClick={onEditName}>
-          {name}
-        </div>
-        <div className="pf-sub">Tap your name to edit</div>
+        <div className="pf-name">{name}</div>
+        <div className="pf-sub">{email}</div>
       </div>
 
       <div className="pf-stats-row">
@@ -150,6 +146,12 @@ export default function ProfilePage() {
         <button type="button" className="pf-link-btn" onClick={() => navigate("/about")}>
           <span className="pf-link-left"><Info size={16} /> About</span>
           <span className="pf-chevron">›</span>
+        </button>
+      </div>
+
+      <div className="pf-card pf-card--danger">
+        <button type="button" className="pf-link-btn pf-link-btn--danger" onClick={handleLogout}>
+          <span className="pf-link-left"><LogOut size={16} /> Sign out</span>
         </button>
       </div>
 
