@@ -1,17 +1,15 @@
 .mp-page {
   position: relative;
-  /* Mobile: viewport minus the bottom nav height */
   height: calc(100dvh - 74px);
   background: #EEF1F5;
-  overflow: hidden; /* prevents page scroll so touch pans the map */
+  overflow: hidden;
 }
 
-/* Desktop: no bottom nav, full height */
 @media (min-width: 768px) {
-  .mp-page {
-    height: 100dvh;
-  }
+  .mp-page { height: 100dvh; }
 }
+
+/* ── Floating search bar ── */
 
 .mp-header {
   position: absolute;
@@ -31,11 +29,6 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.18);
 }
 
-.mp-searchIcon {
-  color: #9AA0A6;
-  flex-shrink: 0;
-}
-
 .mp-searchInput {
   flex: 1;
   border: none;
@@ -46,9 +39,7 @@
   font-family: inherit;
 }
 
-.mp-searchInput::placeholder {
-  color: #9AA0A6;
-}
+.mp-searchInput::placeholder { color: #9AA0A6; }
 
 .mp-filterBtn {
   border: 1.5px solid #DDD6FE;
@@ -64,9 +55,23 @@
   flex-shrink: 0;
 }
 
-.mp-filterBtn:hover {
-  background: #EDE9FE;
+.mp-filterIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
 }
+.mp-filterIcon span {
+  display: block;
+  height: 2px;
+  background: #5B21B6;
+  border-radius: 2px;
+}
+.mp-filterIcon span:nth-child(1) { width: 14px; }
+.mp-filterIcon span:nth-child(2) { width: 10px; }
+.mp-filterIcon span:nth-child(3) { width: 6px; }
+
+/* ── Suggestions dropdown ── */
 
 .mp-suggestions {
   background: white;
@@ -85,30 +90,19 @@
   font-size: 13px;
 }
 
-.mp-suggestionItem:hover {
-  background: #F3F4F6;
-}
+.mp-suggestionItem:hover { background: #F3F4F6; }
 
-.mp-suggestionIcon {
-  font-size: 16px;
-  flex-shrink: 0;
-}
+.mp-suggestionIcon { font-size: 16px; flex-shrink: 0; }
 
 .mp-suggestionText {
   display: flex;
   flex-direction: column;
   gap: 1px;
 }
+.mp-suggestionText strong { font-size: 13px; color: #1a1a1a; }
+.mp-suggestionText span   { font-size: 11px; color: #888; }
 
-.mp-suggestionText strong {
-  font-size: 13px;
-  color: #1a1a1a;
-}
-
-.mp-suggestionText span {
-  font-size: 11px;
-  color: #888;
-}
+/* ── Filter chips ── */
 
 .mp-filterPanel {
   position: absolute;
@@ -125,10 +119,7 @@
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   z-index: 2000;
 }
-
-.mp-filterPanel::-webkit-scrollbar {
-  display: none;
-}
+.mp-filterPanel::-webkit-scrollbar { display: none; }
 
 .mp-chip {
   display: flex;
@@ -146,39 +137,19 @@
   white-space: nowrap;
   font-family: inherit;
 }
+.mp-chip:hover          { border-color: var(--color-primary); color: var(--color-primary); }
+.mp-chip--active        { background: var(--color-primary); border-color: var(--color-primary); color: white; }
 
-.mp-chip:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.mp-chip--active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: white;
-}
+/* ── Map container ── */
 
 .mp-map {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
 }
 
-.mp-state {
-  padding: 16px;
-  color: var(--color-text-secondary);
-}
+.mp-state { padding: 16px; color: var(--color-text-secondary); }
 
-.leaflet-container {
-  font-family: var(--font-family);
-}
-
-/* Hide zoom controls */
-.leaflet-control-zoom {
-  display: none;
-}
+/* ── Locate me button ── */
 
 .mp-locateBtn {
   position: absolute;
@@ -199,94 +170,94 @@
 }
 
 @media (min-width: 768px) {
-  .mp-locateBtn {
-    bottom: 24px; /* no bottom nav on desktop */
-  }
+  .mp-locateBtn { bottom: 24px; }
 }
 
-.mp-markerWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+/* ── Legend ── */
 
-.mp-markerLabel {
-  background: white;
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 3px 7px;
-  border-radius: 6px;
-  font-size: 10px;
-  margin-bottom: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  white-space: nowrap;
-}
-
-.mp-markerDot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-.custom-marker {
-  background: none;
-  border: none;
-}
-
-.mp-filterIcon {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  pointer-events: none;
-}
-.mp-filterIcon span {
-  display: block;
-  height: 2px;
-  background: #5B21B6;
-  border-radius: 2px;
-  transition: width 0.2s ease;
-}
-.mp-filterIcon span:nth-child(1) { width: 14px; }
-.mp-filterIcon span:nth-child(2) { width: 10px; }
-.mp-filterIcon span:nth-child(3) { width: 6px; }
-
-/* User location pulsating dot */
-.mp-userDot {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  background: #4285F4;
-  border: 2.5px solid #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 6px rgba(66, 133, 244, 0.7);
-  overflow: visible;
-}
-
-.mp-userPulse {
+.mp-legend {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40px;
-  height: 40px;
-  background: rgba(66, 133, 244, 0.2);
-  border-radius: 50%;
-  animation: mp-pulse 2s ease-out infinite;
+  bottom: 40px;
+  left: 10px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.92);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   pointer-events: none;
 }
 
-@keyframes mp-pulse {
-  0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
+.mp-legend-section { display: flex; gap: 10px; }
+.mp-legend span    { display: flex; align-items: center; gap: 4px; }
+
+.mp-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
-/* Popup */
+/* ── Popup (inside Google Maps InfoWindow) ── */
+
+/* ── Google Maps InfoWindow overrides ── */
+
+/* Outer container */
+.gm-style .gm-style-iw-c {
+  padding: 0 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15) !important;
+  max-width: 270px !important;
+}
+
+/* Scrollable inner div */
+.gm-style .gm-style-iw-d {
+  overflow: hidden !important;
+  padding: 0 !important;
+  max-height: none !important;
+}
+
+/* Hide the tail/arrow */
+.gm-style .gm-style-iw-t::after { display: none !important; }
+
+/* Style the close button */
+.gm-style .gm-style-iw-chr {
+  position: absolute !important;
+  top: 6px !important;
+  right: 6px !important;
+  z-index: 10;
+}
+
+.gm-style .gm-style-iw-ch {
+  padding: 0 !important;
+}
+
+.gm-style button[title="Close"] {
+  width: 24px !important;
+  height: 24px !important;
+  background: #f3f4f6 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0.7 !important;
+  top: 0 !important;
+  right: 0 !important;
+}
+
+.gm-style button[title="Close"]:hover {
+  opacity: 1 !important;
+  background: #e5e7eb !important;
+}
+
 .mp-popup {
-  min-width: 160px;
-  padding: 4px 2px;
+  min-width: 220px;
+  max-width: 260px;
+  padding: 14px 14px 12px;
+  font-family: var(--font-family);
 }
 
 .mp-popup-name {
@@ -302,128 +273,6 @@
   margin-bottom: 8px;
 }
 
-.mp-popup-quietness {
-  font-size: 12px;
-  font-weight: 600;
-  color: #5B21B6;
-  margin-bottom: 6px;
-}
-
-.mp-popup-facilities {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  font-size: 11px;
-  margin-bottom: 10px;
-}
-
-.mp-popup-busyness {
-  font-size: 12px;
-  font-weight: 500;
-  margin-bottom: 8px;
-  color: #444;
-}
-
-.mp-popup-btn {
-  width: 100%;
-  padding: 8px 0;
-  background: #5B21B6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.mp-popup-btn:hover {
-  background: #7C3AED;
-}
-
-/* Legend */
-.mp-legend {
-  position: absolute;
-  bottom: 40px;
-  left: 10px;
-  z-index: 1000;
-  background: rgba(255,255,255,0.92);
-  border-radius: 10px;
-  padding: 6px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 500;
-  color: #333;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  pointer-events: none;
-}
-
-.mp-legend-section {
-  display: flex;
-  gap: 10px;
-}
-
-.mp-legend-divider {
-  height: 1px;
-  background: #eee;
-}
-
-.mp-legend span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.mp-legend-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-/* Teardrop pin marker */
-.mp-pin-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-
-.mp-pin {
-  width: 16px;
-  height: 16px;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
-  flex-shrink: 0;
-}
-
-.mp-pin-inner {
-  width: 6px;
-  height: 6px;
-  background: rgba(255,255,255,0.75);
-  border-radius: 50%;
-  transform: rotate(45deg);
-}
-
-.mp-pin-label {
-  background: white;
-  padding: 2px 7px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #1a1a1a;
-  white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-}
-
-/* Popup bars */
 .mp-popup-no-ratings {
   font-size: 12px;
   color: #aaa;
@@ -431,7 +280,7 @@
 }
 
 .mp-popup-bars {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -464,13 +313,8 @@
   transition: width 0.3s ease;
 }
 
-.mp-popup-bar--quiet {
-  background: #7C3AED;
-}
-
-.mp-popup-bar--busy {
-  background: #F59E0B;
-}
+.mp-popup-bar--quiet { background: #7C3AED; }
+.mp-popup-bar--busy  { background: #F59E0B; }
 
 .mp-popup-bar-val {
   font-size: 11px;
@@ -480,3 +324,36 @@
   text-align: right;
   flex-shrink: 0;
 }
+
+.mp-popup-facilities {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.mp-popup-fac {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #F3F4F6;
+  color: #444;
+  padding: 3px 7px;
+  border-radius: 999px;
+}
+
+.mp-popup-btn {
+  width: 100%;
+  padding: 8px 0;
+  background: #5B21B6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.mp-popup-btn:hover { background: #7C3AED; }

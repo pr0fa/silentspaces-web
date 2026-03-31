@@ -16,8 +16,6 @@ import { Toaster } from "react-hot-toast";
 
 import BottomNav from "./views/BottomNav/BottomNav.jsx";
 
-// Leaflet base styles (needed for tiles/controls/popups/icons)
-import "leaflet/dist/leaflet.css";
 import "./App.css";
 
 function AppLayout({ children }) {

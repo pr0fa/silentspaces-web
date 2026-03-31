@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
+import { useLoadScript } from "@react-google-maps/api";
 import { getLocations } from "../../models/locationModel";
-import { Navigation, Search, ListFilter, Wifi, Armchair, Zap, VolumeX } from "lucide-react";
-import L from "leaflet";
+import { Navigation, Search, Wifi, Armchair, Zap, VolumeX } from "lucide-react";
 import "./MapPage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
@@ -11,6 +11,20 @@ const LS_PREF_WIFI    = "ss:pref:wifiRequired";
 const LS_PREF_SEATING = "ss:pref:seatingRequired";
 const LS_PREF_QUIET   = "ss:pref:quietRequired";
 const LS_PREF_SOCKETS = "ss:pref:socketsRequired";
+
+const CENTER = { lat: 51.5074, lng: -0.1278 };
+
+// Passed to Map constructor — renderingType can ONLY be set at creation time
+const MAP_INIT_OPTIONS = {
+  center: CENTER,
+  zoom: 12,
+  disableDefaultUI: true,
+  zoomControl: true,
+  clickableIcons: false,
+  gestureHandling: "greedy",
+  renderingType: "VECTOR",       // WebGL vector tiles — smooth 60fps panning
+  isFractionalZoomEnabled: true, // smooth pinch-zoom (no integer snapping)
+};
 
 function readBool(key, fallback = false) {
   const raw = localStorage.getItem(key);
@@ -20,93 +34,60 @@ function readBool(key, fallback = false) {
 
 function getMarkerColor(type) {
   const t = String(type || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  if (t.includes("library"))                        return "#6366F1";
-  if (t.includes("cafe") || t.includes("coffee"))  return "#14B8A6";
-  if (t.includes("park") || t.includes("garden"))  return "#38BDF8";
-  return "#6366F1";
+  if (t.includes("library"))                       return "#7C3AED";
+  if (t.includes("cafe") || t.includes("coffee")) return "#F87171";
+  if (t.includes("park") || t.includes("garden")) return "#06B6D4";
+  return "#7C3AED";
 }
 
-function getQuietnessColour(score) {
-  const s = Number(score || 0);
-  if (s >= 4.0) return "#22C55E";
-  if (s >= 2.5) return "#F59E0B";
-  if (s > 0)    return "#EF4444";
-  return "#D1D5DB";
+function makeTeardropSvg(color) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36"><path d="M14 0C6.268 0 0 6.268 0 14c0 10.5 14 22 14 22S28 24.5 28 14C28 6.268 21.732 0 14 0z" fill="${color}"/><circle cx="14" cy="14" r="6" fill="white" opacity="0.9"/></svg>`;
 }
 
-function FitBounds({ points }) {
-  const map = useMap();
-  const fitted = useRef(false);
-  useEffect(() => {
-    if (fitted.current || !points || points.length === 0) return;
-    map.fitBounds(L.latLngBounds(points), { padding: [30, 30] });
-    fitted.current = true;
-  }, [map, points]);
-  return null;
-}
-
-function PanTo({ coords }) {
-  const map = useMap();
-  useEffect(() => {
-    if (coords) map.setView(coords, 14);
-  }, [coords, map]);
-  return null;
-}
-
-function ZoomWatcher({ onZoom }) {
-  useMapEvents({ zoomend: (e) => onZoom(e.target.getZoom()) });
-  return null;
-}
-
-function LocateMeButton({ userLocation }) {
-  const map = useMap();
-
-  const handleLocate = () => {
-    if (userLocation) {
-      map.setView(userLocation, 16);
-    } else if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        map.setView([pos.coords.latitude, pos.coords.longitude], 16);
-      });
-    }
-  };
-
-  return (
-    <button className="mp-locateBtn" onClick={handleLocate}>
-      <Navigation size={20} />
-    </button>
-  );
-}
+const USER_DOT_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#4285F4" opacity="0.15"><animate attributeName="r" values="6;12;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite"/></circle><circle cx="12" cy="12" r="6" fill="#4285F4" stroke="white" stroke-width="2.5"/></svg>`;
 
 export default function MapPage() {
   const navigate = useNavigate();
+  const containerRef  = useRef(null); // DOM div for native map (set via callback ref)
+  const mapRef        = useRef(null); // google.maps.Map instance
+  const iwRef         = useRef(null); // google.maps.InfoWindow instance
+  const iwContentRef  = useRef(document.createElement("div")); // portal target
+  const markersRef    = useRef([]);
+  const iconsRef      = useRef(null);
+  const userMarkerRef = useRef(null);
+  const fittedRef     = useRef(false);
+  const geocodeTimer  = useRef(null);
 
-  const [locations, setLocations]     = useState([]);
-  const [loading, setLoading]         = useState(true);
-  const [error, setError]             = useState("");
-  const [query, setQuery]             = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+  });
+
+  const [locations,    setLocations]    = useState([]);
+  const [loading,      setLoading]      = useState(true);
+  const [error,        setError]        = useState("");
+  const [query,        setQuery]        = useState("");
+  const [suggestions,  setSuggestions]  = useState([]);
+  const [showFilters,  setShowFilters]  = useState(false);
   const [userLocation, setUserLocation] = useState(null);
-  const [panCoords, setPanCoords] = useState(null);
-  const [zoom, setZoom] = useState(13);
-  const geocodeTimer = useRef(null);
+  const [selected,     setSelected]     = useState(null);
+  const [mapReady,     setMapReady]     = useState(false);
 
   const [wifiOnly,    setWifiOnly]    = useState(() => readBool(LS_PREF_WIFI,    false));
   const [seatingOnly, setSeatingOnly] = useState(() => readBool(LS_PREF_SEATING, false));
   const [quietOnly,   setQuietOnly]   = useState(() => readBool(LS_PREF_QUIET,   false));
   const [socketsOnly, setSocketsOnly] = useState(() => readBool(LS_PREF_SOCKETS, false));
 
-  // Live location tracking
+  // Live user location
   useEffect(() => {
     if (!navigator.geolocation) return;
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => setUserLocation([pos.coords.latitude, pos.coords.longitude]),
+    const id = navigator.geolocation.watchPosition(
+      (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
       () => {}
     );
-    return () => navigator.geolocation.clearWatch(watchId);
+    return () => navigator.geolocation.clearWatch(id);
   }, []);
 
+  // Load locations from Firestore
   useEffect(() => {
     let alive = true;
     getLocations()
@@ -116,11 +97,11 @@ export default function MapPage() {
     return () => { alive = false; };
   }, []);
 
+  // Search suggestions
   useEffect(() => {
     const q = query.trim();
     if (!q) { setSuggestions([]); return; }
 
-    // Local location matches
     const localMatches = locations
       .filter((loc) =>
         (loc.name || "").toLowerCase().includes(q.toLowerCase()) ||
@@ -131,38 +112,21 @@ export default function MapPage() {
 
     setSuggestions(localMatches);
 
-    // Debounce geocoding so we don't call on every keystroke
     clearTimeout(geocodeTimer.current);
     geocodeTimer.current = setTimeout(() => {
       const token = import.meta.env.VITE_MAPBOX_TOKEN;
-      fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?country=gb&types=place,locality,neighborhood,district&access_token=${token}`
-      )
+      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?country=gb&types=place,locality,neighborhood,district&access_token=${token}`)
         .then((r) => r.json())
         .then((data) => {
           const areas = (data.features || []).slice(0, 3).map((f) => ({
-            id: f.id,
-            name: f.text,
-            area: f.place_name,
-            coords: [f.center[1], f.center[0]],
-            isArea: true,
+            id: f.id, name: f.text, area: f.place_name,
+            coords: { lat: f.center[1], lng: f.center[0] }, isArea: true,
           }));
           setSuggestions([...localMatches, ...areas]);
         })
         .catch(() => {});
     }, 400);
   }, [query, locations]);
-
-  const handleSuggestionClick = (item) => {
-    if (item.isArea) {
-      setQuery(item.name);
-      setPanCoords(item.coords);
-      setSuggestions([]);
-    } else {
-      setQuery(item.name);
-      setSuggestions([]);
-    }
-  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -176,49 +140,162 @@ export default function MapPage() {
       if (seatingOnly && !loc.seating) return false;
       if (socketsOnly && !loc.sockets) return false;
       if (quietOnly && Number(loc.quietnessScore || 0) < 4.0) return false;
-      const lat = Number(loc.lat);
-      const lng = Number(loc.lng);
-      return Number.isFinite(lat) && Number.isFinite(lng);
+      return Number.isFinite(Number(loc.lat)) && Number.isFinite(Number(loc.lng));
     });
   }, [locations, query, wifiOnly, seatingOnly, quietOnly, socketsOnly]);
 
-  if (loading) return <LoadingScreen message="Loading the map..." />;
-  if (error)   return <div className="mp-state">{error}</div>;
+  // Build icon cache once (3 icons, reused for all markers)
+  const buildIcons = useCallback(() => {
+    if (iconsRef.current) return iconsRef.current;
+    const make = (color) => ({
+      url: `data:image/svg+xml,${encodeURIComponent(makeTeardropSvg(color))}`,
+      scaledSize: new window.google.maps.Size(18, 24),
+      anchor:     new window.google.maps.Point(9, 24),
+    });
+    iconsRef.current = {
+      "#7C3AED": make("#7C3AED"),
+      "#F87171": make("#F87171"),
+      "#06B6D4": make("#06B6D4"),
+    };
+    return iconsRef.current;
+  }, []);
+
+  // Callback ref — fires the moment the container div mounts in the DOM.
+  // By that point isLoaded is guaranteed true (loading screen hides the div otherwise).
+  const onContainerMount = useCallback((node) => {
+    containerRef.current = node;
+    if (!node || mapRef.current) return; // already created or unmounted
+
+    const map = new window.google.maps.Map(node, MAP_INIT_OPTIONS);
+    map.addListener("click", () => setSelected(null));
+    mapRef.current = map;
+    buildIcons();
+
+    // Native InfoWindow — content is a DOM div we portal React JSX into
+    const iw = new window.google.maps.InfoWindow({
+      content:     iwContentRef.current,
+      pixelOffset: new window.google.maps.Size(0, -28),
+    });
+    iw.addListener("closeclick", () => setSelected(null));
+    iwRef.current = iw;
+
+    setMapReady(true);
+  }, [buildIcons]); // isLoaded not needed — container only mounts after loading screen clears
+
+  // Show/hide InfoWindow when selected changes
+  useEffect(() => {
+    if (!iwRef.current || !mapRef.current) return;
+    if (selected) {
+      iwRef.current.setPosition({ lat: Number(selected.lat), lng: Number(selected.lng) });
+      iwRef.current.open(mapRef.current);
+    } else {
+      iwRef.current.close();
+    }
+  }, [selected]);
+
+  // Place markers natively — bypasses React reconciliation entirely
+  useEffect(() => {
+    if (!mapReady || !mapRef.current) return;
+
+    const icons = buildIcons();
+    markersRef.current.forEach((m) => m.setMap(null));
+    markersRef.current = [];
+
+    filtered.forEach((loc) => {
+      const color = getMarkerColor(loc.type);
+      const marker = new window.google.maps.Marker({
+        position: { lat: Number(loc.lat), lng: Number(loc.lng) },
+        map: mapRef.current,
+        icon: icons[color],
+        title: loc.name,
+        optimized: true, // canvas rendering — faster
+      });
+      marker.addListener("click", () => setSelected(loc));
+      markersRef.current.push(marker);
+    });
+
+    return () => { markersRef.current.forEach((m) => m.setMap(null)); };
+  }, [filtered, mapReady, buildIcons]);
+
+  // User location dot
+  useEffect(() => {
+    if (!mapReady || !mapRef.current) return;
+    if (userMarkerRef.current) userMarkerRef.current.setMap(null);
+    if (!userLocation) return;
+
+    userMarkerRef.current = new window.google.maps.Marker({
+      position: userLocation,
+      map: mapRef.current,
+      icon: {
+        url: `data:image/svg+xml,${encodeURIComponent(USER_DOT_SVG)}`,
+        scaledSize: new window.google.maps.Size(24, 24),
+        anchor:     new window.google.maps.Point(12, 12),
+      },
+      zIndex: 999,
+      optimized: false, // SVG animation requires this
+    });
+  }, [userLocation, mapReady]);
+
+  // FitBounds once on first load
+  useEffect(() => {
+    if (fittedRef.current || !mapReady || filtered.length === 0) return;
+    const bounds = new window.google.maps.LatLngBounds();
+    filtered.forEach((loc) => bounds.extend({ lat: Number(loc.lat), lng: Number(loc.lng) }));
+    mapRef.current.fitBounds(bounds, 40);
+    fittedRef.current = true;
+  }, [filtered, mapReady]);
+
+  const handleSuggestionClick = (item) => {
+    setQuery(item.name);
+    setSuggestions([]);
+    if (item.isArea && mapRef.current) {
+      mapRef.current.panTo(item.coords);
+      mapRef.current.setZoom(13);
+    }
+  };
+
+  const handleLocateMe = () => {
+    if (userLocation && mapRef.current) {
+      mapRef.current.panTo(userLocation);
+      mapRef.current.setZoom(16);
+    } else if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        if (mapRef.current) { mapRef.current.panTo(coords); mapRef.current.setZoom(16); }
+      });
+    }
+  };
+
+  if (loading || !isLoaded) return <LoadingScreen message="Loading the map..." />;
+  if (error || loadError)   return <div className="mp-state">{error || "Failed to load Google Maps"}</div>;
 
   return (
     <div className="mp-page">
 
-      {/* Search bar */}
+      {/* Floating search bar */}
       <div className="mp-header">
         <div className="mp-searchBar">
           <Search size={18} color="#9AA0A6" strokeWidth={2} />
           <input
             value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              if (!e.target.value.trim()) setSuggestions([]);
-            }}
+            onChange={(e) => { setQuery(e.target.value); if (!e.target.value.trim()) setSuggestions([]); }}
             onBlur={() => setTimeout(() => setSuggestions([]), 150)}
             placeholder="Search by name or area..."
             className="mp-searchInput"
           />
           <button className="mp-filterBtn" onClick={() => setShowFilters(!showFilters)}>
-            <span className="mp-filterIcon">
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
+            <span className="mp-filterIcon"><span/><span/><span/></span>
           </button>
         </div>
 
         {suggestions.length > 0 && (
           <div className="mp-suggestions">
             {suggestions.map((item) => (
-              <div key={item.id} className="mp-suggestionItem" onClick={() => handleSuggestionClick(item)}>
+              <div key={item.id} className="mp-suggestionItem" onMouseDown={() => handleSuggestionClick(item)}>
                 <span className="mp-suggestionIcon">{item.isArea ? "🗺️" : "📍"}</span>
                 <div className="mp-suggestionText">
                   <strong>{item.name}</strong>
-                  <span>{item.isArea ? item.area : item.area}</span>
+                  <span>{item.area}</span>
                 </div>
               </div>
             ))}
@@ -248,93 +325,61 @@ export default function MapPage() {
       <div className="mp-map">
         <div className="mp-legend">
           <div className="mp-legend-section">
-            <span><span className="mp-legend-dot" style={{ background: "#6366F1" }}></span>Library</span>
-            <span><span className="mp-legend-dot" style={{ background: "#14B8A6" }}></span>Café</span>
-            <span><span className="mp-legend-dot" style={{ background: "#38BDF8" }}></span>Park</span>
+            <span><span className="mp-legend-dot" style={{ background: "#7C3AED" }}></span>Library</span>
+            <span><span className="mp-legend-dot" style={{ background: "#F87171" }}></span>Café</span>
+            <span><span className="mp-legend-dot" style={{ background: "#06B6D4" }}></span>Park</span>
           </div>
         </div>
-        <MapContainer
-          center={[51.5074, -0.1278]}
-          zoom={13}
-          scrollWheelZoom
-          style={{ height: "100%", width: "100%" }}
-        >
-          <TileLayer
-            attribution='© <a href="https://www.mapbox.com/">Mapbox</a>'
-            url={`https://api.mapbox.com/styles/v1/mapbox/light-v11/tiles/{z}/{x}/{y}?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`}
-            tileSize={512}
-            zoomOffset={-1}
-          />
 
-          <FitBounds points={filtered.map((l) => [Number(l.lat), Number(l.lng)])} />
-          <PanTo coords={panCoords} />
-          <ZoomWatcher onZoom={setZoom} />
-          <LocateMeButton userLocation={userLocation} />
+        <button className="mp-locateBtn" onClick={handleLocateMe}>
+          <Navigation size={20} />
+        </button>
 
-          {userLocation && (
-            <Marker
-              position={userLocation}
-              icon={L.divIcon({
-                className: "",
-                html: `<div class="mp-userDot"><div class="mp-userPulse"></div></div>`,
-                iconSize: [16, 16],
-                iconAnchor: [8, 8],
-              })}
-            />
-          )}
+        {/* Native map container — map created when this div mounts via callback ref */}
+        <div ref={onContainerMount} style={{ width: "100%", height: "100%" }} />
 
-          {filtered.map((loc) => (
-            <Marker
-              key={loc.id}
-              position={[Number(loc.lat), Number(loc.lng)]}
-              icon={L.divIcon({
-                className: "custom-marker",
-                html: zoom >= 15
-                  ? `<div class="mp-pin-wrapper"><span class="mp-pin-label">${loc.name}</span><div class="mp-pin" style="background:${getMarkerColor(String(loc.type))}"><div class="mp-pin-inner"></div></div></div>`
-                  : `<div class="mp-pin" style="background:${getMarkerColor(String(loc.type))}"><div class="mp-pin-inner"></div></div>`,
-                iconSize: zoom >= 15 ? [120, 40] : [16, 22],
-                iconAnchor: zoom >= 15 ? [60, 40] : [8, 22],
-              })}
-            >
-              <Popup>
-                <div className="mp-popup">
-                  <div className="mp-popup-name">{loc.name}</div>
-                  <div className="mp-popup-meta">{loc.area} · {loc.type}</div>
-                  {Number(loc.ratingCount || 0) === 0 ? (
-                    <div className="mp-popup-no-ratings">No ratings yet</div>
-                  ) : (
-                    <div className="mp-popup-bars">
-                      <div className="mp-popup-bar-row">
-                        <span className="mp-popup-bar-label">Quietness</span>
-                        <div className="mp-popup-bar-track">
-                          <div className="mp-popup-bar-fill mp-popup-bar--quiet" style={{ width: `${(Number(loc.quietnessScore) / 5) * 100}%` }} />
-                        </div>
-                        <span className="mp-popup-bar-val">{loc.quietnessScore}</span>
-                      </div>
-                      <div className="mp-popup-bar-row">
-                        <span className="mp-popup-bar-label">Busy</span>
-                        <div className="mp-popup-bar-track">
-                          <div className="mp-popup-bar-fill mp-popup-bar--busy" style={{ width: loc.busynessLevel === "High" ? "100%" : loc.busynessLevel === "Mid" ? "55%" : "25%" }} />
-                        </div>
-                        <span className="mp-popup-bar-val">{loc.busynessLevel || "Low"}</span>
-                      </div>
-                    </div>
-                  )}
-                  <div className="mp-popup-facilities">
-                    {loc.wifi    && <span>📶 Wi-Fi</span>}
-                    {loc.seating && <span>🪑 Seating</span>}
-                    {loc.sockets && <span>🔌 Sockets</span>}
+        {/* Popup content portalled into the native InfoWindow's DOM node */}
+        {selected && createPortal(
+          <div className="mp-popup">
+            <div className="mp-popup-name">{selected.name}</div>
+            <div className="mp-popup-meta">{selected.area} · {selected.type}</div>
+
+            {Number(selected.ratingCount || 0) === 0 ? (
+              <div className="mp-popup-no-ratings">No ratings yet</div>
+            ) : (
+              <div className="mp-popup-bars">
+                <div className="mp-popup-bar-row">
+                  <span className="mp-popup-bar-label">Quietness</span>
+                  <div className="mp-popup-bar-track">
+                    <div className="mp-popup-bar-fill mp-popup-bar--quiet"
+                      style={{ width: `${(Number(selected.quietnessScore) / 5) * 100}%` }} />
                   </div>
-                  <button className="mp-popup-btn" type="button" onClick={() => navigate(`/location/${loc.id}`)}>
-                    View details
-                  </button>
+                  <span className="mp-popup-bar-val">{selected.quietnessScore}</span>
                 </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-      </div>
+                <div className="mp-popup-bar-row">
+                  <span className="mp-popup-bar-label">Busy</span>
+                  <div className="mp-popup-bar-track">
+                    <div className="mp-popup-bar-fill mp-popup-bar--busy"
+                      style={{ width: selected.busynessLevel === "High" ? "100%" : selected.busynessLevel === "Mid" ? "55%" : "25%" }} />
+                  </div>
+                  <span className="mp-popup-bar-val">{selected.busynessLevel || "Low"}</span>
+                </div>
+              </div>
+            )}
 
+            <div className="mp-popup-facilities">
+              {selected.wifi    && <span className="mp-popup-fac"><Wifi size={11} /> Wi-Fi</span>}
+              {selected.seating && <span className="mp-popup-fac"><Armchair size={11} /> Seating</span>}
+              {selected.sockets && <span className="mp-popup-fac"><Zap size={11} /> Sockets</span>}
+            </div>
+
+            <button className="mp-popup-btn" type="button" onClick={() => navigate(`/location/${selected.id}`)}>
+              View details
+            </button>
+          </div>,
+          iwContentRef.current
+        )}
+      </div>
     </div>
   );
 }
