@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import toast from "react-hot-toast";
 import "../LoginPage/LoginPage.css";
 
+const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 export default function SignUpPage() {
   const navigate = useNavigate();
-  const { signUp, signInWithGoogle } = useAuth();
+  const { signUp, signInWithGoogle, signInWithGoogleRedirect, getGoogleRedirectResult } = useAuth();
 
   const [name,     setName]     = useState("");
   const [email,    setEmail]    = useState("");
@@ -15,6 +17,22 @@ export default function SignUpPage() {
   const [confirm,  setConfirm]  = useState("");
   const [showPw,   setShowPw]   = useState(false);
   const [loading,  setLoading]  = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getGoogleRedirectResult()
+      .then((result) => {
+        if (!result) return;
+        const isNew = result._tokenResponse?.isNewUser;
+        navigate(isNew ? "/onboarding" : "/map", { replace: true });
+      })
+      .catch((err) => {
+        if (err.code !== "auth/popup-closed-by-user") {
+          toast.error(friendlyError(err.code));
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,14 +58,17 @@ export default function SignUpPage() {
   const handleGoogle = async () => {
     setLoading(true);
     try {
-      const result = await signInWithGoogle();
-      const isNew = result._tokenResponse?.isNewUser;
-      navigate(isNew ? "/onboarding" : "/map", { replace: true });
+      if (isMobile) {
+        await signInWithGoogleRedirect();
+      } else {
+        const result = await signInWithGoogle();
+        const isNew = result._tokenResponse?.isNewUser;
+        navigate(isNew ? "/onboarding" : "/map", { replace: true });
+      }
     } catch (err) {
       if (err.code !== "auth/popup-closed-by-user") {
         toast.error(friendlyError(err.code));
       }
-    } finally {
       setLoading(false);
     }
   };

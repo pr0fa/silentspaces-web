@@ -4,6 +4,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut,
   onAuthStateChanged,
   updateProfile,
@@ -65,10 +67,16 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = () =>
     signInWithPopup(auth, googleProvider);
 
+  const signInWithGoogleRedirect = () =>
+    signInWithRedirect(auth, googleProvider);
+
+  const getGoogleRedirectResult = () =>
+    getRedirectResult(auth);
+
   const logout = () => signOut(auth);
 
   return (
-    <AuthContext.Provider value={{ currentUser, loading, signUp, signIn, signInWithGoogle, logout }}>
+    <AuthContext.Provider value={{ currentUser, loading, signUp, signIn, signInWithGoogle, signInWithGoogleRedirect, getGoogleRedirectResult, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );

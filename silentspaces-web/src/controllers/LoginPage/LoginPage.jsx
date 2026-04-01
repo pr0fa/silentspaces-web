@@ -1,18 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import toast from "react-hot-toast";
 import "./LoginPage.css";
 
+const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, signInWithGoogleRedirect, getGoogleRedirectResult } = useAuth();
 
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
   const [showPw,   setShowPw]   = useState(false);
   const [loading,  setLoading]  = useState(false);
+
+  // Handle redirect result when returning from Google on mobile
+  useEffect(() => {
+    setLoading(true);
+    getGoogleRedirectResult()
+      .then((result) => {
+        if (!result) return;
+        const isNew = result._tokenResponse?.isNewUser;
+        navigate(isNew ? "/onboarding" : "/map", { replace: true });
+      })
+      .catch((err) => {
+        if (err.code !== "auth/popup-closed-by-user") {
+          toast.error(friendlyError(err.code));
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,15 +50,18 @@ export default function LoginPage() {
   const handleGoogle = async () => {
     setLoading(true);
     try {
-      const result = await signInWithGoogle();
-      // New Google user → onboarding
-      const isNew = result._tokenResponse?.isNewUser;
-      navigate(isNew ? "/onboarding" : "/map", { replace: true });
+      if (isMobile) {
+        // Redirect flow — page navigates away, result handled in useEffect on return
+        await signInWithGoogleRedirect();
+      } else {
+        const result = await signInWithGoogle();
+        const isNew = result._tokenResponse?.isNewUser;
+        navigate(isNew ? "/onboarding" : "/map", { replace: true });
+      }
     } catch (err) {
       if (err.code !== "auth/popup-closed-by-user") {
         toast.error(friendlyError(err.code));
       }
-    } finally {
       setLoading(false);
     }
   };
