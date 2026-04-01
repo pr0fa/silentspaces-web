@@ -286,6 +286,175 @@
   font-size: 14px;
 }
 
+/* ── Add button ── */
+.ad-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #7C3AED;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ad-add-btn:hover { background: #6D28D9; }
+
+/* ── Modal overlay ── */
+.ad-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.ad-modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.ad-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.ad-modal-header h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.ad-modal-close {
+  background: none;
+  border: none;
+  color: #9CA3AF;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+.ad-modal-close:hover { color: #111827; }
+
+/* ── Modal form ── */
+.ad-modal-form {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ad-modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.ad-modal-form input,
+.ad-modal-form select {
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.15s;
+  background: white;
+}
+.ad-modal-form input:focus,
+.ad-modal-form select:focus { border-color: #7C3AED; }
+
+.ad-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: #9CA3AF;
+}
+
+.ad-required { color: #DC2626; margin-left: 2px; }
+.ad-optional { font-weight: 400; color: #9CA3AF; font-size: 12px; }
+
+.ad-modal-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: #F9FAFB;
+  border-radius: 10px;
+}
+
+.ad-toggle-row {
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+}
+
+.ad-toggle-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #7C3AED;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+}
+
+.ad-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.ad-modal-cancel {
+  background: none;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6B7280;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.ad-modal-cancel:hover { border-color: #D1D5DB; color: #374151; }
+
+.ad-modal-submit {
+  background: #7C3AED;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ad-modal-submit:hover:not(:disabled) { background: #6D28D9; }
+.ad-modal-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
 /* ── Mobile fallback ── */
 @media (max-width: 767px) {
   .ad-sidebar { display: none; }

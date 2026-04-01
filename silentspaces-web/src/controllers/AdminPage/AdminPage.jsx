@@ -6,14 +6,34 @@ import {
   getAdminLocations,
   getAdminRatings,
   getAdminUsers,
+  addLocation,
   deleteLocation,
   deleteRating,
 } from "../../models/adminModel";
-import { MapPin, Star, VolumeX, Users, ArrowLeft, Trash2, RefreshCw } from "lucide-react";
+import { MapPin, Star, VolumeX, Users, ArrowLeft, Trash2, RefreshCw, Plus, X } from "lucide-react";
 import toast from "react-hot-toast";
 import "./AdminPage.css";
 
 const TABS = ["Overview", "Locations", "Ratings", "Users"];
+
+const EMPTY_FORM = {
+  name: "", type: "library", address: "", area: "",
+  wifi: false, seating: false, sockets: false,
+};
+
+async function geocodeAddress(address) {
+  const token = import.meta.env.VITE_MAPBOX_TOKEN;
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?country=gb&limit=1&access_token=${token}`;
+  const res  = await fetch(url);
+  const data = await res.json();
+  const feat = data.features?.[0];
+  if (!feat) throw new Error("Address not found");
+  return {
+    lat:  feat.center[1],
+    lng:  feat.center[0],
+    area: feat.context?.find(c => c.id.startsWith("place") || c.id.startsWith("locality"))?.text || "",
+  };
+}
 
 export default function AdminPage() {
   const navigate  = useNavigate();
@@ -26,6 +46,11 @@ export default function AdminPage() {
   const [users,     setUsers]     = useState([]);
   const [loading,   setLoading]   = useState(true);
   const [search,    setSearch]    = useState("");
+
+  // Add location modal
+  const [showAdd,   setShowAdd]   = useState(false);
+  const [form,      setForm]      = useState(EMPTY_FORM);
+  const [saving,    setSaving]    = useState(false);
 
   const loadAll = async () => {
     setLoading(true);
@@ -49,13 +74,43 @@ export default function AdminPage() {
 
   useEffect(() => { loadAll(); }, []);
 
+  const handleAddLocation = async (e) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.address.trim()) {
+      toast.error("Name and address are required.");
+      return;
+    }
+    setSaving(true);
+    try {
+      const { lat, lng, area } = await geocodeAddress(form.address);
+      await addLocation({
+        name:    form.name.trim(),
+        type:    form.type,
+        address: form.address.trim(),
+        area:    form.area.trim() || area,
+        lat, lng,
+        wifi:    form.wifi,
+        seating: form.seating,
+        sockets: form.sockets,
+      });
+      toast.success(`"${form.name}" added to the map!`);
+      setShowAdd(false);
+      setForm(EMPTY_FORM);
+      loadAll();
+    } catch (err) {
+      toast.error(err.message || "Failed to add location.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleDeleteLocation = async (id, name) => {
     if (!window.confirm(`Delete "${name}" and all its ratings?`)) return;
     try {
       await deleteLocation(id);
       setLocations(prev => prev.filter(l => l.id !== id));
       toast.success("Location deleted.");
-      loadAll(); // refresh stats
+      loadAll();
     } catch {
       toast.error("Failed to delete location.");
     }
@@ -72,6 +127,8 @@ export default function AdminPage() {
       toast.error("Failed to delete rating.");
     }
   };
+
+  const field = (key) => (e) => setForm(f => ({ ...f, [key]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
 
   const filteredLocations = locations.filter(l =>
     !search || (l.name || "").toLowerCase().includes(search.toLowerCase())
@@ -135,6 +192,11 @@ export default function AdminPage() {
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
+            )}
+            {tab === "Locations" && (
+              <button className="ad-add-btn" onClick={() => setShowAdd(true)}>
+                <Plus size={15} /> Add Location
+              </button>
             )}
             <button className="ad-refresh-btn" onClick={loadAll} title="Refresh">
               <RefreshCw size={15} />
@@ -213,6 +275,8 @@ export default function AdminPage() {
                       <th>Ratings</th>
                       <th>Score</th>
                       <th>Wi-Fi</th>
+                      <th>Seating</th>
+                      <th>Sockets</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -224,7 +288,9 @@ export default function AdminPage() {
                         <td className="ad-muted">{l.area}</td>
                         <td>{l.ratingCount || 0}</td>
                         <td>{l.quietnessScore || "—"}</td>
-                        <td>{l.wifi ? "✓" : <span className="ad-muted">✗</span>}</td>
+                        <td>{l.wifi    ? "✓" : <span className="ad-muted">✗</span>}</td>
+                        <td>{l.seating ? "✓" : <span className="ad-muted">✗</span>}</td>
+                        <td>{l.sockets ? "✓" : <span className="ad-muted">✗</span>}</td>
                         <td>
                           <button
                             className="ad-delete-btn"
@@ -316,6 +382,84 @@ export default function AdminPage() {
           </>
         )}
       </main>
+
+      {/* ── Add Location Modal ── */}
+      {showAdd && (
+        <div className="ad-modal-overlay" onClick={() => setShowAdd(false)}>
+          <div className="ad-modal" onClick={e => e.stopPropagation()}>
+            <div className="ad-modal-header">
+              <h2>Add Location</h2>
+              <button className="ad-modal-close" onClick={() => setShowAdd(false)}><X size={18} /></button>
+            </div>
+
+            <form className="ad-modal-form" onSubmit={handleAddLocation}>
+              <label>
+                Name <span className="ad-required">*</span>
+                <input
+                  value={form.name}
+                  onChange={field("name")}
+                  placeholder="e.g. Kingston Library"
+                  required
+                />
+              </label>
+
+              <label>
+                Type
+                <select value={form.type} onChange={field("type")}>
+                  <option value="library">Library</option>
+                  <option value="cafe">Café</option>
+                  <option value="park">Park</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
+
+              <label>
+                Address <span className="ad-required">*</span>
+                <input
+                  value={form.address}
+                  onChange={field("address")}
+                  placeholder="e.g. Fairfield Road, Kingston upon Thames"
+                  required
+                />
+                <span className="ad-hint">Used to auto-detect coordinates — be specific</span>
+              </label>
+
+              <label>
+                Area / Neighbourhood <span className="ad-optional">(optional)</span>
+                <input
+                  value={form.area}
+                  onChange={field("area")}
+                  placeholder="e.g. Kingston upon Thames"
+                />
+              </label>
+
+              <div className="ad-modal-toggles">
+                <label className="ad-toggle-row">
+                  <input type="checkbox" checked={form.wifi}    onChange={field("wifi")}    />
+                  Wi-Fi available
+                </label>
+                <label className="ad-toggle-row">
+                  <input type="checkbox" checked={form.seating} onChange={field("seating")} />
+                  Seating available
+                </label>
+                <label className="ad-toggle-row">
+                  <input type="checkbox" checked={form.sockets} onChange={field("sockets")} />
+                  Power sockets
+                </label>
+              </div>
+
+              <div className="ad-modal-actions">
+                <button type="button" className="ad-modal-cancel" onClick={() => setShowAdd(false)}>
+                  Cancel
+                </button>
+                <button type="submit" className="ad-modal-submit" disabled={saving}>
+                  {saving ? "Adding…" : "Add to Map"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

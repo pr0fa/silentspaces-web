@@ -5,10 +5,9 @@ import {
   getDocs,
   deleteDoc,
   doc,
-  query,
-  orderBy,
-  limit,
+  addDoc,
   runTransaction,
+  serverTimestamp,
 } from "firebase/firestore";
 
 // ── Stats ──────────────────────────────────────────────────────────
@@ -45,6 +44,24 @@ export async function getAdminLocations() {
   return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
+export async function addLocation({ name, type, address, area, lat, lng, wifi, seating, sockets }) {
+  const ref = await addDoc(collection(db, "locations"), {
+    name,
+    type,
+    address,
+    area:           area || "",
+    lat:            Number(lat),
+    lng:            Number(lng),
+    wifi:           Boolean(wifi),
+    seating:        Boolean(seating),
+    sockets:        Boolean(sockets),
+    quietnessScore: 0,
+    ratingCount:    0,
+    createdAt:      serverTimestamp(),
+  });
+  return ref.id;
+}
+
 export async function deleteLocation(locationId) {
   // Also delete all ratings in the subcollection
   const ratingsSnap = await getDocs(
@@ -56,15 +73,16 @@ export async function deleteLocation(locationId) {
 
 // ── Ratings ───────────────────────────────────────────────────────
 export async function getAdminRatings() {
-  const snap = await getDocs(
-    query(collectionGroup(db, "ratings"), orderBy("createdAt", "desc"), limit(200))
-  );
-  return snap.docs.map(d => ({
-    id:         d.id,
-    locationId: d.ref.parent.parent.id,
-    ...d.data(),
-    createdAt:  d.data().createdAt?.toDate().toISOString() ?? "",
-  }));
+  const snap = await getDocs(collectionGroup(db, "ratings"));
+  return snap.docs
+    .map(d => ({
+      id:         d.id,
+      locationId: d.ref.parent.parent.id,
+      ...d.data(),
+      createdAt:  d.data().createdAt?.toDate().toISOString() ?? "",
+    }))
+    .sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1))
+    .slice(0, 200);
 }
 
 export async function deleteRating(locationId, ratingId) {
