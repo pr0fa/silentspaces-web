@@ -256,6 +256,27 @@
 .ad-badge--red    { background: #FEE2E2; color: #DC2626; }
 .ad-badge--cyan   { background: #CFFAFE; color: #0891B2; }
 
+/* ── Row actions ── */
+.ad-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Edit button ── */
+.ad-edit-btn {
+  background: none;
+  border: none;
+  color: #D1D5DB;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: all 0.15s;
+}
+.ad-edit-btn:hover { background: #EDE9FE; color: #7C3AED; }
+
 /* ── Delete button ── */
 .ad-delete-btn {
   background: none;

@@ -7,10 +7,11 @@ import {
   getAdminRatings,
   getAdminUsers,
   addLocation,
+  updateLocation,
   deleteLocation,
   deleteRating,
 } from "../../models/adminModel";
-import { MapPin, Star, VolumeX, Users, ArrowLeft, Trash2, RefreshCw, Plus, X } from "lucide-react";
+import { MapPin, Star, VolumeX, Users, ArrowLeft, Trash2, RefreshCw, Plus, X, Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import "./AdminPage.css";
 
@@ -47,8 +48,9 @@ export default function AdminPage() {
   const [loading,   setLoading]   = useState(true);
   const [search,    setSearch]    = useState("");
 
-  // Add location modal
+  // Add / Edit location modal
   const [showAdd,   setShowAdd]   = useState(false);
+  const [editTarget, setEditTarget] = useState(null); // location being edited, or null for add
   const [form,      setForm]      = useState(EMPTY_FORM);
   const [saving,    setSaving]    = useState(false);
 
@@ -74,7 +76,29 @@ export default function AdminPage() {
 
   useEffect(() => { loadAll(); }, []);
 
-  const handleAddLocation = async (e) => {
+  const openAdd = () => {
+    setEditTarget(null);
+    setForm(EMPTY_FORM);
+    setShowAdd(true);
+  };
+
+  const openEdit = (loc) => {
+    setEditTarget(loc);
+    setForm({
+      name:    loc.name    || "",
+      type:    loc.type    || "library",
+      address: loc.address || "",
+      area:    loc.area    || "",
+      wifi:    !!loc.wifi,
+      seating: !!loc.seating,
+      sockets: !!loc.sockets,
+    });
+    setShowAdd(true);
+  };
+
+  const closeModal = () => { setShowAdd(false); setEditTarget(null); setForm(EMPTY_FORM); };
+
+  const handleSaveLocation = async (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.address.trim()) {
       toast.error("Name and address are required.");
@@ -82,23 +106,38 @@ export default function AdminPage() {
     }
     setSaving(true);
     try {
-      const { lat, lng, area } = await geocodeAddress(form.address);
-      await addLocation({
-        name:    form.name.trim(),
-        type:    form.type,
-        address: form.address.trim(),
-        area:    form.area.trim() || area,
+      // Re-geocode only if address changed (or it's a new location)
+      const addressChanged = !editTarget || editTarget.address !== form.address.trim();
+      let lat = editTarget?.lat;
+      let lng = editTarget?.lng;
+      let area = form.area.trim() || editTarget?.area || "";
+
+      if (addressChanged) {
+        const geo = await geocodeAddress(form.address);
+        lat  = geo.lat;
+        lng  = geo.lng;
+        area = form.area.trim() || geo.area;
+      }
+
+      const payload = {
+        name: form.name.trim(), type: form.type,
+        address: form.address.trim(), area,
         lat, lng,
-        wifi:    form.wifi,
-        seating: form.seating,
-        sockets: form.sockets,
-      });
-      toast.success(`"${form.name}" added to the map!`);
-      setShowAdd(false);
-      setForm(EMPTY_FORM);
+        wifi: form.wifi, seating: form.seating, sockets: form.sockets,
+      };
+
+      if (editTarget) {
+        await updateLocation(editTarget.id, payload);
+        toast.success(`"${form.name}" updated.`);
+      } else {
+        await addLocation(payload);
+        toast.success(`"${form.name}" added to the map!`);
+      }
+
+      closeModal();
       loadAll();
     } catch (err) {
-      toast.error(err.message || "Failed to add location.");
+      toast.error(err.message || "Failed to save location.");
     } finally {
       setSaving(false);
     }
@@ -194,7 +233,7 @@ export default function AdminPage() {
               />
             )}
             {tab === "Locations" && (
-              <button className="ad-add-btn" onClick={() => setShowAdd(true)}>
+              <button className="ad-add-btn" onClick={openAdd}>
                 <Plus size={15} /> Add Location
               </button>
             )}
@@ -292,13 +331,22 @@ export default function AdminPage() {
                         <td>{l.seating ? "✓" : <span className="ad-muted">✗</span>}</td>
                         <td>{l.sockets ? "✓" : <span className="ad-muted">✗</span>}</td>
                         <td>
-                          <button
-                            className="ad-delete-btn"
-                            onClick={() => handleDeleteLocation(l.id, l.name)}
-                            title="Delete location"
-                          >
-                            <Trash2 size={14} />
-                          </button>
+                          <div className="ad-row-actions">
+                            <button
+                              className="ad-edit-btn"
+                              onClick={() => openEdit(l)}
+                              title="Edit location"
+                            >
+                              <Pencil size={14} />
+                            </button>
+                            <button
+                              className="ad-delete-btn"
+                              onClick={() => handleDeleteLocation(l.id, l.name)}
+                              title="Delete location"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -388,11 +436,11 @@ export default function AdminPage() {
         <div className="ad-modal-overlay" onClick={() => setShowAdd(false)}>
           <div className="ad-modal" onClick={e => e.stopPropagation()}>
             <div className="ad-modal-header">
-              <h2>Add Location</h2>
-              <button className="ad-modal-close" onClick={() => setShowAdd(false)}><X size={18} /></button>
+              <h2>{editTarget ? "Edit Location" : "Add Location"}</h2>
+              <button className="ad-modal-close" onClick={closeModal}><X size={18} /></button>
             </div>
 
-            <form className="ad-modal-form" onSubmit={handleAddLocation}>
+            <form className="ad-modal-form" onSubmit={handleSaveLocation}>
               <label>
                 Name <span className="ad-required">*</span>
                 <input
@@ -449,11 +497,11 @@ export default function AdminPage() {
               </div>
 
               <div className="ad-modal-actions">
-                <button type="button" className="ad-modal-cancel" onClick={() => setShowAdd(false)}>
+                <button type="button" className="ad-modal-cancel" onClick={closeModal}>
                   Cancel
                 </button>
                 <button type="submit" className="ad-modal-submit" disabled={saving}>
-                  {saving ? "Adding…" : "Add to Map"}
+                  {saving ? "Saving…" : editTarget ? "Save Changes" : "Add to Map"}
                 </button>
               </div>
             </form>

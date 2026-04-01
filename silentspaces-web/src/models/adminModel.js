@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   addDoc,
+  updateDoc,
   runTransaction,
   serverTimestamp,
 } from "firebase/firestore";
@@ -60,6 +61,20 @@ export async function addLocation({ name, type, address, area, lat, lng, wifi, s
     createdAt:      serverTimestamp(),
   });
   return ref.id;
+}
+
+export async function updateLocation(locationId, { name, type, address, area, lat, lng, wifi, seating, sockets }) {
+  await updateDoc(doc(db, "locations", locationId), {
+    name,
+    type,
+    address,
+    area:    area || "",
+    lat:     Number(lat),
+    lng:     Number(lng),
+    wifi:    Boolean(wifi),
+    seating: Boolean(seating),
+    sockets: Boolean(sockets),
+  });
 }
 
 export async function deleteLocation(locationId) {
