@@ -3,11 +3,11 @@ import { Map, Search, User, LayoutDashboard } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import "./BottomNav.css";
 
-const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL || "bleronajvazi7@hotmail.com").trim();
 
 export default function BottomNav() {
   const { currentUser } = useAuth();
-  const isAdmin = currentUser?.email === ADMIN_EMAIL;
+  const isAdmin = currentUser?.email?.trim() === ADMIN_EMAIL;
 
   return (
     <nav className={`bn ${isAdmin ? "bn--admin" : ""}`} aria-label="Bottom navigation">
@@ -18,6 +18,8 @@ export default function BottomNav() {
         </svg>
         <span>SilentSpaces</span>
       </div>
+
+      {/* Main nav items */}
       <div className="bn-inner">
         <NavLink to="/map" className={({ isActive }) => `bn-item ${isActive ? "is-active" : ""}`}>
           <Map size={22} />
@@ -34,13 +36,24 @@ export default function BottomNav() {
           <span className="bn-label">Profile</span>
         </NavLink>
 
+        {/* Mobile only: admin tab inside bottom bar */}
         {isAdmin && (
-          <NavLink to="/admin" className={({ isActive }) => `bn-item bn-item--admin ${isActive ? "is-active" : ""}`}>
+          <NavLink to="/admin" className={({ isActive }) => `bn-item bn-item--admin bn-admin-mobile ${isActive ? "is-active" : ""}`}>
             <LayoutDashboard size={22} />
             <span className="bn-label">Admin</span>
           </NavLink>
         )}
       </div>
+
+      {/* Desktop only: admin shortcut pinned to bottom of sidebar */}
+      {isAdmin && (
+        <div className="bn-admin-footer">
+          <NavLink to="/admin" className={({ isActive }) => `bn-item bn-item--admin ${isActive ? "is-active" : ""}`}>
+            <LayoutDashboard size={20} />
+            <span className="bn-label">Admin Dashboard</span>
+          </NavLink>
+        </div>
+      )}
     </nav>
   );
 }

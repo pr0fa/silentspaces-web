@@ -33,6 +33,16 @@
   background: #EDE9FE;
 }
 
+/* Admin footer — hidden on mobile, shown on desktop */
+.bn-admin-footer {
+  display: none;
+}
+
+/* Admin tab inside bottom bar — visible on mobile, hidden on desktop */
+.bn-admin-mobile {
+  display: flex;
+}
+
 .bn-item {
   display: flex;
   flex-direction: column;
@@ -92,6 +102,7 @@
     flex-direction: column;
     gap: 4px;
     padding: 16px 12px;
+    flex: 1;
     grid-template-columns: unset;
     max-width: none;
     margin: 0;
@@ -107,5 +118,32 @@
 
   .bn-label {
     font-size: 14px;
+  }
+
+  /* Desktop: hide admin from bottom bar, show pinned footer instead */
+  .bn-admin-mobile {
+    display: none;
+  }
+
+  .bn-admin-footer {
+    display: block;
+    padding: 12px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .bn-admin-footer .bn-item {
+    width: 100%;
+    background: #EDE9FE;
+    color: #7C3AED;
+    font-weight: 600;
+  }
+
+  .bn-admin-footer .bn-item:hover {
+    background: #DDD6FE;
+  }
+
+  /* Desktop: grid not used, reset it */
+  .bn--admin .bn-inner {
+    grid-template-columns: unset;
   }
 }

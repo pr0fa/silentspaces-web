@@ -113,7 +113,7 @@
   padding: 10px 12px;
   border-radius: 14px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   z-index: 2000;
@@ -122,7 +122,9 @@
 .mp-chip {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
+  flex: 1;
   padding: 7px 12px;
   border-radius: 999px;
   border: 1.5px solid var(--color-border);

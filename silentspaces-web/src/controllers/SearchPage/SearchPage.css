@@ -64,8 +64,31 @@
 
 .sp-chips {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 2px;
+}
+
+.sp-chips::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .sp-filters {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .sp-chips {
+    overflow-x: visible;
+    flex-wrap: wrap;
+  }
 }
 
 .sp-chip {
