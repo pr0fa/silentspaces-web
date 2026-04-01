@@ -307,6 +307,64 @@
   font-size: 14px;
 }
 
+/* ── Charts ── */
+.ad-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.ad-chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 20px 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.ad-chart-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 16px;
+}
+
+.ad-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: #6B7280;
+}
+
+.ad-chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ad-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.ad-chart-empty {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9CA3AF;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .ad-charts-row { grid-template-columns: 1fr; }
+}
+
 /* ── Add button ── */
 .ad-add-btn {
   display: flex;

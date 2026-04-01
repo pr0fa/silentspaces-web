@@ -12,6 +12,10 @@ import {
   deleteRating,
 } from "../../models/adminModel";
 import { MapPin, Star, VolumeX, Users, ArrowLeft, Trash2, RefreshCw, Plus, X, Pencil } from "lucide-react";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
+  PieChart, Pie, Legend,
+} from "recharts";
 import toast from "react-hot-toast";
 import "./AdminPage.css";
 
@@ -270,6 +274,91 @@ export default function AdminPage() {
                     <div className="ad-stat-icon ad-stat-icon--green"><Users size={20} /></div>
                     <div className="ad-stat-num">{stats.totalUsers}</div>
                     <div className="ad-stat-label">Users</div>
+                  </div>
+                </div>
+
+                {/* ── Charts row ── */}
+                <div className="ad-charts-row">
+                  {/* Bar chart — quietness score per location */}
+                  <div className="ad-chart-card">
+                    <h2 className="ad-chart-title">Quietness Score by Location</h2>
+                    {locations.filter(l => l.ratingCount > 0).length === 0 ? (
+                      <div className="ad-chart-empty">No rated locations yet</div>
+                    ) : (
+                      <>
+                      <div className="ad-chart-legend">
+                        <span><span className="ad-legend-dot" style={{background:"#10B981"}}/>4–5 Very quiet</span>
+                        <span><span className="ad-legend-dot" style={{background:"#F59E0B"}}/>3–4 Moderate</span>
+                        <span><span className="ad-legend-dot" style={{background:"#F97316"}}/>2–3 Noisy</span>
+                        <span><span className="ad-legend-dot" style={{background:"#EF4444"}}/>0–2 Loud</span>
+                      </div>
+                      <ResponsiveContainer width="100%" height={220}>
+                        <BarChart
+                          data={locations
+                            .filter(l => l.ratingCount > 0)
+                            .sort((a, b) => b.quietnessScore - a.quietnessScore)
+                            .slice(0, 8)
+                            .map(l => ({ name: l.name.length > 14 ? l.name.slice(0, 13) + "…" : l.name, score: Number(l.quietnessScore) }))}
+                          margin={{ top: 4, right: 8, left: -20, bottom: 40 }}
+                        >
+                          <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#6B7280" }} angle={-35} textAnchor="end" interval={0} />
+                          <YAxis domain={[0, 5]} tick={{ fontSize: 11, fill: "#6B7280" }} />
+                          <Tooltip formatter={(v) => [`${v}/5`, "Quietness"]} contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #E5E7EB" }} />
+                          <Bar dataKey="score" radius={[6, 6, 0, 0]}>
+                            {locations
+                              .filter(l => l.ratingCount > 0)
+                              .sort((a, b) => b.quietnessScore - a.quietnessScore)
+                              .slice(0, 8)
+                              .map((l, i) => {
+                                const s = Number(l.quietnessScore);
+                                const color = s >= 4 ? "#10B981" : s >= 3 ? "#F59E0B" : s >= 2 ? "#F97316" : "#EF4444";
+                                return <Cell key={i} fill={color} />;
+                              })}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Pie chart — location type breakdown */}
+                  <div className="ad-chart-card">
+                    <h2 className="ad-chart-title">Location Types</h2>
+                    {locations.length === 0 ? (
+                      <div className="ad-chart-empty">No locations yet</div>
+                    ) : (
+                      <ResponsiveContainer width="100%" height={220}>
+                        <PieChart>
+                          <Pie
+                            data={Object.entries(
+                              locations.reduce((acc, l) => {
+                                const t = (l.type || "").toLowerCase();
+                                const key = t.includes("library") ? "Library" : t.includes("cafe") || t.includes("coffee") ? "Café" : t.includes("park") || t.includes("garden") ? "Park" : "Café";
+                                acc[key] = (acc[key] || 0) + 1;
+                                return acc;
+                              }, {})
+                            ).map(([name, value]) => ({ name, value }))}
+                            cx="50%" cy="50%" outerRadius={80}
+                            dataKey="value"
+                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            labelLine={false}
+                          >
+                            {Object.entries(
+                              locations.reduce((acc, l) => {
+                                const t = (l.type || "").toLowerCase();
+                                const key = t.includes("library") ? "Library" : t.includes("cafe") || t.includes("coffee") ? "Café" : t.includes("park") || t.includes("garden") ? "Park" : "Café";
+                                acc[key] = (acc[key] || 0) + 1;
+                                return acc;
+                              }, {})
+                            ).map(([name], i) => {
+                              const COLOR = { Library: "#7C3AED", Café: "#F87171", Park: "#06B6D4" };
+                              return <Cell key={i} fill={COLOR[name] || "#F87171"} />;
+                            })}
+                          </Pie>
+                          <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #E5E7EB" }} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    )}
                   </div>
                 </div>
 
