@@ -173,3 +173,10 @@
   color: #DC2626;
   margin-bottom: 4px;
 }
+
+/* ── Mobile fixes ── */
+@media (max-width: 390px) {
+  .auth-card { padding: 28px 20px; border-radius: 18px; }
+  .auth-eye { padding: 10px; }
+  .auth-btn { padding: 14px; min-height: 48px; }
+}

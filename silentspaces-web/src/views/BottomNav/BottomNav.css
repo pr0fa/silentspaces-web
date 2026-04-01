@@ -22,6 +22,17 @@
     calc(var(--space-sm) + env(safe-area-inset-bottom));
 }
 
+.bn--admin .bn-inner {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.bn-item--admin {
+  color: #7C3AED;
+}
+.bn-item--admin:hover {
+  background: #EDE9FE;
+}
+
 .bn-item {
   display: flex;
   flex-direction: column;

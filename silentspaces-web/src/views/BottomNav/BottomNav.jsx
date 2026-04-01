@@ -1,10 +1,16 @@
 import { NavLink } from "react-router-dom";
-import { Map, Search, User } from "lucide-react";
+import { Map, Search, User, LayoutDashboard } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 import "./BottomNav.css";
 
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+
 export default function BottomNav() {
+  const { currentUser } = useAuth();
+  const isAdmin = currentUser?.email === ADMIN_EMAIL;
+
   return (
-    <nav className="bn" aria-label="Bottom navigation">
+    <nav className={`bn ${isAdmin ? "bn--admin" : ""}`} aria-label="Bottom navigation">
       <div className="bn-logo">
         <svg viewBox="0 0 20 24" width="18" height="22" fill="none">
           <path d="M10 0C4.48 0 0 4.48 0 10c0 7.5 10 14 10 14S20 17.5 20 10C20 4.48 15.52 0 10 0z" fill="#7C3AED"/>
@@ -27,6 +33,13 @@ export default function BottomNav() {
           <User size={22} />
           <span className="bn-label">Profile</span>
         </NavLink>
+
+        {isAdmin && (
+          <NavLink to="/admin" className={({ isActive }) => `bn-item bn-item--admin ${isActive ? "is-active" : ""}`}>
+            <LayoutDashboard size={22} />
+            <span className="bn-label">Admin</span>
+          </NavLink>
+        )}
       </div>
     </nav>
   );

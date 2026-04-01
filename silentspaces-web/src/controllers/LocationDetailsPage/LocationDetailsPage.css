@@ -237,3 +237,6 @@
 .ldp-busy--mid  { background: #FEF9C3; color: #854D0E; }
 .ldp-busy--high { background: #FEE2E2; color: #991B1B; }
 .ldp-busy--none { background: #F5F5F5; color: #9E9E9E; }
+
+/* ── Mobile fixes ── */
+.ldp-back { min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center; }

@@ -197,3 +197,10 @@
 .ab-contact-row:hover {
   opacity: 0.8;
 }
+
+/* ── Mobile fixes ── */
+.ab-back { min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center; }
+@media (max-width: 360px) {
+  .ab-stat-num { font-size: 15px; }
+  .ab-stat-label { font-size: 10px; }
+}

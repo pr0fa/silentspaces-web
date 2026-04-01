@@ -124,6 +124,7 @@
   background: white;
   color: #111827;
   width: 220px;
+  max-width: 100%;
 }
 .ad-search:focus { outline: none; border-color: #7C3AED; }
 
@@ -196,6 +197,8 @@
   border-radius: 16px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .ad-table {
@@ -399,7 +402,10 @@
   border-radius: 16px;
   width: 100%;
   max-width: 480px;
+  max-height: calc(100dvh - 40px);
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -437,6 +443,8 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .ad-modal-form label {
@@ -582,4 +590,76 @@
   .ad-charts-row { grid-template-columns: 1fr; }
   .ad-topbar { flex-wrap: wrap; gap: 10px; }
   .ad-topbar-right { width: 100%; justify-content: flex-end; }
+  .ad-search { flex: 1; width: auto; }
+
+  /* ── Table → card layout on mobile ── */
+  .ad-table-wrap {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .ad-table thead { display: none; }
+
+  .ad-table,
+  .ad-table tbody,
+  .ad-table tr,
+  .ad-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ad-table tr {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    margin-bottom: 10px;
+    overflow: hidden;
+    border-bottom: none;
+  }
+
+  .ad-table tr:last-child td { border-bottom: none; }
+  .ad-table tr:hover td { background: white; }
+
+  .ad-table td {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #F9FAFB;
+    font-size: 13px;
+    min-height: 0;
+  }
+
+  .ad-table td:last-child { border-bottom: none; }
+
+  /* Label column generated from data-label attribute */
+  .ad-table td[data-label]::before {
+    content: attr(data-label);
+    font-size: 10px;
+    font-weight: 700;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 68px;
+    flex-shrink: 0;
+  }
+
+  /* Action cells (no data-label) — push buttons to the right */
+  .ad-table td:not([data-label]) {
+    justify-content: flex-end;
+    padding: 6px 10px;
+    background: #FAFAFA;
+  }
+
+  /* Comment cell wraps on mobile */
+  .ad-table td .ad-cell-comment,
+  .ad-table td[data-label="Comment"] {
+    max-width: none;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
 }

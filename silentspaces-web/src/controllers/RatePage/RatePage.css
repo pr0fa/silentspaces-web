@@ -227,3 +227,9 @@
   font-size: var(--font-xs);
   color: var(--color-text-secondary);
 }
+/* ── Mobile fixes ── */
+@media (max-width: 390px) {
+  .rp-star { width: 44px; height: 44px; font-size: 20px; }
+  .rp-starsRow { gap: 6px; }
+  .rp-back { min-height: 44px; min-width: 44px; justify-content: center; }
+}

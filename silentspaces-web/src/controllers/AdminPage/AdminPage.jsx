@@ -91,7 +91,7 @@ export default function AdminPage() {
     setEditTarget(loc);
     setForm({
       name:    loc.name    || "",
-      type:    loc.type    || "library",
+      type:    normalizeType(loc.type),
       address: loc.address || "",
       area:    loc.area    || "",
       wifi:    !!loc.wifi,
@@ -387,10 +387,10 @@ export default function AdminPage() {
                         const loc = locations.find(l => l.id === r.locationId);
                         return (
                           <tr key={r.id}>
-                            <td>{loc?.name || r.locationId}</td>
-                            <td><span className="ad-badge ad-badge--purple">{r.rating}/5</span></td>
-                            <td className="ad-cell-comment">{r.comment || <span className="ad-muted">—</span>}</td>
-                            <td className="ad-muted">{r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "—"}</td>
+                            <td data-label="Location">{loc?.name || r.locationId}</td>
+                            <td data-label="Score"><span className="ad-badge ad-badge--purple">{r.rating}/5</span></td>
+                            <td data-label="Comment" className="ad-cell-comment">{r.comment || <span className="ad-muted">—</span>}</td>
+                            <td data-label="Date" className="ad-muted">{r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "—"}</td>
                           </tr>
                         );
                       })}
@@ -420,14 +420,14 @@ export default function AdminPage() {
                   <tbody>
                     {filteredLocations.map(l => (
                       <tr key={l.id}>
-                        <td className="ad-cell-name">{l.name}</td>
-                        <td><span className={`ad-badge ad-badge--${typeColor(l.type)}`}>{l.type}</span></td>
-                        <td className="ad-muted">{l.area}</td>
-                        <td>{l.ratingCount || 0}</td>
-                        <td>{l.quietnessScore || "—"}</td>
-                        <td>{l.wifi    ? "✓" : <span className="ad-muted">✗</span>}</td>
-                        <td>{l.seating ? "✓" : <span className="ad-muted">✗</span>}</td>
-                        <td>{l.sockets ? "✓" : <span className="ad-muted">✗</span>}</td>
+                        <td data-label="Name" className="ad-cell-name">{l.name}</td>
+                        <td data-label="Type"><span className={`ad-badge ad-badge--${typeColor(l.type)}`}>{l.type}</span></td>
+                        <td data-label="Area" className="ad-muted">{l.area}</td>
+                        <td data-label="Ratings">{l.ratingCount || 0}</td>
+                        <td data-label="Score">{l.quietnessScore || "—"}</td>
+                        <td data-label="Wi-Fi">{l.wifi    ? "✓" : <span className="ad-muted">✗</span>}</td>
+                        <td data-label="Seating">{l.seating ? "✓" : <span className="ad-muted">✗</span>}</td>
+                        <td data-label="Sockets">{l.sockets ? "✓" : <span className="ad-muted">✗</span>}</td>
                         <td>
                           <div className="ad-row-actions">
                             <button
@@ -473,11 +473,11 @@ export default function AdminPage() {
                       const loc = locations.find(l => l.id === r.locationId);
                       return (
                         <tr key={r.id}>
-                          <td className="ad-cell-name">{loc?.name || r.locationId}</td>
-                          <td><span className="ad-badge ad-badge--purple">{r.rating}/5</span></td>
-                          <td className="ad-cell-comment">{r.comment || <span className="ad-muted">—</span>}</td>
-                          <td className="ad-muted">{r.bestTime || "—"}</td>
-                          <td className="ad-muted">{r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "—"}</td>
+                          <td data-label="Location" className="ad-cell-name">{loc?.name || r.locationId}</td>
+                          <td data-label="Score"><span className="ad-badge ad-badge--purple">{r.rating}/5</span></td>
+                          <td data-label="Comment" className="ad-cell-comment">{r.comment || <span className="ad-muted">—</span>}</td>
+                          <td data-label="Best Time" className="ad-muted">{r.bestTime || "—"}</td>
+                          <td data-label="Date" className="ad-muted">{r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "—"}</td>
                           <td>
                             <button
                               className="ad-delete-btn"
@@ -510,12 +510,12 @@ export default function AdminPage() {
                   <tbody>
                     {filteredUsers.map(u => (
                       <tr key={u.id}>
-                        <td className="ad-cell-name">
+                        <td data-label="Name" className="ad-cell-name">
                           {u.photoURL && <img src={u.photoURL} alt="" className="ad-user-avatar" />}
                           {u.displayName || <span className="ad-muted">—</span>}
                         </td>
-                        <td className="ad-muted">{u.email}</td>
-                        <td className="ad-muted">
+                        <td data-label="Email" className="ad-muted">{u.email}</td>
+                        <td data-label="Last Seen" className="ad-muted">
                           {u.lastSeen?.toDate ? u.lastSeen.toDate().toLocaleDateString() : "—"}
                         </td>
                       </tr>
@@ -613,7 +613,15 @@ export default function AdminPage() {
 function typeColor(type) {
   const t = (type || "").toLowerCase();
   if (t.includes("library")) return "purple";
-  if (t.includes("cafe") || t.includes("coffee")) return "red";
+  if (t.includes("cafe") || t.includes("café") || t.includes("coffee")) return "red";
   if (t.includes("park") || t.includes("garden")) return "cyan";
   return "purple";
+}
+
+function normalizeType(type) {
+  const t = (type || "").toLowerCase();
+  if (t.includes("library")) return "library";
+  if (t.includes("cafe") || t.includes("café") || t.includes("coffee")) return "cafe";
+  if (t.includes("park") || t.includes("garden")) return "park";
+  return "other";
 }

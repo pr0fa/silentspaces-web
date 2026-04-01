@@ -227,3 +227,11 @@
 }
 
 @media (min-width: 768px) { .mr-page { height: 100dvh; } }
+
+/* ── Mobile fixes ── */
+.mr-back { min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center; }
+@media (max-width: 360px) {
+  .mr-summary { gap: 4px; }
+  .mr-summary-num { font-size: 13px; }
+  .mr-summary-label { font-size: 10px; }
+}
