@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth, googleProvider } from "../config/firebase";
+import { auth, googleProvider, db } from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -8,10 +8,29 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
+
+// Write/update user doc in Firestore so admin dashboard can count users
+async function ensureUserDoc(user) {
+  try {
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        displayName: user.displayName || "",
+        email:       user.email       || "",
+        photoURL:    user.photoURL    || "",
+        lastSeen:    serverTimestamp(),
+      },
+      { merge: true }
+    );
+  } catch {
+    // non-critical — never block the auth flow
+  }
+}
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -21,6 +40,7 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
+      if (user) ensureUserDoc(user);
     });
     return unsubscribe;
   }, []);
@@ -28,7 +48,13 @@ export function AuthProvider({ children }) {
   const signUp = async (email, password, name) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(cred.user, { displayName: name });
-    // Refresh currentUser so displayName is immediately available
+    await setDoc(doc(db, "users", cred.user.uid), {
+      displayName: name,
+      email,
+      photoURL:  "",
+      createdAt: serverTimestamp(),
+      lastSeen:  serverTimestamp(),
+    });
     setCurrentUser({ ...cred.user, displayName: name });
     return cred;
   };

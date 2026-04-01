@@ -15,12 +15,15 @@ import HelpPage             from "./controllers/HelpPage/HelpPage.jsx";
 import LoginPage            from "./controllers/LoginPage/LoginPage.jsx";
 import SignUpPage           from "./controllers/SignUpPage/SignUpPage.jsx";
 import OnboardingPage       from "./controllers/OnboardingPage/OnboardingPage.jsx";
+import AdminPage            from "./controllers/AdminPage/AdminPage.jsx";
 
 import { Toaster }    from "react-hot-toast";
 import BottomNav      from "./views/BottomNav/BottomNav.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 
 import "./App.css";
+
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "bleronajvazi7@hotmail.com";
 
 /* ── Layout with sidebar/bottom nav ── */
 function AppLayout({ children }) {
@@ -48,6 +51,14 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+/* ── Admin-only route ── */
+function AdminRoute({ children }) {
+  const { currentUser } = useAuth();
+  if (!currentUser) return <Navigate to="/login" replace />;
+  if (currentUser.email !== ADMIN_EMAIL) return <Navigate to="/map" replace />;
+  return children;
+}
+
 function AppRoutes() {
   const [showSplash, setShowSplash] = useState(
     () => !sessionStorage.getItem("ss:splashShown")
@@ -67,6 +78,9 @@ function AppRoutes() {
         <Route path="/login"      element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
         <Route path="/signup"     element={<PublicOnlyRoute><SignUpPage /></PublicOnlyRoute>} />
         <Route path="/onboarding" element={<ProtectedRoute><OnboardingPage /></ProtectedRoute>} />
+
+        {/* Admin — no nav bar, protected by email */}
+        <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
 
         {/* Main app — with nav bar */}
         <Route path="/*" element={
