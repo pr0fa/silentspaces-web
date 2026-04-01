@@ -90,16 +90,23 @@
 .ad-main {
   flex: 1;
   margin-left: 220px;
-  padding: 28px 32px;
-  min-height: 100dvh;
+  padding: 0 32px 32px;
+  height: 100dvh;
+  overflow-y: auto;
 }
 
 .ad-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
   gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: #F9FAFB;
+  padding: 24px 0 16px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #F3F4F6;
 }
 
 .ad-page-title {
@@ -585,10 +592,28 @@
     transform: translateX(0);
   }
 
-  .ad-main { margin-left: 0; padding: 16px; }
+  .ad-main { margin-left: 0; padding: 0; height: 100dvh; overflow-y: auto; }
   .ad-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .ad-charts-row { grid-template-columns: 1fr; }
-  .ad-topbar { flex-wrap: wrap; gap: 10px; }
+
+  .ad-topbar {
+    flex-wrap: wrap;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    background: #F9FAFB;
+    padding: 14px 16px 10px;
+    margin-bottom: 0;
+    border-bottom: 1px solid #F3F4F6;
+  }
+
+  .ad-overview,
+  .ad-table-wrap,
+  .ad-empty {
+    padding: 16px;
+  }
+
   .ad-topbar-right { width: 100%; justify-content: flex-end; }
   .ad-search { flex: 1; width: auto; }
 
