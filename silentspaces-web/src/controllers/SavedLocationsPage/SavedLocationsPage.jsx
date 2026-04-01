@@ -1,21 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
+import { useAuth } from "../../contexts/AuthContext";
 import { Wifi, Armchair, Zap, Clock, Bookmark, ChevronLeft } from "lucide-react";
 import "./SavedLocationsPage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
-const LS_FAVS = "ss:favourites";
-
-function readFavourites() {
+function readFavourites(uid) {
   try {
-    const raw = localStorage.getItem(LS_FAVS);
+    const raw = localStorage.getItem(`ss:favourites:${uid || "guest"}`);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
 function getBadge(score) {
@@ -27,12 +24,13 @@ function getBadge(score) {
 
 export default function SavedLocationsPage() {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
   const [saved, setSaved]     = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getLocations().then((data) => {
-      const favIds = readFavourites();
+      const favIds = readFavourites(currentUser?.uid);
       const all = Array.isArray(data) ? data : [];
       setSaved(all.filter((loc) => favIds.includes(String(loc.id))));
       setLoading(false);

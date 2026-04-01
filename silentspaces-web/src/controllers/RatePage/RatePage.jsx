@@ -2,23 +2,24 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { submitRating } from "../../models/ratingModel";
 import { getLocationById } from "../../models/locationModel";
+import { useAuth } from "../../contexts/AuthContext";
 import toast from "react-hot-toast";
 import { Wifi, Armchair, Check, X, ChevronLeft } from "lucide-react";
 import "./RatePage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
-const LS_MY_RATINGS = "ss:myRatings";
-
-function saveRatingToLocal(locationId, rating, comment, bestTime) {
-  const existing = JSON.parse(localStorage.getItem(LS_MY_RATINGS) || "[]");
+function saveRatingToLocal(uid, locationId, rating, comment, bestTime) {
+  const key = `ss:myRatings:${uid}`;
+  const existing = JSON.parse(localStorage.getItem(key) || "[]");
   const filtered = existing.filter((r) => r.locationId !== locationId);
   filtered.push({ locationId, rating, comment, bestTime, createdAt: new Date().toISOString() });
-  localStorage.setItem(LS_MY_RATINGS, JSON.stringify(filtered));
+  localStorage.setItem(key, JSON.stringify(filtered));
 }
 
 export default function RatePage() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { currentUser } = useAuth();
 
   const [loc, setLoc]                   = useState(null);
   const [loading, setLoading]           = useState(true);
@@ -57,7 +58,7 @@ export default function RatePage() {
     try {
       setIsSubmitting(true);
       await submitRating(loc.id, stars, comments, bestTime);
-      saveRatingToLocal(loc.id, stars, comments, bestTime);
+      saveRatingToLocal(currentUser?.uid || "guest", loc.id, stars, comments, bestTime);
       toast.success("Rating submitted!");
       navigate("/map");
     } catch (err) {

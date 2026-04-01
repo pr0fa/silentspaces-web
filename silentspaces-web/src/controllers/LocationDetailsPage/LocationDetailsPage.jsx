@@ -3,30 +3,23 @@ import { useEffect, useState } from "react";
 import RatingsPanel from "../../views/RatingsPanel/RatingsPanel";
 import PopularTimes from "../../views/PopularTimes/PopularTimes";
 import { getLocationById } from "../../models/locationModel";
+import { useAuth } from "../../contexts/AuthContext";
 import { Wifi, Armchair, Zap, ChevronLeft } from "lucide-react";
 import "./LocationDetailsPage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
-// localStorage key for storing favourite location IDs
-const LS_FAVS = "ss:favourites";
-
-/* Read list of favourite IDs (new helper) */
-function readFavourites() {
-  try {
-    return JSON.parse(localStorage.getItem(LS_FAVS) || "[]");
-  } catch {
-    return [];
-  }
+function favsKey(uid) { return `ss:favourites:${uid || "guest"}`; }
+function readFavourites(uid) {
+  try { return JSON.parse(localStorage.getItem(favsKey(uid)) || "[]"); } catch { return []; }
 }
-
-/* Save updated favourite list (new helper) */
-function writeFavourites(list) {
-  localStorage.setItem(LS_FAVS, JSON.stringify(list));
+function writeFavourites(uid, list) {
+  localStorage.setItem(favsKey(uid), JSON.stringify(list));
 }
 
 export default function LocationDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const [loc, setLoc] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,9 +27,9 @@ export default function LocationDetailsPage() {
 
   // Load favourite state when ID changes
   useEffect(() => {
-    const favs = readFavourites();
+    const favs = readFavourites(currentUser?.uid);
     setFavourite(favs.includes(id));
-  }, [id]);
+  }, [id, currentUser]);
 
   useEffect(() => {
     let alive = true;
@@ -66,16 +59,10 @@ export default function LocationDetailsPage() {
 
   /* NEW: toggle favourite and persist to localStorage */
   const toggleFavourite = () => {
-    const favs = readFavourites();
-    let updated;
-
-    if (favs.includes(id)) {
-      updated = favs.filter((x) => x !== id);
-    } else {
-      updated = [...favs, id];
-    }
-
-    writeFavourites(updated);
+    const uid = currentUser?.uid;
+    const favs = readFavourites(uid);
+    const updated = favs.includes(id) ? favs.filter((x) => x !== id) : [...favs, id];
+    writeFavourites(uid, updated);
     setFavourite(updated.includes(id));
   };
 

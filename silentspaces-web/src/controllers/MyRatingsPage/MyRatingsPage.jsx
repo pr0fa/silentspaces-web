@@ -2,20 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { BookOpen, Coffee, Trees, Monitor, MapPin, Clock, Star, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getLocations } from "../../models/locationModel";
+import { useAuth } from "../../contexts/AuthContext";
 import "./MyRatingsPage.css";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 
-const LS_MY_RATINGS = "ss:myRatings";
-
-function readRatings() {
+function readRatings(uid) {
   try {
-    const raw = localStorage.getItem(LS_MY_RATINGS);
+    const raw = localStorage.getItem(`ss:myRatings:${uid || "guest"}`);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
 function typeIcon(type) {
@@ -29,6 +26,7 @@ function typeIcon(type) {
 
 export default function MyRatingsPage() {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const [allLocations, setAllLocations] = useState([]);
   const [loading, setLoading]           = useState(true);
@@ -42,7 +40,7 @@ export default function MyRatingsPage() {
   }, []);
 
   const allRatings = useMemo(() => {
-    return [...readRatings()].sort(
+    return [...readRatings(currentUser?.uid)].sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
   }, []);

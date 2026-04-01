@@ -221,13 +221,55 @@
   gap: 8px;
 }
 
-@media (min-width: 768px) { .pf-page { height: 100dvh; } }
+/* ---------- Section description ---------- */
+.pf-section-desc {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  margin: -4px 0 var(--space-sm);
+}
+
+/* ---------- Admin button ---------- */
+.pf-admin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: var(--space-md);
+  padding: 13px;
+  border: 2px solid #7C3AED;
+  border-radius: 14px;
+  background: transparent;
+  color: #7C3AED;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.pf-admin-btn:hover {
+  background: #7C3AED;
+  color: white;
+}
+
+/* ---------- Sign out button ---------- */
+.pf-signout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  padding: 13px;
+  border: none;
+  border-radius: 14px;
+  background: #FEF2F2;
+  color: #EF4444;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.pf-signout-btn:hover { background: #FEE2E2; }
 
 @media (min-width: 768px) { .pf-page { height: auto; overflow-y: visible; padding-bottom: 32px; } }
-
-/* ── Sign out / danger card ── */
-.pf-card--danger { margin-top: 8px; }
-
-.pf-link-btn--danger { color: #EF4444; }
-.pf-link-btn--danger .pf-link-left { color: #EF4444; }
-.pf-link-btn--danger:hover { background: #FEF2F2; }

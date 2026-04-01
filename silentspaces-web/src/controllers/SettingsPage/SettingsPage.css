@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .st-back {
@@ -33,90 +33,105 @@
   font-weight: 700;
 }
 
-/* Section */
-.st-section {
-  margin-bottom: 20px;
+/* Section label */
+.st-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 0 0 8px 4px;
 }
 
-.st-section-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-  padding-left: 4px;
-}
+.st-section-label--danger { color: #EF4444; margin-top: 20px; }
 
 /* Card */
 .st-card {
   background: #fff;
   border-radius: 16px;
-  border: 1px solid #eee;
+  border: 1.5px solid #F3F4F6;
   overflow: hidden;
 }
 
-/* Button rows */
-.st-btn {
-  width: 100%;
+.st-card--danger { border-color: #FEE2E2; }
+
+/* Row */
+.st-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
+  gap: 14px;
+  padding: 16px;
 }
 
-.st-btn:hover {
-  background: #f9f9f9;
-}
-
-.st-btn-icon {
-  font-size: 18px;
-  width: 24px;
-  text-align: center;
-}
-
-.st-btn-label {
-  flex: 1;
-  font-size: 15px;
-  font-weight: 500;
-  color: #1a1a1a;
-}
-
-.st-btn-arrow {
-  color: #bbb;
-  font-size: 18px;
-}
-
-/* Danger button */
-.st-btn--danger .st-btn-label {
-  color: #b00020;
-}
-
-/* Divider */
-.st-divider {
+.st-row-divider {
   height: 1px;
-  background: #f0f0f0;
+  background: #F3F4F6;
   margin: 0 16px;
 }
 
-/* About rows */
-.st-about-row {
+/* Icon circle */
+.st-row-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 14px 16px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.st-row-icon--blue   { background: #DBEAFE; color: #2563EB; }
+.st-row-icon--yellow { background: #FEF9C3; color: #CA8A04; }
+.st-row-icon--purple { background: #EDE9FE; color: #7C3AED; }
+.st-row-icon--red    { background: #FEE2E2; color: #EF4444; }
+
+/* Row body */
+.st-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.st-row-title {
   font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2px;
 }
 
-.st-about-row span:first-child {
-  color: #666;
+.st-row-title--danger { color: #EF4444; }
+
+.st-row-desc {
+  font-size: 12px;
+  color: #9CA3AF;
 }
 
-.st-about-row span:last-child {
-  font-weight: 500;
-  color: #1a1a1a;
+/* Action button */
+.st-action-btn {
+  flex-shrink: 0;
+  border: 1.5px solid #E5E7EB;
+  background: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.st-action-btn:hover {
+  border-color: #7C3AED;
+  color: #7C3AED;
+  background: #F5F3FF;
+}
+
+.st-action-btn--danger {
+  border-color: #FCA5A5;
+  color: #EF4444;
+}
+
+.st-action-btn--danger:hover {
+  background: #FEF2F2;
+  border-color: #EF4444;
+  color: #EF4444;
 }
