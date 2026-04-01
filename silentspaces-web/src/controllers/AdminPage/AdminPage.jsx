@@ -11,7 +11,7 @@ import {
   deleteLocation,
   deleteRating,
 } from "../../models/adminModel";
-import { MapPin, Star, VolumeX, Users, ArrowLeft, Trash2, RefreshCw, Plus, X, Pencil } from "lucide-react";
+import { MapPin, Star, VolumeX, Users, ArrowLeft, Trash2, RefreshCw, Plus, X, Pencil, Menu } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
   PieChart, Pie, Legend,
@@ -53,10 +53,11 @@ export default function AdminPage() {
   const [search,    setSearch]    = useState("");
 
   // Add / Edit location modal
-  const [showAdd,   setShowAdd]   = useState(false);
-  const [editTarget, setEditTarget] = useState(null); // location being edited, or null for add
-  const [form,      setForm]      = useState(EMPTY_FORM);
-  const [saving,    setSaving]    = useState(false);
+  const [showAdd,    setShowAdd]    = useState(false);
+  const [editTarget, setEditTarget] = useState(null);
+  const [form,       setForm]       = useState(EMPTY_FORM);
+  const [saving,     setSaving]     = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const loadAll = async () => {
     setLoading(true);
@@ -188,8 +189,11 @@ export default function AdminPage() {
   return (
     <div className="ad-page">
 
+      {/* Mobile overlay */}
+      {sidebarOpen && <div className="ad-sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+
       {/* Sidebar */}
-      <aside className="ad-sidebar">
+      <aside className={`ad-sidebar ${sidebarOpen ? "ad-sidebar--open" : ""}`}>
         <div className="ad-sidebar-logo">
           <svg viewBox="0 0 20 24" width="22" height="26" fill="none">
             <path d="M10 0C4.48 0 0 4.48 0 10c0 7.5 10 14 10 14S20 17.5 20 10C20 4.48 15.52 0 10 0z" fill="#7C3AED"/>
@@ -203,7 +207,7 @@ export default function AdminPage() {
             <button
               key={t}
               className={`ad-nav-item ${tab === t ? "ad-nav-item--active" : ""}`}
-              onClick={() => { setTab(t); setSearch(""); }}
+              onClick={() => { setTab(t); setSearch(""); setSidebarOpen(false); }}
             >
               {t === "Overview"  && <MapPin size={16} />}
               {t === "Locations" && <MapPin size={16} />}
@@ -226,7 +230,12 @@ export default function AdminPage() {
       <main className="ad-main">
 
         <div className="ad-topbar">
-          <h1 className="ad-page-title">{tab}</h1>
+          <div className="ad-topbar-left">
+            <button className="ad-hamburger" onClick={() => setSidebarOpen(o => !o)}>
+              <Menu size={20} />
+            </button>
+            <h1 className="ad-page-title">{tab}</h1>
+          </div>
           <div className="ad-topbar-right">
             {tab !== "Overview" && (
               <input
