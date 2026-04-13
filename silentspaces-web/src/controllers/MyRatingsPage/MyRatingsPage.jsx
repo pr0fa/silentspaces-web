@@ -1,49 +1,75 @@
-import { useEffect, useMemo, useState } from "react";
-import { BookOpen, Coffee, Trees, Monitor, MapPin, Clock, Star, ChevronLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { getLocations } from "../../models/locationModel";
-import { useAuth } from "../../contexts/AuthContext";
-import "./MyRatingsPage.css";
-import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
+/*
+  MyRatingsPage.jsx
+  shows the user's rating history, pulled from localStorage.
 
+  we also fetch all locations from Firestore so we can display the location name
+  next to each rating — without that fetch, we'd only have the location ID.
+
+  ratings are sorted newest-first and include a small summary stat block at the top.
+*/
+
+import { useEffect, useMemo, useState }                       from "react";
+import { useNavigate }                                        from "react-router-dom";
+import { useAuth }                                            from "../../contexts/AuthContext";
+import { getLocations }                                       from "../../models/locationModel";
+import { BookOpen, Coffee, Trees, Monitor, MapPin, Clock, Star, ChevronLeft } from "lucide-react";
+import LoadingScreen                                          from "../../views/LoadingScreen/LoadingScreen";
+import "./MyRatingsPage.css";
+
+
+// grab the user's cached ratings from localStorage.
+// returns an empty array if nothing's there or the JSON is malformed.
 function readRatings(uid) {
   try {
-    const raw = localStorage.getItem(`ss:myRatings:${uid || "guest"}`);
+    const raw    = localStorage.getItem(`ss:myRatings:${uid || "guest"}`);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
-  } catch { return []; }
+  } catch {
+    return [];
+  }
 }
 
+
+// returns a relevant lucide icon for each location type.
+// falls back to a generic map pin if the type doesn't match anything.
 function typeIcon(type) {
   const t = (type || "").toLowerCase();
-  if (t.includes("library"))           return <BookOpen size={13} />;
-  if (t.includes("cafe") || t.includes("coffee")) return <Coffee size={13} />;
-  if (t.includes("park") || t.includes("garden")) return <Trees size={13} />;
-  if (t.includes("study") || t.includes("cowork")) return <Monitor size={13} />;
+  if (t.includes("library"))                             return <BookOpen size={13} />;
+  if (t.includes("cafe") || t.includes("coffee"))       return <Coffee size={13} />;
+  if (t.includes("park") || t.includes("garden"))       return <Trees size={13} />;
+  if (t.includes("study") || t.includes("cowork"))      return <Monitor size={13} />;
   return <MapPin size={13} />;
 }
 
+
 export default function MyRatingsPage() {
-  const navigate = useNavigate();
+  const navigate       = useNavigate();
   const { currentUser } = useAuth();
 
   const [allLocations, setAllLocations] = useState([]);
-  const [loading, setLoading]           = useState(true);
+  const [loading,      setLoading]      = useState(true);
 
+  // fetch locations so we can look up names by ID
   useEffect(() => {
     let alive = true;
+
     getLocations()
-      .then((data) => { if (alive) setAllLocations(Array.isArray(data) ? data : []); })
+      .then(data => { if (alive) setAllLocations(Array.isArray(data) ? data : []); })
       .finally(() => { if (alive) setLoading(false); });
+
     return () => { alive = false; };
   }, []);
 
+
+  // read + sort ratings once. we don't put uid in deps because it's stable —
+  // the user can't change their account mid-session.
   const allRatings = useMemo(() => {
     return [...readRatings(currentUser?.uid)].sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const average = useMemo(() => {
     if (allRatings.length === 0) return 0;
@@ -51,20 +77,23 @@ export default function MyRatingsPage() {
     return Math.round((sum / allRatings.length) * 10) / 10;
   }, [allRatings]);
 
-  const getLocation = (id) => allLocations.find((l) => l.id === id) ?? null;
+
+  const getLocation = (id) => allLocations.find(l => l.id === id) ?? null;
+
 
   if (loading) return <LoadingScreen />;
 
   return (
     <div className="mr-page">
 
-      {/* Header */}
       <div className="mr-header">
-        <button className="mr-back" onClick={() => navigate("/profile")}><ChevronLeft size={28} /></button>
+        <button className="mr-back" onClick={() => navigate("/profile")}>
+          <ChevronLeft size={28} />
+        </button>
         <span className="mr-heading">My Ratings</span>
       </div>
 
-      {/* Summary stat */}
+      {/* summary stats — only shown when there's something to summarise */}
       {allRatings.length > 0 && (
         <div className="mr-summary">
           <div className="mr-summary-stat">
@@ -79,7 +108,7 @@ export default function MyRatingsPage() {
           <div className="mr-summary-sep" />
           <div className="mr-summary-stat">
             <span className="mr-summary-num">
-              {allRatings.filter((r) => r.rating >= 4).length}
+              {allRatings.filter(r => r.rating >= 4).length}
             </span>
             <span className="mr-summary-label">4★ or above</span>
           </div>
@@ -90,7 +119,6 @@ export default function MyRatingsPage() {
         {allRatings.length} rating{allRatings.length !== 1 ? "s" : ""}
       </p>
 
-      {/* Empty state */}
       {allRatings.length === 0 && (
         <div className="mr-empty">
           <div className="mr-empty-icon"><Star size={32} /></div>
@@ -99,10 +127,9 @@ export default function MyRatingsPage() {
         </div>
       )}
 
-      {/* Cards */}
       <div className="mr-list">
         {allRatings.map((r, index) => {
-          const loc = getLocation(r.locationId);
+          const loc  = getLocation(r.locationId);
           const name = loc ? loc.name : "Unknown location";
           const type = loc ? loc.type : "";
 
@@ -113,7 +140,7 @@ export default function MyRatingsPage() {
               onClick={() => navigate(`/location/${r.locationId}`)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => {
+              onKeyDown={e => {
                 if (e.key === "Enter" || e.key === " ") navigate(`/location/${r.locationId}`);
               }}
             >
@@ -127,7 +154,9 @@ export default function MyRatingsPage() {
                   )}
                 </div>
                 <div className="mr-right">
-                  <div className="mr-stars">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
+                  <div className="mr-stars">
+                    {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}
+                  </div>
                   <span className="mr-chevron">›</span>
                 </div>
               </div>
@@ -142,7 +171,7 @@ export default function MyRatingsPage() {
                 )}
                 <span className="mr-date">
                   {new Date(r.createdAt).toLocaleDateString("en-GB", {
-                    day: "numeric", month: "short", year: "numeric"
+                    day: "numeric", month: "short", year: "numeric",
                   })}
                 </span>
               </div>

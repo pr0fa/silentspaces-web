@@ -1,13 +1,33 @@
+/*
+  SettingsPage.jsx
+  lets the user nuke their local app data — saved locations, ratings cache,
+  and filter preferences. everything here is localStorage-only so no Firestore
+  writes are needed.
+
+  heads up: "reset all" sends them back to /map after clearing everything because
+  staying on settings with no data would look broken.
+*/
+
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import toast from "react-hot-toast";
+import { useAuth }     from "../../contexts/AuthContext";
 import { Bookmark, Star, RotateCcw, Trash2, ChevronLeft } from "lucide-react";
+import toast from "react-hot-toast";
 import "./SettingsPage.css";
 
+
+// the four filter pref keys — same ones ProfilePage and MapPage use
+const PREF_KEYS = [
+  "ss:pref:wifiRequired",
+  "ss:pref:seatingRequired",
+  "ss:pref:quietRequired",
+  "ss:pref:socketsRequired",
+];
+
+
 export default function SettingsPage() {
-  const navigate = useNavigate();
+  const navigate       = useNavigate();
   const { currentUser } = useAuth();
-  const uid = currentUser?.uid || "guest";
+  const uid            = currentUser?.uid || "guest";
 
   const clearSaved = () => {
     if (!window.confirm("Clear all saved locations?")) return;
@@ -23,30 +43,36 @@ export default function SettingsPage() {
 
   const resetPreferences = () => {
     if (!window.confirm("Reset all filter preferences to default?")) return;
-    ["ss:pref:wifiRequired","ss:pref:seatingRequired","ss:pref:quietRequired","ss:pref:socketsRequired"]
-      .forEach(k => localStorage.removeItem(k));
+    PREF_KEYS.forEach(k => localStorage.removeItem(k));
     toast.success("Preferences reset");
   };
 
+  // the nuclear option — clears everything and redirects to the map
   const resetAll = () => {
     if (!window.confirm("This will clear all your local app data. Are you sure?")) return;
+
     localStorage.removeItem(`ss:favourites:${uid}`);
     localStorage.removeItem(`ss:myRatings:${uid}`);
-    ["ss:pref:wifiRequired","ss:pref:seatingRequired","ss:pref:quietRequired","ss:pref:socketsRequired","ss:profile:name"]
-      .forEach(k => localStorage.removeItem(k));
+    PREF_KEYS.forEach(k => localStorage.removeItem(k));
+    localStorage.removeItem("ss:profile:name");
+
     toast.success("All app data cleared");
     navigate("/map");
   };
+
 
   return (
     <div className="st-page">
 
       <div className="st-header">
-        <button className="st-back" onClick={() => navigate("/profile")}><ChevronLeft size={28} /></button>
+        <button className="st-back" onClick={() => navigate("/profile")}>
+          <ChevronLeft size={28} />
+        </button>
         <span className="st-heading">Settings</span>
       </div>
 
       <p className="st-section-label">Data Management</p>
+
       <div className="st-card">
 
         <div className="st-row">
@@ -83,6 +109,7 @@ export default function SettingsPage() {
       </div>
 
       <p className="st-section-label st-section-label--danger">Danger Zone</p>
+
       <div className="st-card st-card--danger">
         <div className="st-row">
           <div className="st-row-icon st-row-icon--red"><Trash2 size={16} /></div>

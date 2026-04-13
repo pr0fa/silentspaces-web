@@ -1,3 +1,11 @@
+/*
+  AdminPage.jsx
+  the admin dashboard. all the data-fetching and mutation logic lives in
+  useAdminLogic below — the component itself just renders what that hook gives back.
+
+  tabs: Overview | Locations | Ratings | Users
+*/
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -14,6 +22,7 @@ function useAdminLogic() {
   const [search,setSearch]=useState(""),   [showAdd,setShowAdd]=useState(false),[editTarget,setEditTarget]=useState(null);
   const [form,setForm]=useState(EMPTY_FORM),[saving,setSaving]=useState(false), [sidebarOpen,setSidebarOpen]=useState(false);
 
+  // load everything in parallel — one Promise.all is faster than four sequential reads
   const loadAll = async () => {
     setLoading(true);
     try {
@@ -23,8 +32,10 @@ function useAdminLogic() {
   };
   useEffect(()=>{ loadAll(); },[]);
 
+  // open the add modal fresh, or pre-fill it with an existing location's data for editing
   const openAdd    = ()    => { setEditTarget(null); setForm(EMPTY_FORM); setShowAdd(true); };
   const openEdit   = loc   => { setEditTarget(loc); setForm({name:loc.name||"",type:nt(loc.type),address:loc.address||"",area:loc.area||"",wifi:!!loc.wifi,seating:!!loc.seating,sockets:!!loc.sockets}); setShowAdd(true); };
+  // reset everything so reopening the modal always starts clean
   const closeModal = ()    => { setShowAdd(false); setEditTarget(null); setForm(EMPTY_FORM); };
 
   const handleSaveLocation = async e => {
@@ -32,6 +43,7 @@ function useAdminLogic() {
     if (!form.name.trim()||!form.address.trim()) { toast.error("Name and address are required."); return; }
     setSaving(true);
     try {
+      // only re-geocode if the address actually changed — saves an API call
       const ac = !editTarget||editTarget.address!==form.address.trim();
       let lat=editTarget?.lat, lng=editTarget?.lng, area=form.area.trim()||editTarget?.area||"";
       if (ac) { const g=await geocodeAddress(form.address); lat=g.lat; lng=g.lng; area=form.area.trim()||g.area; }
@@ -42,8 +54,10 @@ function useAdminLogic() {
     } catch(err) { toast.error(err.message||"Failed to save location."); } finally { setSaving(false); }
   };
 
+  // confirm before deleting — also calls loadAll so the stats cards update immediately
   const delLoc = async (id,name) => { if(!window.confirm(`Delete "${name}" and all its ratings?`))return; try{await deleteLocation(id);setLocations(p=>p.filter(l=>l.id!==id));toast.success("Location deleted.");loadAll();}catch{toast.error("Failed to delete location.");} };
   const delRat = async (lid,rid) => { if(!window.confirm("Delete this rating?"))return; try{await deleteRating(lid,rid);setRatings(p=>p.filter(r=>r.id!==rid));toast.success("Rating deleted.");loadAll();}catch{toast.error("Failed to delete rating.");} };
+  // curried onChange — works for text inputs and checkboxes
   const field  = k => e => setForm(f=>({...f,[k]:e.target.type==="checkbox"?e.target.checked:e.target.value}));
   const q = search.toLowerCase();
   return {
@@ -57,6 +71,7 @@ function useAdminLogic() {
   };
 }
 
+// generic table wrapper reused by Locations, Ratings, and Users tabs
 function DataTable({ headers, rows, renderRow, empty }) {
   return (
     <div className="ad-card ad-table-wrap">
@@ -73,8 +88,10 @@ export default function AdminPage() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const d = useAdminLogic();
+  // renders a checkmark or a muted cross — used in the boolean columns of the locations table
   const tick = v => v ? "✓" : <span className="ad-muted">✗</span>;
 
+  // map tab name → the JSX to render in <main> — keeps the return block clean
   const TABS_MAP = {
     Overview:  d.stats && <OverviewTab stats={d.stats} locations={d.locations} ratings={d.ratings} />,
     Locations: <DataTable key="locations" headers={["Name","Type","Area","Ratings","Score","Wi-Fi","Seating","Sockets",""]}
@@ -123,7 +140,9 @@ export default function AdminPage() {
 
   return (
     <div className="ad-page">
+      {/* dim overlay that closes the sidebar when tapped on mobile */}
       {d.sidebarOpen && <div className="ad-overlay" onClick={()=>d.setSidebarOpen(false)}/>}
+      {/* sidebar slides in on mobile, always visible on desktop */}
       <aside className={`ad-sidebar ${d.sidebarOpen?"ad-sidebar--open":""}`}>
         <div className="ad-sidebar-logo">
           <svg viewBox="0 0 20 24" width="22" height="26" fill="none">
@@ -145,6 +164,7 @@ export default function AdminPage() {
           <div className="ad-sidebar-user">{currentUser?.email}</div>
         </div>
       </aside>
+      {/* main content area — topbar + the active tab's content */}
       <main className="ad-main">
         <div className="ad-topbar">
           <div className="ad-topbar-left">

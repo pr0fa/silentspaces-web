@@ -1,3 +1,9 @@
+/*
+  MapPage.jsx
+  the main map view. the heavy Google Maps logic lives in useMapLogic.js —
+  this file handles location loading, search/filter state, and rendering.
+*/
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
@@ -7,22 +13,31 @@ import { getLocations } from "../../models/locationModel";
 import LoadingScreen from "../../views/LoadingScreen/LoadingScreen";
 import { useMapLogic, geocodeAddress, readBool, LS_PREF_WIFI, LS_PREF_SEATING, LS_PREF_QUIET, LS_PREF_SOCKETS } from "./useMapLogic";
 import "./MapPage.css";
+
 export default function MapPage() {
   const navigate = useNavigate();
   const { isLoaded, loadError } = useLoadScript({ googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY });
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // fetch all locations on mount. `alive` prevents setState after unmount.
   useEffect(() => {
     let alive = true;
     getLocations().then(d => alive && setLocations(Array.isArray(d) ? d : [])).catch(() => alive && setError("Failed to load locations")).finally(() => alive && setLoading(false));
     return () => { alive = false; };
   }, []);
+
   const [query, setQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  // initialise filters from localStorage so prefs persist across sessions
   const [filters, setFilters] = useState(() => ({ wifi: readBool(LS_PREF_WIFI, false), seating: readBool(LS_PREF_SEATING, false), quiet: readBool(LS_PREF_QUIET, false), sockets: readBool(LS_PREF_SOCKETS, false) }));
+  // keep localStorage in sync whenever a filter changes
   useEffect(() => { [[LS_PREF_WIFI, filters.wifi], [LS_PREF_SEATING, filters.seating], [LS_PREF_QUIET, filters.quiet], [LS_PREF_SOCKETS, filters.sockets]].forEach(([k, v]) => localStorage.setItem(k, String(v))); }, [filters]);
+  // flip a single filter key — keeping all other keys untouched
   const toggleFilter = key => setFilters(f => ({ ...f, [key]: !f[key] }));
+
+  // the filtered list is passed to useMapLogic — markers re-draw whenever it changes
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return locations.filter(loc => {
@@ -35,8 +50,11 @@ export default function MapPage() {
       return true;
     });
   }, [locations, query, filters]);
+
   const { onContainerMount, selected, setSelected, handleLocateMe, panTo, iwContentRef } = useMapLogic(filtered);
+  // when a suggestion is picked, update the query and pan if it's an area (not a known location)
   const onSuggest = useCallback(item => { setQuery(item.name); if (item.isArea) panTo(item.coords, 13); }, [panTo]);
+
   if (loading || !isLoaded) return <LoadingScreen message="Loading the map..." />;
   if (error || loadError)   return <div className="mp-state">{error || "Failed to load Google Maps"}</div>;
   return (
@@ -46,23 +64,28 @@ export default function MapPage() {
       <div className="mp-map">
         <MapLegend />
         <button className="mp-locateBtn flex-center" onClick={handleLocateMe} aria-label="Locate me"><Navigation size={20} /></button>
+        {/* the map renders into this div — Google Maps owns it after mount */}
         <div ref={onContainerMount} style={{ width: "100%", height: "100%" }} />
+        {/* render the popup as normal React JSX inside the InfoWindow via a portal */}
         {selected && createPortal(<LocationPopup selected={selected} onViewDetails={() => navigate(`/location/${selected.id}`)} onClose={() => setSelected(null)} />, iwContentRef.current)}
       </div>
     </div>
   );
 }
 
+// search bar with local suggestions + debounced Mapbox geocoding for area names
 function SearchBar({ query, onQueryChange, locations, onSuggestionClick, onFilterToggle }) {
   const [suggestions, setSuggestions] = useState([]);
   const [panning, setPanning] = useState(false);
   const geocodeTimer = useRef(null), panTimer = useRef(null), justSelected = useRef(false);
   useEffect(() => () => { clearTimeout(geocodeTimer.current); clearTimeout(panTimer.current); }, []);
   useEffect(() => {
+    // skip this cycle if we just selected a suggestion ourselves
     if (justSelected.current) { justSelected.current = false; return; }
     const q = query.trim(); if (!q) return void setSuggestions([]);
     const local = locations.filter(l => `${l.name} ${l.area}`.toLowerCase().includes(q.toLowerCase())).slice(0, 3).map(l => ({ ...l, isArea: false }));
     setSuggestions(local); clearTimeout(geocodeTimer.current);
+    // debounce the geocode call so we don't hammer Mapbox on every keystroke
     geocodeTimer.current = setTimeout(() =>
       geocodeAddress(q, import.meta.env.VITE_MAPBOX_TOKEN)
         .then(d => setSuggestions([...local, ...(d.features||[]).slice(0, 3).map(f => ({ id: f.id, name: f.text, area: f.place_name, coords: { lat: f.center[1], lng: f.center[0] }, isArea: true }))]))
@@ -89,14 +112,23 @@ function SearchBar({ query, onQueryChange, locations, onSuggestionClick, onFilte
     </div>
   );
 }
+
+// chip definitions are static — no reason to rebuild this array on every render
 const CHIPS = [{ key: "wifi", icon: <Wifi size={13} />, label: "Wi-Fi" }, { key: "seating", icon: <Armchair size={13} />, label: "Seating" }, { key: "sockets", icon: <Zap size={13} />, label: "Sockets" }, { key: "quiet", icon: <VolumeX size={13} />, label: "Quiet" }];
+
+// renders the row of filter toggle chips below the search bar
 function FilterPanel({ filters, onToggle }) {
   return <div className="mp-filterPanel">{CHIPS.map(({ key, icon, label }) => (
     <button key={key} className={`mp-chip${filters[key] ? " mp-chip--active" : ""}`} onClick={() => onToggle(key)}>{icon} {label}</button>
   ))}</div>;
 }
+
+// small colour key that explains the three marker types — rendered as an overlay on the map
 const MapLegend = () => <div className="mp-legend mp-card"><div className="mp-legend-section">{[["library", "Library"], ["cafe", "Café"], ["park", "Park"]].map(([t, l]) => <span key={l}><span className={`mp-legend-dot mp-legend-dot--${t}`} />{l}</span>)}</div></div>;
+
+// the card that floats inside Google's InfoWindow when a marker is tapped
 function LocationPopup({ selected: s, onViewDetails }) {
+  // translate the three busyness levels into a rough bar width so it reads visually
   const busyW = s.busynessLevel === "High" ? "100%" : s.busynessLevel === "Mid" ? "55%" : "25%";
   return (
     <div className="mp-popup mp-card">

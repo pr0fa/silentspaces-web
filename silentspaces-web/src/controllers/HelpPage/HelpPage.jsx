@@ -1,6 +1,13 @@
+/*
+  HelpPage.jsx
+  the help & support screen. static content — FAQ items and contact links.
+  no state or data fetching needed here.
+*/
+
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import "./HelpPage.css";
+
 
 const FAQ = [
   {
@@ -21,6 +28,7 @@ const FAQ = [
   },
 ];
 
+
 export default function HelpPage() {
   const navigate = useNavigate();
 
@@ -34,7 +42,6 @@ export default function HelpPage() {
         <span className="hp-heading">Help & Support</span>
       </div>
 
-      {/* Contact */}
       <div className="hp-section">
         <div className="hp-section-title">Contact Us</div>
         <div className="hp-card">
@@ -43,19 +50,26 @@ export default function HelpPage() {
             <span>k2372662@kingston.ac.uk</span>
           </a>
           <div className="hp-divider" />
-          <a href="https://github.com/pr0fa/silentspaces-web/issues" target="_blank" rel="noopener noreferrer" className="hp-contact-row">
+          <a
+            href="https://github.com/pr0fa/silentspaces-web/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hp-contact-row"
+          >
             <span>🐛</span>
             <span>Report an issue on GitHub</span>
           </a>
         </div>
       </div>
 
-      {/* FAQ */}
       <div className="hp-section">
         <div className="hp-section-title">Frequently Asked Questions</div>
         <div className="hp-card">
           {FAQ.map((item, i) => (
-            <div key={i} className={`hp-faq-item ${i < FAQ.length - 1 ? "hp-faq-border" : ""}`}>
+            <div
+              key={i}
+              className={`hp-faq-item ${i < FAQ.length - 1 ? "hp-faq-border" : ""}`}
+            >
               <div className="hp-faq-q">❓ {item.q}</div>
               <div className="hp-faq-a">{item.a}</div>
             </div>

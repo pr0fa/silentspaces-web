@@ -1,8 +1,17 @@
-// src/api/ratingsApi.js
-// Reads and writes ratings directly to Firestore.
-// Each location has a "ratings" subcollection: /locations/{id}/ratings/{ratingId}
-// When a rating is submitted, the parent location doc is updated atomically
-// so quietnessScore and ratingCount always stay in sync.
+/*
+  ratingModel.js
+  reads and writes ratings to Firestore.
+
+  the data structure:
+    /locations/{locationId}/ratings/{ratingId}
+
+  every time someone submits a rating we run a Firestore transaction that:
+    1. reads the current location doc to get the running average
+    2. writes the new rating doc into the subcollection
+    3. updates quietnessScore and ratingCount on the parent location doc
+  doing it in a single transaction means those two values are always in sync —
+  no chance of a half-written state if the network drops mid-save.
+*/
 
 import { db } from "../config/firebase";
 import {
@@ -15,8 +24,9 @@ import {
   query,
 } from "firebase/firestore";
 
-// Fetches all ratings for a location and computes the average.
-// Returns the same shape the old REST API did: { average, count, ratings[] }
+
+// fetches all ratings for a location, sorted newest-first.
+// also calculates the current average so the UI doesn't have to do the math.
 export async function getRatings(locationId) {
   const ratingsRef = collection(db, "locations", locationId, "ratings");
   const q = query(ratingsRef, orderBy("createdAt", "desc"));
@@ -25,7 +35,8 @@ export async function getRatings(locationId) {
   const ratings = snapshot.docs.map(d => ({
     id: d.id,
     ...d.data(),
-    // Firestore Timestamps need converting to ISO strings for display
+    // Firestore Timestamps aren't plain strings — convert them so components
+    // can just call new Date(r.createdAt) without any extra fuss
     createdAt: d.data().createdAt?.toDate().toISOString() ?? new Date().toISOString(),
   }));
 
@@ -38,11 +49,13 @@ export async function getRatings(locationId) {
   return { average, count, ratings };
 }
 
-// Adds a new rating and updates the location's quietnessScore + ratingCount
-// inside a single transaction so the aggregates are always consistent.
+
+// submits a new rating and atomically updates the location's aggregates.
+// the transaction guarantees quietnessScore and ratingCount stay consistent
+// even if two users submit at the exact same millisecond.
 export async function submitRating(locationId, rating, comment, bestTime) {
   const locationRef = doc(db, "locations", locationId);
-  const ratingRef = doc(collection(db, "locations", locationId, "ratings"));
+  const ratingRef   = doc(collection(db, "locations", locationId, "ratings"));
 
   let savedRating;
 
@@ -50,38 +63,50 @@ export async function submitRating(locationId, rating, comment, bestTime) {
     const locSnap = await tx.get(locationRef);
     if (!locSnap.exists()) throw new Error("Location not found");
 
-    const { ratingCount = 0, quietnessScore = 0, dayVisits = [0,0,0,0,0,0,0] } = locSnap.data();
+    const {
+      ratingCount   = 0,
+      quietnessScore = 0,
+      dayVisits      = [0, 0, 0, 0, 0, 0, 0],
+    } = locSnap.data();
 
+    // recalculate the running average with the new rating included
     const newCount = ratingCount + 1;
-    const newScore =
-      Math.round(((quietnessScore * ratingCount + rating) / newCount) * 10) / 10;
+    const newScore = Math.round(
+      ((quietnessScore * ratingCount + rating) / newCount) * 10
+    ) / 10;
 
+    // track which day of the week this visit happened so we can power the
+    // "popular times" chart on the location details page
     const newDayVisits = [...dayVisits];
     newDayVisits[new Date().getDay()]++;
-    const maxDay = Math.max(...newDayVisits);
+
+    // figure out busyness level based on how evenly visits are spread across the week
+    const maxDay     = Math.max(...newDayVisits);
     const totalVisits = newDayVisits.reduce((a, b) => a + b, 0);
-    const ratio = totalVisits > 0 ? maxDay / totalVisits : 0;
+    const ratio       = totalVisits > 0 ? maxDay / totalVisits : 0;
     const busynessLevel = ratio >= 0.35 ? "High" : ratio >= 0.2 ? "Mid" : "Low";
 
     tx.set(ratingRef, {
       rating,
-      comment: comment ?? "",
-      bestTime: bestTime ?? "",
+      comment:   comment  ?? "",
+      bestTime:  bestTime ?? "",
       createdAt: serverTimestamp(),
     });
 
     tx.update(locationRef, {
-      ratingCount: newCount,
+      ratingCount:    newCount,
       quietnessScore: newScore,
-      dayVisits: newDayVisits,
+      dayVisits:      newDayVisits,
       busynessLevel,
     });
 
+    // build the return value now — after the transaction commits we can't re-read
+    // serverTimestamp so we use a plain Date as a close-enough approximation
     savedRating = {
-      id: ratingRef.id,
+      id:        ratingRef.id,
       rating,
-      comment: comment ?? "",
-      bestTime: bestTime ?? "",
+      comment:   comment  ?? "",
+      bestTime:  bestTime ?? "",
       createdAt: new Date().toISOString(),
     };
   });
