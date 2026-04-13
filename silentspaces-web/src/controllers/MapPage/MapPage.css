@@ -1,4 +1,18 @@
+/* ── CSS variables (map-scoped colours) ────────────────────────────────── */
+
 .mp-page {
+  --mp-purple:      #7C3AED;
+  --mp-purple-dark: #5B21B6;
+  --mp-purple-tint: #EDE9FE;
+  --mp-purple-ring: #DDD6FE;
+  --mp-red:         #F87171;
+  --mp-cyan:        #06B6D4;
+  --mp-amber:       #F59E0B;
+  /* marker colours — mirror getMarkerColor() in useMapLogic.js */
+  --mp-color-library: var(--mp-purple, #7C3AED);
+  --mp-color-cafe:    var(--mp-red,    #F87171);
+  --mp-color-park:    var(--mp-cyan,   #06B6D4);
+
   position: relative;
   height: calc(100dvh - 74px);
   background: #EEF1F5;
@@ -9,7 +23,21 @@
   .mp-page { height: 100dvh; }
 }
 
-/* ── Floating search bar ── */
+/* ── Shared utility ─────────────────────────────────────────────────────── */
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mp-card {
+  background: rgba(255,255,255,0.96);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* ── Floating search bar ────────────────────────────────────────────────── */
 
 .mp-header {
   position: absolute;
@@ -42,8 +70,8 @@
 .mp-searchInput::placeholder { color: #9AA0A6; }
 
 .mp-filterBtn {
-  border: 1.5px solid #DDD6FE;
-  background: #EDE9FE;
+  border: 1.5px solid var(--mp-purple-ring, #DDD6FE);
+  background: var(--mp-purple-tint, #EDE9FE);
   width: 36px;
   height: 36px;
   border-radius: 8px;
@@ -51,7 +79,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #5B21B6;
+  color: var(--mp-purple-dark, #5B21B6);
   flex-shrink: 0;
 }
 
@@ -64,14 +92,14 @@
 .mp-filterIcon span {
   display: block;
   height: 2px;
-  background: #5B21B6;
+  background: var(--mp-purple-dark, #5B21B6);
   border-radius: 2px;
 }
 .mp-filterIcon span:nth-child(1) { width: 14px; }
 .mp-filterIcon span:nth-child(2) { width: 10px; }
 .mp-filterIcon span:nth-child(3) { width: 6px; }
 
-/* ── Suggestions dropdown ── */
+/* ── Suggestions dropdown ───────────────────────────────────────────────── */
 
 .mp-suggestions {
   background: white;
@@ -102,7 +130,7 @@
 .mp-suggestionText strong { font-size: 13px; color: #1a1a1a; }
 .mp-suggestionText span   { font-size: 11px; color: #888; }
 
-/* ── Filter chips ── */
+/* ── Filter chips ───────────────────────────────────────────────────────── */
 
 .mp-filterPanel {
   position: absolute;
@@ -133,18 +161,23 @@
   font-weight: 500;
   color: var(--color-text-secondary);
   cursor: pointer;
+  touch-action: manipulation;
   transition: all 0.15s ease;
   white-space: nowrap;
   font-family: inherit;
 }
-.mp-chip:hover                  { border-color: var(--color-primary); color: var(--color-primary); }
+.mp-chip:hover { border-color: var(--mp-purple, #7C3AED); color: var(--mp-purple, #7C3AED); }
+
 .mp-chip--active,
 .mp-chip--active:hover,
 .mp-chip--active:focus,
-.mp-chip--active:active         { background: var(--color-primary); border-color: var(--color-primary); color: white; }
-.mp-chip                        { touch-action: manipulation; }
+.mp-chip--active:active {
+  background: var(--mp-purple, #7C3AED);
+  border-color: var(--mp-purple, #7C3AED);
+  color: white;
+}
 
-/* ── Map container ── */
+/* ── Map container ──────────────────────────────────────────────────────── */
 
 .mp-map {
   position: absolute;
@@ -153,7 +186,7 @@
 
 .mp-state { padding: 16px; color: var(--color-text-secondary); }
 
-/* ── Locate me button ── */
+/* ── Locate me button ───────────────────────────────────────────────────── */
 
 .mp-locateBtn {
   position: absolute;
@@ -164,33 +197,27 @@
   border-radius: 50%;
   border: none;
   background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   cursor: pointer;
   z-index: 1000;
-  color: #5B21B6;
+  color: var(--mp-purple-dark, #5B21B6);
 }
 
 @media (min-width: 768px) {
   .mp-locateBtn { bottom: 24px; }
 }
 
-/* ── Legend ── */
+/* ── Legend ─────────────────────────────────────────────────────────────── */
 
 .mp-legend {
   position: absolute;
   bottom: 40px;
   left: 10px;
   z-index: 1000;
-  background: rgba(255,255,255,0.92);
-  border-radius: 10px;
   padding: 6px 10px;
   font-size: 11px;
   font-weight: 500;
   color: #333;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   pointer-events: none;
 }
 
@@ -204,12 +231,12 @@
   display: inline-block;
   flex-shrink: 0;
 }
+.mp-legend-dot--library { background: var(--mp-color-library, #7C3AED); }
+.mp-legend-dot--cafe    { background: var(--mp-color-cafe,    #F87171); }
+.mp-legend-dot--park    { background: var(--mp-color-park,    #06B6D4); }
 
-/* ── Popup (inside Google Maps InfoWindow) ── */
+/* ── Google Maps InfoWindow overrides ───────────────────────────────────── */
 
-/* ── Google Maps InfoWindow overrides ── */
-
-/* Outer container */
 .gm-style .gm-style-iw-c {
   padding: 0 !important;
   border-radius: 14px !important;
@@ -217,17 +244,14 @@
   max-width: 270px !important;
 }
 
-/* Scrollable inner div */
 .gm-style .gm-style-iw-d {
   overflow: hidden !important;
   padding: 0 !important;
   max-height: none !important;
 }
 
-/* Hide the tail/arrow */
 .gm-style .gm-style-iw-t::after { display: none !important; }
 
-/* Style the close button */
 .gm-style .gm-style-iw-chr {
   position: absolute !important;
   top: 6px !important;
@@ -235,9 +259,7 @@
   z-index: 10;
 }
 
-.gm-style .gm-style-iw-ch {
-  padding: 0 !important;
-}
+.gm-style .gm-style-iw-ch { padding: 0 !important; }
 
 .gm-style button[title="Close"] {
   width: 24px !important;
@@ -257,11 +279,14 @@
   background: #e5e7eb !important;
 }
 
+/* ── Popup (inside InfoWindow) ──────────────────────────────────────────── */
+
 .mp-popup {
   min-width: 220px;
   max-width: 260px;
   padding: 14px 14px 12px;
   font-family: var(--font-family);
+  background: white; /* override .mp-card's slight transparency */
 }
 
 .mp-popup-name {
@@ -284,10 +309,10 @@
 }
 
 .mp-popup-bars {
-  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-bottom: 8px;
 }
 
 .mp-popup-bar-row {
@@ -317,8 +342,8 @@
   transition: width 0.3s ease;
 }
 
-.mp-popup-bar--quiet { background: #7C3AED; }
-.mp-popup-bar--busy  { background: #F59E0B; }
+.mp-popup-bar--quiet { background: var(--mp-purple, #7C3AED); }
+.mp-popup-bar--busy  { background: var(--mp-amber,  #F59E0B); }
 
 .mp-popup-bar-val {
   font-size: 11px;
@@ -351,7 +376,7 @@
 .mp-popup-btn {
   width: 100%;
   padding: 8px 0;
-  background: #5B21B6;
+  background: var(--mp-purple-dark, #5B21B6);
   color: white;
   border: none;
   border-radius: 8px;
@@ -360,4 +385,20 @@
   cursor: pointer;
   font-family: inherit;
 }
-.mp-popup-btn:hover { background: #7C3AED; }
+.mp-popup-btn:hover { background: var(--mp-purple, #7C3AED); }
+
+/* ── Search panning spinner ─────────────────────────────────────────────── */
+
+.mp-searchSpinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #E5E7EB;
+  border-top-color: var(--mp-purple, #7C3AED);
+  animation: mp-spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes mp-spin {
+  to { transform: rotate(360deg); }
+}
